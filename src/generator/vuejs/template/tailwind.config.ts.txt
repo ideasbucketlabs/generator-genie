@@ -1,0 +1,47 @@
+{%- if javascriptSelected -%}
+/* eslint-env node */
+/** @type {import('tailwindcss').Config} */
+{%- if metadata.indentSize == 2 %}
+module.exports = {
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+{%- else %}
+module.exports = {
+    content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+    theme: {
+        extend: {}
+    },
+    plugins: []
+}
+{%- endif -%}
+{%- else -%}
+{%- if metadata.indentSize == 2 -%}
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  theme: {
+    extend: {}
+  },
+  plugins: []
+}
+
+export default config
+{%- else -%}
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+    content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+    theme: {
+        extend: {}
+    },
+    plugins: []
+}
+
+export default config
+{%- endif -%}
+{%- endif %}

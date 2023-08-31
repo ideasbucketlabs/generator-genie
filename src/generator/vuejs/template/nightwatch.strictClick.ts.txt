@@ -1,0 +1,27 @@
+/**
+ * A non-class-based custom-command in Nightwatch. The command name is the filename.
+ *
+ * Usage:
+ *   browser.strictClick(selector)
+ *
+ * This command is not used yet used in any of the examples.
+ *
+ * For more information on working with custom-commands see:
+ * https://nightwatchjs.org/guide/extending-nightwatch/adding-custom-commands.html
+ {%- if javascriptSelected %}
+ * @param {string} selector
+ {%- endif %}
+ */
+{%- if indentSize == 2 %}
+module.exports = {
+  command: function (selector{%- if typescriptSelected %}: string{%- endif %}) {
+    return this.waitForElementVisible(selector).click(selector)
+  }
+}
+{%- else %}
+module.exports = {
+    command: function (selector{%- if typescriptSelected %}: string{%- endif %}) {
+        return this.waitForElementVisible(selector).click(selector)
+    }
+}
+{%- endif -%}

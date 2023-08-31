@@ -1,0 +1,13 @@
+{%- if metadata.indentSize == 2 -%}
+<template>
+  <header>Header (MainLayout.vue)</header>
+  <main><router-view /></main>
+  <footer>Footer (MainLayout.vue)</footer>
+</template>
+{%- else -%}
+<template>
+    <header>Header (from MainLayout.vue)</header>
+    <main><router-view /></main>
+    <footer>Footer (from MainLayout.vue)</footer>
+</template>
+{%- endif %}

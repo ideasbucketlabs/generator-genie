@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ripple {
+    @apply pointer-events-none absolute block;
+    transform: scale(0);
+    border-radius: 100%;
+}
+
+.ripple-animation {
+    animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+    100% {
+        opacity: 0;
+        transform: scale(2.5);
+    }
+}
+
+:root {
+    --shiki-color-text: theme('colors.gray.800');
+    --shiki-color-background: theme('colors.white');
+    --shiki-token-constant: theme('colors.indigo.500');
+    --shiki-token-string: theme('colors.indigo.500');
+    --shiki-token-comment: theme('colors.red.500');
+    --shiki-token-keyword: theme('colors.sky.500');
+    --shiki-token-parameter: theme('colors.red.500');
+    --shiki-token-function: theme('colors.red.500');
+    --shiki-token-string-expression: theme('colors.blue.500');
+    --shiki-token-punctuation: theme('colors.red.500');
+    --shiki-token-link: theme('colors.red.500');
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --shiki-color-text: theme('colors.gray.100');
+        --shiki-color-background: theme('colors.gray.900');
+        --shiki-token-string: theme('colors.yellow.500');
+        --shiki-token-string-expression: theme('colors.yellow.500');
+        --shiki-token-constant: theme('colors.yellow.500');
+        --shiki-token-function: theme('colors.red.500');
+    }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s ease-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.fade-bottom-enter-active {
+    transition: all 0.3s ease-out;
+}
+
+.fade-bottom-leave-active {
+    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.fade-bottom-enter-from {
+    transform: translateY(-8%);
+    opacity: 0;
+}
+
+.fade-bottom-leave-to {
+    transform: translateY(8%);
+    opacity: 0;
+}
+
+.animate__animated {
+    animation-duration: 200ms;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.fadeOut {
+    animation-name: fadeOut;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input:checked + span {
+    @apply text-indigo-500;
+}

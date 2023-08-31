@@ -1,0 +1,41 @@
+{%- if indentSize == 2 -%}
+{%- if javascriptSelected -%}
+const { test, expect } = require('@playwright/test');
+
+// See here how to get started:
+// https://playwright.dev/docs/intro
+test('visits the app root url', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('body')).toHaveCount(1);
+})
+{%- else -%}
+import { test, expect } from '@playwright/test';
+
+// See here how to get started:
+// https://playwright.dev/docs/intro
+test('visits the app root url', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('body')).toHaveCount(1);
+})
+{%- endif -%}
+{%- else -%}
+{%- if javascriptSelected -%}
+const { test, expect } = require('@playwright/test');
+
+// See here how to get started:
+// https://playwright.dev/docs/intro
+test('visits the app root url', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('body')).toHaveCount(1);
+})
+{%- else -%}
+import { test, expect } from '@playwright/test';
+
+// See here how to get started:
+// https://playwright.dev/docs/intro
+test('visits the app root url', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('body')).toHaveCount(1);
+})
+{%- endif -%}
+{%- endif -%}

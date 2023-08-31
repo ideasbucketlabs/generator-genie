@@ -1,0 +1,44 @@
+{% assign placeholder = "{{ msg }}" %}
+{%- if typescriptSelected -%}
+    {%- if metadata.indentSize == 2 -%}
+<script setup lang="ts">
+defineProps<{
+  msg: string
+}>()
+</script>
+    {%- else -%}
+<script setup lang="ts">
+defineProps<{
+    msg: string
+}>()
+</script>
+    {%- endif -%}
+{%- else -%}
+    {%- if metadata.indentSize == 2 -%}
+<script setup>
+defineProps({
+  msg: {
+    type: String,
+    required: true
+  }
+})
+</script>
+    {%- else -%}
+<script setup>
+defineProps({
+    msg: {
+        type: String,
+        required: true
+    }
+})
+</script>
+    {%- endif %}
+{%- endif %}
+
+<template>
+  {%- if metadata.indentSize == 2 %}
+  <div>{{ placeholder }}</div>
+  {%- else %}
+    <div>{{ placeholder }}</div>
+  {%- endif %}
+</template>

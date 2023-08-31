@@ -1,0 +1,17 @@
+{%- if indentSize == 4 -%}
+/* eslint-env node */
+module.exports = {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {}
+    }
+}
+{%- else -%}
+/* eslint-env node */
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {}
+  }
+}
+{%- endif %}

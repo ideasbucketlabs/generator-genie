@@ -1,0 +1,19 @@
+{%- if indentSize == 2 -%}
+// https://on.cypress.io/api
+
+describe('My First Test', () => {
+  it('visits the app root url', () => {
+    cy.visit('/')
+    cy.get('body').its('length').should('eq', 1)
+  })
+})
+{%- else -%}
+// https://on.cypress.io/api
+
+describe('My First Test', () => {
+    it('visits the app root url', () => {
+        cy.visit('/')
+        cy.get('body').its('length').should('eq', 1)
+    })
+})
+{%- endif %}

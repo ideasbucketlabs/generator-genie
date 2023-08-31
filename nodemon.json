@@ -1,0 +1,5 @@
+{
+    "watch": ["src/generator/**/template/**.txt","src/generator/Processor.**"],
+    "ext": "txt,ts",
+    "exec": "ts-node ./src/generator/Processor.ts"
+}

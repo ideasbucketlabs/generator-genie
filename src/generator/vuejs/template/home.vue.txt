@@ -1,0 +1,21 @@
+{%- if typescriptSelected -%}
+<script lang="ts" setup>
+{%- else -%}
+<script setup>
+{%- endif %}
+import HelloWorld from '@/components/HelloWorld.vue'
+</script>
+
+<template>
+  {%- if metadata.indentSize == 2 %}
+  <div {%- if dependenciesIds contains "tailwind" %} class="text-gray-500"{%- endif -%}>
+    <div>Hello from Home.vue!!!</div>
+    <HelloWorld msg="Hello from HelloWorld Component"></HelloWorld>
+  </div>
+  {%- else %}
+    <div {%- if dependenciesIds contains "tailwind" %} class="text-gray-500"{%- endif -%}>
+        <div>Hello from Home.vue!!!</div>
+        <HelloWorld msg="Hello from HelloWorld Component"></HelloWorld>
+    </div>
+  {%- endif %}
+</template>

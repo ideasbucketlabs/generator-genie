@@ -1,0 +1,27 @@
+{%- if indentSize == 2 -%}
+describe('My First Test', function () {
+  before((browser) => {
+    browser.init()
+  })
+
+  it('visits the app root url', function () {
+    browser.assert.elementHasCount('body', 1)
+    .strictClick('body')
+  })
+
+  after((browser) => browser.end())
+})
+{%- else -%}
+describe('My First Test', function () {
+    before((browser) => {
+        browser.init()
+    })
+
+    it('visits the app root url', function () {
+        browser.assert.elementHasCount('body', 1)
+        .strictClick('body')
+    })
+
+    after((browser) => browser.end())
+})
+{%- endif -%}
