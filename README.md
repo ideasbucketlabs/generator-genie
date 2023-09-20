@@ -2,7 +2,7 @@
   <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ideasbucketlabs/generator-genie/main/documentation/images/logo-dark.svg">
       <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ideasbucketlabs/generator-genie/main/documentation/images/logo-light.svg">
-      <img alt="Generator Genie" src="https://raw.githubusercontent.com/ideasbucketlabs/generator-genie/main/documentation/images/logo-light.svg" width="144" height="58" style="max-width: 100%;">
+      <img alt="Generator Genie" src="https://raw.githubusercontent.com/ideasbucketlabs/generator-genie/main/documentation/images/logo-light.svg" width="444" height="58" style="max-width: 100%;">
   </picture>
 </p>
 

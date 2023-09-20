@@ -115,7 +115,3 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
-
-input:checked + span {
-    @apply text-indigo-500;
-}

@@ -13,7 +13,7 @@ const data: Dependency[] = [
                     'Support for compiling Spring applications to native executables using the GraalVM native-image compiler.',
                 plugin: true,
                 groupId: 'org.graalvm.buildtools.native',
-                version: '0.9.23'
+                version: '0.9.24'
             },
             {
                 name: 'Spring Boot DevTools',
@@ -37,6 +37,13 @@ const data: Dependency[] = [
                     'Generate metadata for developers to offer contextual help and "code completion" when working with custom configuration keys (ex.application.properties/.yml files).',
                 groupId: 'org.springframework.boot',
                 artifactId: 'spring-boot-configuration-processor'
+            },
+            {
+                name: 'Docker Compose Support',
+                id: 'docker-compose-setup',
+                description: 'Provides docker compose support for enhanced development experience.',
+                groupId: 'org.springframework.boot',
+                artifactId: 'spring-boot-docker-compose'
             }
         ]
     },

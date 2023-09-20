@@ -75,3 +75,6 @@ For further reference, please consider the following sections:
 {%- if dependenciesIds contains "webflux" %}
 * [Building a Reactive RESTful Web Service](https://spring.io/guides/gs/reactive-rest-service/)
 {%- endif %}
+{%- if dependenciesIds contains "pebble" %}
+* [Pebble Documentation](https://pebbletemplates.io/)
+{%- endif %}

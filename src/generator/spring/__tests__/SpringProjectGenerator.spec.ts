@@ -18,7 +18,7 @@ function getOutput(fileName: string) {
 function getMetadata(language: Language.Kotlin | Language.Java = Language.Java): SpringProject {
     return {
         language: language,
-        springBootVersion: SpringBootVersion['3_1_2'],
+        springBootVersion: SpringBootVersion['3_1_3'],
         group: 'com.test',
         artifact: 'demo',
         packageName: 'demo',
@@ -56,7 +56,7 @@ describe('Can generate build.gradle properly', () => {
                         description: 'test',
                         plugin: true,
                         groupId: 'org.graalvm.buildtools.native',
-                        version: '0.9.23'
+                        version: '0.9.24'
                     },
                     {
                         name: 'Spring Boot DevTools',

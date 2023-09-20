@@ -1,22 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" class="flex min-h-screen flex-col items-stretch subpixel-antialiased overflow-hidden">
+<html lang="en" class="flex min-h-full flex-col items-stretch subpixel-antialiased overflow-hidden">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
         <title>Generator Genie</title>
+
+        <!-- Font -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=roboto:100,100i,300,300i,400,400i,500,500i,700&display=swap" rel="stylesheet" />
+
+        <!-- Primary Meta Tags -->
+        <meta name="title" content="Generator Genie - Versatile project template generator">
+        <meta name="description" content="Language agnostic project template generator that lets you generator project of many kinds without the need to install anything.">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://generatorgenie.io/">
+        <meta property="og:title" content="Generator Genie - Versatile project template generator">
+        <meta property="og:description" content="Language agnostic project template generator that lets you generator project of many kinds without the need to install anything.">
+        <meta property="og:image" content="https://generatorgenie.io/social-card.jpg">
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://generatorgenie.io/">
+        <meta property="twitter:title" content="Generator Genie - Versatile project template generator">
+        <meta property="twitter:description" content="Language agnostic project template generator that lets you generator project of many kinds without the need to install anything.">
+        <meta property="twitter:image" content="https://generatorgenie.io/social-card.jpg">
+
+        <!-- Favicon -->
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="shortcut icon" href="/favicon.ico">
         <link rel="manifest" href="/site.webmanifest">
+        <meta name="msapplication-config" content="/browserconfig.xml">
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#6366f1">
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="theme-color" content="#ffffff">
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=roboto:100,100i,300,300i,400,400i,500,500i,700" rel="stylesheet" />
     </head>
-    <body class="relative flex flex-1 flex-col">
-        <div id="app" class="flex flex-col flex-1 relative"></div>
+    <body class="relative flex flex-1 flex-col" id="app">
         <script type="module" src="/src/main.ts"></script>
     </body>
 </html>

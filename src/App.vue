@@ -17,8 +17,10 @@ import type { ContentTree } from '@/entity/ContentTree'
 import { Language } from '@/entity/Language'
 import VueJsProject from '@/components/VueJsProject.vue'
 import GithubIcon from '@/icons/GithubIcon.vue'
+import XIcon from '@/icons/XIcon.vue'
+import BaseInput from '@/components/BaseInput.vue'
 
-const defaultGroup = import.meta.env.VITE_DEFAULT_GROUP ?? 'com.demo'
+const defaultGroup = import.meta.env.VITE_DEFAULT_GROUP ?? 'com.example'
 const dependencyStore = dStore()
 const keys = useMagicKeys({
     passive: false,
@@ -34,12 +36,12 @@ const keys = useMagicKeys({
 const DependenciesDialog = defineAsyncComponent({
     loader: () => import('@/components/DependenciesDialog.vue'),
     loadingComponent: AppComponentLoader,
-    delay: 200
+    delay: 100
 })
 const Explorer = defineAsyncComponent({
     loader: () => import('@/components/Explorer.vue'),
     loadingComponent: AppComponentLoader,
-    delay: 200
+    delay: 100
 })
 const contentTree = ref<ContentTree | null>(null)
 const generateButtonLabel = ref<string>('Generate')
@@ -68,7 +70,7 @@ const springProject = ref<{ active: boolean; valid: boolean; metaData: SpringPro
     valid: true,
     metaData: {
         language: Language.Java,
-        springBootVersion: SpringBootVersion['3_1_2'] as SpringBootVersion,
+        springBootVersion: SpringBootVersion['3_1_3'] as SpringBootVersion,
         group: defaultGroup,
         name: 'demo',
         artifact: 'demo',
@@ -268,25 +270,46 @@ function removePackage(packageId: string) {
 </script>
 <template>
     <AppComponentLoader v-if="isLoading"></AppComponentLoader>
-    <header class="bg-indigo-500 px-2 py-4 shadow-inner dark:bg-gray-900 flex items-center justify-between">
-        <a href="/">
+    <header class="bg-indigo-500 shadow-inner dark:bg-gray-900 flex items-center justify-between" role="banner">
+        <a href="/" class="mx-2 my-3" role="navigation" aria-label="Generator Genie" tabindex="-1">
             <Logo class="w-80 fill-current text-white"></Logo>
         </a>
-        <a
-            href="https://github.com/ideasbucketlabs/generator-genie"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-9 h-9 flex items-center justify-center"
-            title="Go to Generator Genie Github page"
-        >
-            <span class="block h-full w-full"
-                ><GithubIcon
-                    class="text-white fill-current w-full h-full hover:scale-105 hover:drop-shadow-xl"
-                ></GithubIcon
-            ></span>
-        </a>
+        <div class="flex space-y-3 flex-col items-center justify-center mr-2 md:flex-row md:space-y-0 md:space-x-4">
+            <a
+                href="https://github.com/ideasbucketlabs/generator-genie"
+                target="_blank"
+                aria-label="Go to Generator Genie Github page"
+                rel="noopener noreferrer"
+                tabindex="-1"
+                class="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 xl:w-9 xl:h-9 flex items-center justify-center"
+                title="Go to Generator Genie Github page"
+            >
+                <span class="block h-full w-full"
+                    ><GithubIcon
+                        class="text-white fill-current w-full h-full hover:scale-105 hover:drop-shadow-xl"
+                        aria-label="Go to Generator Genie Github page"
+                    ></GithubIcon
+                ></span>
+            </a>
+            <a
+                href="https://twitter.com/@myideasbucket"
+                target="_blank"
+                tabindex="-1"
+                rel="noopener noreferrer"
+                class="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 xl:w-9 xl:h-9 flex items-center justify-center"
+                aria-label="Go to IdeasBucket Twitter(X) page"
+                title="Go to IdeasBucket Twitter(X) page"
+            >
+                <span class="block h-full w-full"
+                    ><XIcon
+                        class="text-white fill-current w-full h-full hover:scale-105 hover:drop-shadow-xl"
+                        aria-label="Go to IdeasBucket Twitter(X) page"
+                    ></XIcon
+                ></span>
+            </a>
+        </div>
     </header>
-    <main class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 dark:bg-gray-800 dark:text-gray-100">
+    <main class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 dark:bg-gray-800 dark:text-gray-100" role="main">
         <Explorer
             v-if="showExplorer && contentTree !== null"
             :content="contentTree"
@@ -310,27 +333,21 @@ function removePackage(packageId: string) {
                 <div class="space-y-4 p-2 xl:flex xl:space-x-10 xl:space-y-0">
                     <div class="">
                         <div class="font-medium">Project Type</div>
-                        <div class="flex flex-col space-y-2 xl:flex-row xl:space-x-4 xl:space-y-0">
-                            <label class="flex cursor-pointer items-center">
-                                <input
-                                    type="radio"
-                                    name="project_type"
-                                    :value="ProjectType.Spring"
-                                    v-model="projectType"
-                                    class="-mt-[2px] text-indigo-500 hover:border hover:border-indigo-500 focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-indigo-500"
-                                />
-                                <span class="ml-2">Spring Boot</span>
-                            </label>
-                            <label class="flex cursor-pointer items-center">
-                                <input
-                                    type="radio"
-                                    name="project_type"
-                                    :value="ProjectType.VueJS"
-                                    v-model="projectType"
-                                    class="-mt-[2px] text-indigo-500 hover:border hover:border-indigo-500 focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-indigo-500"
-                                />
-                                <span class="ml-2">VueJS</span>
-                            </label>
+                        <div class="flex space-x-4">
+                            <BaseInput
+                                v-model="projectType"
+                                label="Spring Boot"
+                                name="project_type"
+                                type="radio"
+                                :value="ProjectType.Spring"
+                            ></BaseInput>
+                            <BaseInput
+                                v-model="projectType"
+                                label="VueJS"
+                                name="project_type"
+                                type="radio"
+                                :value="ProjectType.VueJS"
+                            ></BaseInput>
                         </div>
                     </div>
                 </div>
@@ -357,7 +374,7 @@ function removePackage(packageId: string) {
                         <span v-if="!isMobile && !isMac" class="font-mono ml-2 block font-extralight">Ctrl + b</span>
                     </button>
                 </div>
-                <hr class="my-2" />
+                <hr class="my-2 dark:border-gray-500" />
                 <div class="mt-2 italic" v-if="selectedPackages.size === 0">No dependency selected</div>
                 <div v-else class="xl:flex xl:flex-col space-y-4 xl:overflow-y-auto">
                     <TransitionGroup
@@ -403,7 +420,6 @@ function removePackage(packageId: string) {
                         </div>
                     </TransitionGroup>
                 </div>
-                <!--                <pre class="code-display rounded bg-white shadow" v-html="ttt"></pre>-->
             </div>
         </div>
     </main>

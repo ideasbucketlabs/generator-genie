@@ -198,14 +198,14 @@ onBeforeUnmount(() => {
             title=""
             @close="emit('close')"
         >
-            <div style="height: calc(100vh - 5vw)" class="flex flex-col bg-white dark:bg-gray-800 dark:text-gray-100">
+            <div style="height: calc(100dvh - 5dvw)" class="flex flex-col bg-white dark:bg-gray-800 dark:text-gray-100">
                 <div class="relative">
                     <input
                         type="text"
                         name="dependencies-input-filter"
                         tabindex="-1"
                         ref="inputElement"
-                        class="h-12 w-full border-b border-l-0 border-r-0 border-t-0 transition duration-200 ease-linear hover:border-indigo-500 focus:border-indigo-500 focus:shadow-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:ring-offset-0 dark:bg-gray-800"
+                        class="h-12 w-full border-b border-l-0 border-r-0 border-t-0 transition duration-200 ease-linear dark:hover:border-indigo-400 hover:border-indigo-500 dark:focus:border-indigo-400 focus:border-indigo-500 focus:shadow-lg focus:outline-none focus:ring-1 dark:focus:ring-indigo-400 focus:ring-indigo-500 focus:ring-offset-0 dark:bg-gray-800"
                         :class="{ 'pr-56': !isMobile }"
                         autocomplete="off"
                         :placeholder="
@@ -230,7 +230,7 @@ onBeforeUnmount(() => {
                         <div v-for="dependency in dependencies" :key="dependency.id">
                             <template v-if="dependency.packages.length !== 0">
                                 <div
-                                    class="sticky top-0 flex items-center border-b border-indigo-200 bg-white p-2 pl-2 text-white shadow dark:border-indigo-600 dark:bg-gray-700"
+                                    class="sticky top-0 flex items-center border-b border-indigo-200 bg-white p-2 pl-2 text-white shadow dark:border-indigo-400 dark:bg-gray-700"
                                 >
                                     <span class="block rounded bg-indigo-500 px-2 py-1 text-sm uppercase">{{
                                         dependency.group
@@ -239,7 +239,7 @@ onBeforeUnmount(() => {
                                 <template v-for="packages in dependency.packages" :key="dependency.id + packages.id">
                                     <div
                                         @click="selectPackage(packages.id)"
-                                        class="flex cursor-pointer border-b border-indigo-200 p-2 transition duration-100 ease-linear dark:border-indigo-600"
+                                        class="flex cursor-pointer border-b border-indigo-200 p-2 transition duration-100 ease-linear dark:border-indigo-500"
                                         :class="{
                                             'keyboard-select bg-indigo-100 dark:bg-indigo-500':
                                                 keyboardSelection === packages.id

@@ -167,7 +167,7 @@ onBeforeUnmount(() => {
             title=""
             @close="emit('close')"
         >
-            <div style="height: calc(100vh - 5vw)" class="flex dark:text-gray-100">
+            <div style="height: calc(100dvh - 5dvw)" class="flex dark:text-gray-100">
                 <div class="bg-indigo-50 dark:bg-gray-800 w-72 hidden xl:flex flex-col xl:pb-16">
                     <div
                         class="p-2 font-semibold text-indigo-500 border-b border-indigo-100 dark:border-gray-700 h-11 flex items-center"
