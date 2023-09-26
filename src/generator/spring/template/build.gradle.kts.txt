@@ -21,7 +21,7 @@ group = "{{ metadata.group }}"
 version = "0.0.1-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_{{ metadata.javaVersion}}
+    sourceCompatibility = JavaVersion.VERSION_{%- if javaSelected -%}{{ metadata.javaVersion}}{%- else -%}17{%- endif %}
 }
 
 {%- if annotationDependencies.size != 0 %}
@@ -143,14 +143,14 @@ dependencyManagement {
 tasks.compileKotlin {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "{{ metadata.javaVersion}}"
+        jvmTarget = "17"
     }
 }
 
 tasks.compileTestKotlin {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "{{ metadata.javaVersion}}"
+        jvmTarget = "17"
     }
 }
 {%- endif %}

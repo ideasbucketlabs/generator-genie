@@ -18,7 +18,7 @@ function getOutput(fileName: string) {
 function getMetadata(language: Language.Kotlin | Language.Java = Language.Java): SpringProject {
     return {
         language: language,
-        springBootVersion: SpringBootVersion['3_1_3'],
+        springBootVersion: SpringBootVersion['3_1_4'],
         group: 'com.test',
         artifact: 'demo',
         packageName: 'demo',

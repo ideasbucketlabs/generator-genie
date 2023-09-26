@@ -9,5 +9,5 @@ export interface SpringProject {
     artifact: string
     packageName: string
     description: string
-    javaVersion: number
+    javaVersion: 17 | 21
 }

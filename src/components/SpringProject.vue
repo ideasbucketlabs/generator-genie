@@ -28,7 +28,7 @@ const name = ref<string>(information.name)
 const language = ref<Language.Java | Language.Kotlin>(information.language)
 const springBootVersion = ref<SpringBootVersion>(information.springBootVersion)
 const description = ref<string>(information.description)
-const javaVersion = ref<number>(information.javaVersion)
+const javaVersion = ref<17 | 21>(information.javaVersion)
 
 defineExpose({ validate })
 
@@ -132,17 +132,17 @@ function validate() {
             <div class="space-x-4 flex">
                 <BaseInput
                     v-model="springBootVersion"
-                    :label="SpringBootVersion['3_0_10']"
+                    :label="SpringBootVersion['3_0_11']"
                     name="springBootVersion"
                     type="radio"
-                    :value="SpringBootVersion['3_0_10']"
+                    :value="SpringBootVersion['3_0_11']"
                 ></BaseInput>
                 <BaseInput
                     v-model="springBootVersion"
-                    :label="SpringBootVersion['3_1_3']"
+                    :label="SpringBootVersion['3_1_4']"
                     name="springBootVersion"
                     type="radio"
-                    :value="SpringBootVersion['3_1_3']"
+                    :value="SpringBootVersion['3_1_4']"
                 ></BaseInput>
             </div>
         </div>
@@ -199,13 +199,22 @@ function validate() {
 
             <div>
                 <div class="font-medium">Java version</div>
-                <BaseInput
-                    v-model.number="javaVersion"
-                    :value="17"
-                    label="17"
-                    type="radio"
-                    name="java_version"
-                ></BaseInput>
+                <div class="flex space-x-2">
+                    <BaseInput
+                        v-model.number="javaVersion"
+                        :value="17"
+                        label="17"
+                        type="radio"
+                        name="java_version"
+                    ></BaseInput>
+                    <BaseInput
+                        v-model.number="javaVersion"
+                        :value="21"
+                        label="21"
+                        type="radio"
+                        name="java_version"
+                    ></BaseInput>
+                </div>
             </div>
         </div>
     </div>
