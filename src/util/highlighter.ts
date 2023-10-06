@@ -1,19 +1,17 @@
-import { getHighlighter, type Highlighter, setCDN } from 'shiki'
 import { Language } from '@/entity/Language'
+import Prism from 'prismjs'
+import 'prismjs/components/prism-json'
+import 'prismjs/components/prism-java'
+import 'prismjs/components/prism-kotlin'
+import 'prismjs/components/prism-markdown'
+import 'prismjs/components/prism-css'
+import 'prismjs/components/prism-typescript'
+import 'prismjs/components/prism-javascript'
 
-let shiki: Highlighter | null = null
+export default async function highlight(content: string, language: Language): Promise<{ code: string; lines: number }> {
+    // PrismJS does not have native VueJS highlight support so map to html.
+    const derivedLanguage = language === Language.Vue ? Language.Html : language
+    const highlightedContent = Prism.highlight(content, Prism.languages[derivedLanguage], derivedLanguage)
 
-async function init() {
-    setCDN('https://cdn.jsdelivr.net/npm/shiki/')
-    shiki = await getHighlighter({
-        theme: 'css-variables',
-        langs: ['js', 'java', 'kotlin', 'markdown', 'vue', 'vue-html']
-    })
-}
-
-export default async function highlight(content: string, language: Language): Promise<string> {
-    if (shiki === null) {
-        await init()
-    }
-    return shiki?.codeToHtml(content, { lang: language }) ?? ''
+    return { code: highlightedContent, lines: highlightedContent.split(/\n(?!$)/g).length }
 }

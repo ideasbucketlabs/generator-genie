@@ -219,7 +219,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                       '@vue/tsconfig': '^0.4.0',
                       'npm-run-all': '^4.1.5',
                       'vue-tsc': '^1.8.8',
-                      typescript: '~5.1.6'
+                      typescript: '~5.2.0'
                   }
                 : {}),
             ...(projectMetaData.includeEslint
@@ -231,7 +231,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 : {}),
             ...(projectMetaData.includeEslint && typescriptSelected
                 ? {
-                      '@vue/eslint-config-typescript': '^11.0.3'
+                      '@vue/eslint-config-typescript': '^12.0.0'
                   }
                 : {}),
             ...(projectMetaData.includePrettier

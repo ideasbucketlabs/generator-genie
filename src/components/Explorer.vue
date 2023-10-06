@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ContentTree, Folder } from '@/entity/ContentTree'
 import Dialog from '@/components/Dialog.vue'
-import { defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref } from 'vue'
 import Ripple from '@/components/Ripple.vue'
 import highlight from '@/util/highlighter'
 import type { File } from '@/entity/File'
@@ -20,6 +20,7 @@ const emit = defineEmits<{
     (e: 'update:model-value', selectedPackage: Set<string>): void
 }>()
 const code = ref<string>('')
+const numberOfLinesInACode = ref<number>(0)
 const rawCode = ref<string>('')
 const selectedFileId = ref<string>(getId())
 const selectedFileLanguageType = ref<Language | null>(null)
@@ -31,6 +32,20 @@ const props = withDefaults(defineProps<{ content: ContentTree | null; artifact: 
 
 const fileMap: Map<string, File> = new Map()
 
+const lineHtml = computed<string>(() => {
+    if (numberOfLinesInACode.value === 0) {
+        return ''
+    }
+
+    let html = ''
+
+    for (let i = 1; i <= numberOfLinesInACode.value; ++i) {
+        html = html + `<div><pre class="line-number">${i}</pre></div>`
+    }
+
+    return html
+})
+
 function fillMap(input: Array<File | Folder>) {
     input.forEach((it) => {
         if (it.type === ContentType.File) {
@@ -40,6 +55,7 @@ function fillMap(input: Array<File | Folder>) {
         }
     })
 }
+
 const copyText = ref<string>('Copy')
 
 const MarkdownPreview = defineAsyncComponent({
@@ -101,7 +117,9 @@ async function selectFile(id: string, content: string, lang: Language) {
     if (selectedFileId.value === id) {
         return
     }
-    code.value = await highlight(content, lang)
+    const highlightedCode = await highlight(content, lang)
+    code.value = highlightedCode.code
+    numberOfLinesInACode.value = highlightedCode.lines
     selectedFileLanguageType.value = lang
     rawCode.value = content
     selectedFileId.value = id
@@ -114,7 +132,10 @@ async function nestedOptionChanged(inputElement: HTMLInputElement | null) {
     }
     if (fileMap.has(inputElement.value)) {
         const file = fileMap.get(inputElement.value) as File
-        code.value = await highlight(file.content ?? '', file.lang)
+        const highlightedCode = await highlight(file.content ?? '', file.lang)
+        code.value = highlightedCode.code
+        numberOfLinesInACode.value = highlightedCode.lines
+
         rawCode.value = file.content ?? ''
         selectedFileId.value = file.id
         selectedFileLanguageType.value = file.lang
@@ -137,7 +158,10 @@ onMounted(async () => {
 
         if (firstFile !== null) {
             rawCode.value = firstFile.content!!
-            code.value = await highlight(firstFile.content!!, firstFile.lang)
+
+            const highlightedCode = await highlight(firstFile.content!!, firstFile.lang)
+            code.value = highlightedCode.code
+            numberOfLinesInACode.value = highlightedCode.lines
             selectedFileId.value = firstFile.id!!
         } else {
             code.value =
@@ -174,18 +198,18 @@ onBeforeUnmount(() => {
                     >
                         {{ artifact }}.zip
                     </div>
-                    <div class="flex-1 overflow-auto">
+                    <div class="flex-1 overflow-auto flex">
                         <TreeNode
                             v-if="content !== null"
                             :level="1"
                             :content="content.tree"
-                            class="max-w-[24rem]"
+                            class="max-w-[24rem] flex flex-col flex-1"
                             :selected-id="selectedFileId"
                             @node-selected="selectFile($event.id, $event.content, $event.lang)"
                         ></TreeNode>
                     </div>
                 </div>
-                <div class="flex-1 flex flex-col">
+                <div class="flex-1 flex flex-col overflow-auto">
                     <div class="xl:hidden flex" v-if="content !== null">
                         <select
                             class="flex-1 dark:bg-gray-900 text-indigo-500 hover:border border-indigo-100 dark:border-indigo-500 hover:border-indigo-200 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border-indigo-200 dark:focus:border-indigo-500"
@@ -199,7 +223,7 @@ onBeforeUnmount(() => {
                         </select>
                     </div>
                     <div
-                        class="flex-1 border-l border-b border-indigo-100 dark:border-gray-700 flex flex-col rounded-bl bg-white dark:bg-gray-900"
+                        class="flex-1 border-l border-b border-indigo-100 dark:border-gray-700 flex flex-col rounded-bl bg-white dark:bg-gray-900 overflow-auto"
                     >
                         <div
                             class="border-b flex border-indigo-100 items-center justify-center bg-indigo-50 dark:bg-gray-800 dark:border-gray-700 h-11"
@@ -233,7 +257,16 @@ onBeforeUnmount(() => {
                                 :content="rawCode"
                             ></MarkdownPreview>
                         </div>
-                        <pre v-else class="code-display flex-1 rounded-bl overflow-auto relative" v-html="code"></pre>
+                        <template v-else>
+                            <div class="flex flex-1">
+                                <div
+                                    v-if="numberOfLinesInACode !== 0"
+                                    class="mr-2 w-10 text-right pr-1 dark:bg-gray-800 bg-indigo-50 text-indigo-300 dark:text-gray-500 border-r border-indigo-100 dark:border-gray-700"
+                                    v-html="lineHtml"
+                                ></div>
+                                <pre class="code-display flex-1 rounded-bl overflow-auto relative" v-html="code"></pre>
+                            </div>
+                        </template>
 
                         <!--                        <pre class="code-display flex-1 rounded-bl overflow-auto relative" v-html="code"></pre>-->
                     </div>
@@ -273,36 +306,172 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-:deep(.code-display) pre {
-    overflow: auto !important;
-    position: absolute;
+.line-number {
+    @apply leading-6 whitespace-pre;
+    word-spacing: normal;
+    word-wrap: normal;
 }
 
-:deep(.code-display) code {
-    counter-reset: step;
-    counter-increment: step 0;
-    position: relative;
-    overflow: auto !important;
+:deep(.code-display) code,
+.code-display {
+    @apply leading-6 whitespace-pre text-left bg-none border-0 text-black;
+    direction: ltr;
+    word-spacing: normal;
+    word-wrap: normal;
+    hyphens: none;
 }
 
-:deep(.code-display) code .line::before {
-    content: counter(step);
-    counter-increment: step;
-    width: theme('width.12');
-    padding-right: theme('width.2');
-    display: inline-block;
-    text-align: right;
-    font-weight: 200;
-    color: theme('colors.indigo.300');
-    border-right: solid 10px theme('colors.white');
-    background: theme('colors.indigo.50');
+/*.code-display,
+//:deep(.code-display) :not(pre) > code {
+//} */
+
+/* Theme */
+:deep(.code-display) .token.comment,
+:deep(.code-display) .token.prolog,
+:deep(.code-display) .token.doctype,
+:deep(.code-display) .token.cdata {
+    color: theme('colors.gray.700');
+}
+
+:deep(.code-display) .token.selector,
+:deep(.code-display) .token.operator,
+:deep(.code-display) .token.punctuation {
+    color: theme('colors.gray.900');
+}
+
+:deep(.code-display) .token.namespace {
+    opacity: 0.7;
+}
+
+:deep(.code-display) .token.tag,
+:deep(.code-display) .token.boolean {
+    color: theme('colors.amber.500');
+}
+
+:deep(.code-display) .token.atrule,
+:deep(.code-display) .token.attr-value,
+:deep(.code-display) .token.hex,
+:deep(.code-display) .token.string {
+    color: theme('colors.blue.500');
+}
+
+:deep(.code-display) .token.rule {
+    color: theme('colors.sky.500');
+}
+
+:deep(.code-display) .token.property,
+:deep(.code-display) .token.entity,
+:deep(.code-display) .token.url,
+:deep(.code-display) .token.attr-name,
+:deep(.code-display) .token.keyword {
+    color: theme('colors.sky.500');
+}
+
+:deep(.code-display) .token.regex {
+    color: theme('colors.purple.500');
+}
+
+:deep(.code-display) .token.entity {
+    cursor: help;
+}
+
+:deep(.code-display) .token.function,
+:deep(.code-display) .token.constant {
+    color: theme('colors.red.500');
+}
+
+:deep(.code-display) .token.variable {
+    color: theme('colors.blue.500');
+}
+
+:deep(.code-display) .token.number {
+    color: theme('colors.indigo.500');
+}
+
+:deep(.code-display) .token.important,
+:deep(.code-display) .token.deliminator {
+    color: theme('colors.red.500');
+}
+
+:deep(.code-display) .token.annotation.builtin {
+    color: theme('colors.green.600');
 }
 
 @media (prefers-color-scheme: dark) {
-    :deep(.code-display) code .line::before {
-        color: theme('colors.blue.500');
-        background: theme('colors.gray.800');
-        border-right-color: theme('colors.gray.900');
+    :deep(.code-display) code,
+    .code-display {
+        color: theme('colors.white');
+    }
+
+    :deep(.code-display) .token.comment,
+    :deep(.code-display) .token.prolog,
+    :deep(.code-display) .token.doctype,
+    :deep(.code-display) .token.cdata {
+        color: theme('colors.gray.500');
+    }
+
+    :deep(.code-display) .token.selector,
+    :deep(.code-display) .token.operator,
+    :deep(.code-display) .token.punctuation {
+        color: theme('colors.red.600');
+    }
+
+    :deep(.code-display) .token.namespace {
+        opacity: 0.7;
+    }
+
+    :deep(.code-display) .token.tag,
+    :deep(.code-display) .token.boolean {
+        color: theme('colors.amber.300');
+    }
+
+    :deep(.code-display) .token.atrule,
+    :deep(.code-display) .token.attr-value,
+    :deep(.code-display) .token.hex,
+    :deep(.code-display) .token.string {
+        color: theme('colors.lime.500');
+    }
+
+    :deep(.code-display) .token.rule {
+        color: theme('colors.amber.300');
+    }
+
+    :deep(.code-display) .token.property,
+    :deep(.code-display) .token.entity,
+    :deep(.code-display) .token.url,
+    :deep(.code-display) .token.attr-name,
+    :deep(.code-display) .token.keyword {
+        color: theme('colors.amber.500');
+    }
+
+    :deep(.code-display) .token.regex {
+        color: theme('colors.purple.500');
+    }
+
+    :deep(.code-display) .token.annotation.builtin {
+        color: theme('colors.lime.500');
+    }
+
+    :deep(.code-display) .token.entity {
+        cursor: help;
+    }
+
+    :deep(.code-display) .token.function,
+    :deep(.code-display) .token.constant {
+        color: theme('colors.rose.500');
+    }
+
+    :deep(.code-display) .token.variable {
+        color: theme('colors.amber.300');
+    }
+
+    :deep(.code-display) .token.number {
+        color: theme('colors.blue.200');
+    }
+
+    :deep(.code-display) .token.important,
+    :deep(.code-display) .token.deliminator {
+        color: theme('colors.red.500');
     }
 }
 </style>

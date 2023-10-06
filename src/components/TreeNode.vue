@@ -25,16 +25,18 @@ function selectNode(id: string | null, content: string | null, lang: Language | 
         emit('node-selected', { id, content, lang })
     }
 }
+
 function collapseExpandFolder(id: string) {
     const currentState = folderState.value.get(id)
     folderState.value.set(id, !currentState)
 }
 
-function isCollapsed(id: string) {
+function isCollapsed(id: string): boolean {
     if (!folderState.value.has(id)) {
         folderState.value.set(id, true)
     }
-    return folderState.value.get(id)
+
+    return folderState.value.get(id)!!
 }
 </script>
 
@@ -61,7 +63,7 @@ function isCollapsed(id: string) {
                     <span class="w-4 flex-none">
                         <FileIcon class="w-full"></FileIcon>
                     </span>
-                    <span class="flex-none truncate">{{ c.name }}</span>
+                    <span class="flex-none truncate">{{ c.name }}&nbsp;&nbsp;</span>
                 </span>
             </template>
             <template v-else>
@@ -79,7 +81,7 @@ function isCollapsed(id: string) {
                             ></ArrowRightIcon
                         ></span>
                         <span class="w-4"><FolderCloseIcon class="w-full fill-current"></FolderCloseIcon></span>
-                        <span>{{ c.name }}</span>
+                        <span>{{ c.name }}&nbsp;&nbsp;</span>
                     </span>
                     <span
                         v-else
