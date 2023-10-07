@@ -272,7 +272,7 @@ function removePackage(packageId: string) {
     <AppComponentLoader v-if="isLoading"></AppComponentLoader>
     <header class="bg-indigo-500 shadow-inner dark:bg-gray-900 flex items-center justify-between" role="banner">
         <a href="/" class="mx-2 my-3" role="navigation" aria-label="Generator Genie" tabindex="-1">
-            <Logo class="w-80 fill-current text-white"></Logo>
+            <Logo class="w-80 fill-current text-white drop-shadow-lg"></Logo>
         </a>
         <div class="flex space-y-3 flex-col items-center justify-center mr-2 md:flex-row md:space-y-0 md:space-x-4">
             <a
@@ -286,7 +286,7 @@ function removePackage(packageId: string) {
             >
                 <span class="block h-full w-full"
                     ><GithubIcon
-                        class="text-white fill-current w-full h-full hover:scale-105 hover:drop-shadow-xl"
+                        class="text-white fill-current w-full h-full hover:scale-105 hover:drop-shadow-xl drop-shadow-lg"
                         aria-label="Go to Generator Genie Github page"
                     ></GithubIcon
                 ></span>
@@ -302,7 +302,7 @@ function removePackage(packageId: string) {
             >
                 <span class="block h-full w-full"
                     ><XIcon
-                        class="text-white fill-current w-full h-full hover:scale-105 hover:drop-shadow-xl"
+                        class="text-white fill-current w-full h-full hover:scale-105 hover:drop-shadow-xl drop-shadow-lg"
                         aria-label="Go to IdeasBucket Twitter(X) page"
                     ></XIcon
                 ></span>
