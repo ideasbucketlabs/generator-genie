@@ -8,7 +8,7 @@
         "preview": "vite preview",
         "test:unit": "vitest",
         "test:unit:ci": "vitest run --root src/",
-        "test:e2e": "playwright test",
+        "test:e2e": "playwright test --workers=3",
         "build-only": "vite build",
         "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
