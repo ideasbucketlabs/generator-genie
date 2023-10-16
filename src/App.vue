@@ -270,8 +270,15 @@ function removePackage(packageId: string) {
 </script>
 <template>
     <AppComponentLoader v-if="isLoading"></AppComponentLoader>
-    <header class="bg-indigo-500 shadow-inner dark:bg-gray-900 flex items-center justify-between" role="banner">
-        <a href="/" class="mx-2 my-3" role="navigation" aria-label="Generator Genie" tabindex="-1">
+    <header class="bg-primary-500 shadow-inner dark:bg-gray-900 flex items-center justify-between" role="banner">
+        <a
+            href="/"
+            class="mx-2 my-3"
+            role="navigation"
+            aria-label="Generator Genie"
+            tabindex="-1"
+            title="Generator Genie"
+        >
             <Logo class="w-80 fill-current text-white drop-shadow-lg"></Logo>
         </a>
         <div class="flex space-y-3 flex-col items-center justify-center mr-2 md:flex-row md:space-y-0 md:space-x-4">
@@ -364,7 +371,7 @@ function removePackage(packageId: string) {
                 <div class="flex items-center justify-between">
                     <div class="font-medium">Dependencies</div>
                     <button
-                        class="relative flex dark:border-gray-950 border-indigo-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
+                        class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
                         type="button"
                         @click="showDependenciesDialog = true"
                     >
@@ -395,7 +402,7 @@ function removePackage(packageId: string) {
                                     <div>
                                         {{ p.name
                                         }}<span
-                                            class="ml-2 truncate rounded bg-indigo-500 px-2 py-1 text-sm uppercase text-white"
+                                            class="ml-2 truncate rounded bg-primary-500 px-2 py-1 text-sm uppercase text-white"
                                             >{{ p.parentName }}</span
                                         >
                                     </div>
@@ -423,7 +430,7 @@ function removePackage(packageId: string) {
             </div>
         </div>
     </main>
-    <footer role="contentinfo" class="flex border-indigo-50 z-0 relative items-center">
+    <footer role="contentinfo" class="flex border-primary-50 z-0 relative items-center">
         <div
             class="h-16 flex relative flex-1 z-0 bg-white items-center justify-center space-x-4 border-t dark:border-gray-900 dark:bg-gray-700"
         >
@@ -431,7 +438,7 @@ function removePackage(packageId: string) {
                 v-if="haveValidProjectMetaData()"
                 @click="onGenerate"
                 type="button"
-                class="relative flex items-center overflow-hidden rounded border border-indigo-600 bg-indigo-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-indigo-600 hover:shadow-lg"
+                class="relative flex items-center overflow-hidden rounded border border-primary-600 bg-primary-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-primary-600 hover:shadow-lg"
             >
                 <Ripple></Ripple>
                 <span class="block">{{ generateButtonLabel }}</span>
@@ -449,7 +456,7 @@ function removePackage(packageId: string) {
                 v-if="haveValidProjectMetaData()"
                 type="button"
                 @click="onExplore"
-                class="relative flex dark:border-gray-950 border-indigo-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
+                class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
             >
                 <Ripple></Ripple>
                 <span>Explore</span>
@@ -459,7 +466,7 @@ function removePackage(packageId: string) {
                 v-else
                 type="button"
                 @click="onExplore"
-                class="relative flex cursor-not-allowed dark:border-gray-950 border-indigo-400 items-center overflow-hidden rounded border px-4 py-2 text-gray-400 dark:text-gray-100"
+                class="relative flex cursor-not-allowed dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 text-gray-400 dark:text-gray-100"
             >
                 <span>Explore</span>
             </button>

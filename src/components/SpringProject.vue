@@ -148,11 +148,11 @@ function validate() {
         </div>
         <div class="font-medium">Project Metadata</div>
         <div class="space-y-4">
-            <div class="flex items-center rounded bg-indigo-100 dark:bg-indigo-500 shadow-lg p-4 space-x-4">
+            <div class="flex items-center rounded bg-primary-100 dark:bg-primary-500 shadow-lg p-4 space-x-4">
                 <div class="">
                     <InformationIcon
                         aria-label="Information"
-                        class="w-10 fill-current text-indigo-500 dark:text-white"
+                        class="w-10 fill-current text-primary-500 dark:text-white"
                     ></InformationIcon>
                 </div>
                 <div>Please note project will be generated based on Gradle.</div>
@@ -181,7 +181,7 @@ function validate() {
             <div class="">
                 <div class="block">Package Name:</div>
                 <div
-                    class="w-full cursor-not-allowed bg-white hover:border-indigo-500 border rounded border-gray-700 px-3 py-2 dark:bg-gray-800 dark:border-gray-500"
+                    class="w-full cursor-not-allowed bg-white hover:border-primary-500 border rounded border-gray-700 px-3 py-2 dark:bg-gray-800 dark:border-gray-500"
                 >
                     {{ packageName }}
                 </div>

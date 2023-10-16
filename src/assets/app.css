@@ -19,31 +19,6 @@
     }
 }
 
-:root {
-    --shiki-color-text: theme('colors.gray.800');
-    --shiki-color-background: theme('colors.white');
-    --shiki-token-constant: theme('colors.indigo.500');
-    --shiki-token-string: theme('colors.indigo.500');
-    --shiki-token-comment: theme('colors.red.500');
-    --shiki-token-keyword: theme('colors.sky.500');
-    --shiki-token-parameter: theme('colors.red.500');
-    --shiki-token-function: theme('colors.red.500');
-    --shiki-token-string-expression: theme('colors.blue.500');
-    --shiki-token-punctuation: theme('colors.red.500');
-    --shiki-token-link: theme('colors.red.500');
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --shiki-color-text: theme('colors.gray.100');
-        --shiki-color-background: theme('colors.gray.900');
-        --shiki-token-string: theme('colors.yellow.500');
-        --shiki-token-string-expression: theme('colors.yellow.500');
-        --shiki-token-constant: theme('colors.yellow.500');
-        --shiki-token-function: theme('colors.red.500');
-    }
-}
-
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.5s ease-out;
@@ -112,6 +87,6 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
     -moz-appearance: textfield;
 }

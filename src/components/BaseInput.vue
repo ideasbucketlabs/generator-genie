@@ -94,7 +94,7 @@ onBeforeMount(() => {
             :checked="value === modelValue"
             @change="emit('update:model-value', value)"
             :aria-label="label.replace(/(<([^>]+)>)/gi, '')"
-            class="-mt-[2px] text-indigo-500 dark:text-indigo-400 hover:border hover:border-indigo-500 focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-indigo-500"
+            class="text-primary-500 dark:text-primary-400 hover:border hover:border-primary-500 focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-primary-500"
         />
         <input
             v-else-if="type === 'text' || type === 'number'"
@@ -107,7 +107,7 @@ onBeforeMount(() => {
             :class="[
                 hasError
                     ? 'border-red-500 dark:border-red-700 have-error focus:border-red-500 focus:ring-red-500 dark:focus:ring-red-700'
-                    : 'hover:border-indigo-500 focus:border-indigo-500 focus:ring-indigo-500 dark:hover:border-indigo-500 dark:focus:border-indigo-500 dark:focus:ring-indigo-500'
+                    : 'hover:border-primary-500 focus:border-primary-500 focus:ring-primary-500 dark:hover:border-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500'
             ]"
         />
         <textarea
@@ -121,7 +121,7 @@ onBeforeMount(() => {
             :class="[
                 hasError
                     ? 'border-red-500 dark:border-red-700 have-error focus:border-red-500 focus:ring-red-500 dark:focus:ring-red-700'
-                    : 'hover:border-indigo-500 focus:border-indigo-500 focus:ring-indigo-500'
+                    : 'hover:border-primary-500 focus:border-primary-500 focus:ring-primary-500'
             ]"
         ></textarea>
         <label class="flex cursor-pointer items-center" :for="id" :title="informationTooltip">
@@ -136,6 +136,6 @@ onBeforeMount(() => {
 
 <style scoped>
 input:checked + label {
-    @apply text-indigo-500 dark:text-indigo-400;
+    @apply text-primary-500 dark:text-primary-400;
 }
 </style>

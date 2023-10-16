@@ -51,9 +51,9 @@ function isCollapsed(id: string): boolean {
                     :class="[
                         ((c as File).content ?? null) === null
                             ? 'cursor-not-allowed text-gray-400'
-                            : 'hover:bg-indigo-100 dark:hover:bg-gray-700 cursor-pointer transition duration-200 ease-linear',
+                            : 'hover:bg-primary-100 dark:hover:bg-gray-700 cursor-pointer transition duration-200 ease-linear',
                         {
-                            'font-medium dark:text-blue-500 text-indigo-500 bg-indigo-100 dark:bg-gray-700':
+                            'font-medium dark:text-blue-500 text-primary-500 bg-primary-100 dark:bg-gray-700':
                                 ((c as File)?.id ?? 'NA') === selectedId
                         }
                     ]"
@@ -70,7 +70,7 @@ function isCollapsed(id: string): boolean {
                 <li class="flex flex-col flex-1">
                     <span
                         v-if="((c as Folder).children ?? []).length !== 0"
-                        class="flex space-x-2 items-center hover:bg-indigo-100 dark:hover:bg-gray-700 transition duration-200 ease-linear py-1 cursor-pointer"
+                        class="flex space-x-2 items-center hover:bg-primary-100 dark:hover:bg-gray-700 transition duration-200 ease-linear py-1 cursor-pointer"
                         @click="collapseExpandFolder(c.id)"
                     >
                         <span :style="{ width: level === 1 ? 0 : (level * 0.7).toString() + 'rem' }"></span>
@@ -85,7 +85,7 @@ function isCollapsed(id: string): boolean {
                     </span>
                     <span
                         v-else
-                        class="flex space-x-2 items-center hover:bg-indigo-100 dark:hover:bg-gray-700 transition duration-200 ease-linear py-1 cursor-default"
+                        class="flex space-x-2 items-center hover:bg-primary-100 dark:hover:bg-gray-700 transition duration-200 ease-linear py-1 cursor-default"
                         title="Empty folder"
                     >
                         <span :style="{ width: level === 1 ? 0 : (level * 0.7).toString() + 'rem' }"></span>

@@ -192,9 +192,9 @@ onBeforeUnmount(() => {
             @close="emit('close')"
         >
             <div style="height: calc(100dvh - 5dvw)" class="flex dark:text-gray-100">
-                <div class="bg-indigo-50 dark:bg-gray-800 w-72 hidden xl:flex flex-col xl:pb-16">
+                <div class="bg-primary-50 dark:bg-gray-800 w-72 hidden xl:flex flex-col xl:pb-16">
                     <div
-                        class="p-2 font-semibold text-indigo-500 border-b border-indigo-100 dark:border-gray-700 h-11 flex items-center"
+                        class="p-2 font-semibold text-primary-500 border-b border-primary-100 dark:border-gray-700 h-11 flex items-center"
                     >
                         {{ artifact }}.zip
                     </div>
@@ -212,7 +212,7 @@ onBeforeUnmount(() => {
                 <div class="flex-1 flex flex-col overflow-auto">
                     <div class="xl:hidden flex" v-if="content !== null">
                         <select
-                            class="flex-1 dark:bg-gray-900 text-indigo-500 hover:border border-indigo-100 dark:border-indigo-500 hover:border-indigo-200 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border-indigo-200 dark:focus:border-indigo-500"
+                            class="flex-1 dark:bg-gray-900 text-primary-500 hover:border border-primary-100 dark:border-primary-500 hover:border-primary-200 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border-primary-200 dark:focus:border-primary-500"
                             @change="nestedOptionChanged(($event.target as HTMLInputElement) ?? null)"
                         >
                             <NestedOption
@@ -223,17 +223,17 @@ onBeforeUnmount(() => {
                         </select>
                     </div>
                     <div
-                        class="flex-1 border-l border-b border-indigo-100 dark:border-gray-700 flex flex-col rounded-bl bg-white dark:bg-gray-900 overflow-auto"
+                        class="flex-1 border-l border-b border-primary-100 dark:border-gray-700 flex flex-col rounded-bl bg-white dark:bg-gray-900 overflow-auto"
                     >
                         <div
-                            class="border-b flex border-indigo-100 items-center justify-center bg-indigo-50 dark:bg-gray-800 dark:border-gray-700 h-11"
+                            class="border-b flex border-primary-100 items-center justify-center bg-primary-50 dark:bg-gray-800 dark:border-gray-700 h-11"
                             v-if="selectedFileLanguageType === Language.Markdown"
                         >
                             <button
                                 type="button"
                                 v-if="markedDownShowPreview"
                                 @click="markedDownShowPreview = !markedDownShowPreview"
-                                class="relative flex my-1 dark:border-gray-950 border-indigo-400 items-center overflow-hidden rounded border px-4 py-1 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
+                                class="relative flex my-1 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-1 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
                             >
                                 <Ripple></Ripple>
                                 View Source
@@ -242,7 +242,7 @@ onBeforeUnmount(() => {
                                 type="button"
                                 v-if="!markedDownShowPreview"
                                 @click="markedDownShowPreview = !markedDownShowPreview"
-                                class="relative flex my-1 dark:border-gray-950 border-indigo-400 items-center overflow-hidden rounded border px-4 py-1 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
+                                class="relative flex my-1 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-1 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
                             >
                                 <Ripple></Ripple>
                                 Preview
@@ -261,7 +261,7 @@ onBeforeUnmount(() => {
                             <div class="flex flex-1">
                                 <div
                                     v-if="numberOfLinesInACode !== 0"
-                                    class="mr-2 w-10 text-right pr-1 dark:bg-gray-800 bg-indigo-50 text-indigo-300 dark:text-gray-500 border-r border-indigo-100 dark:border-gray-700"
+                                    class="mr-2 w-10 text-right pr-1 dark:bg-gray-800 bg-primary-50 text-primary-300 dark:text-gray-500 border-r border-primary-100 dark:border-gray-700"
                                     v-html="lineHtml"
                                 ></div>
                                 <pre class="code-display flex-1 rounded-bl overflow-auto relative" v-html="code"></pre>
@@ -270,11 +270,11 @@ onBeforeUnmount(() => {
 
                         <!--                        <pre class="code-display flex-1 rounded-bl overflow-auto relative" v-html="code"></pre>-->
                     </div>
-                    <div class="flex justify-center space-x-4 bg-indigo-50 dark:bg-gray-800 py-2">
+                    <div class="flex justify-center space-x-4 bg-primary-50 dark:bg-gray-800 py-2">
                         <button
                             type="button"
                             v-if="!isMobile"
-                            class="relative flex items-center overflow-hidden rounded border border-indigo-600 bg-indigo-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-indigo-600 hover:shadow-lg"
+                            class="relative flex items-center overflow-hidden rounded border border-primary-600 bg-primary-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-primary-600 hover:shadow-lg"
                         >
                             <Ripple></Ripple>
                             <span class="block">Download</span>
@@ -284,7 +284,7 @@ onBeforeUnmount(() => {
                         <button
                             type="button"
                             @click="copyContent"
-                            class="relative flex dark:border-gray-950 border-indigo-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
+                            class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
                         >
                             <Ripple></Ripple>
                             <span>{{ copyText }}</span>
@@ -292,7 +292,7 @@ onBeforeUnmount(() => {
                         <button
                             type="button"
                             @click="closeDialog"
-                            class="relative flex dark:border-gray-950 border-indigo-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
+                            class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
                         >
                             <Ripple></Ripple>
                             <span>Close</span>
@@ -385,7 +385,7 @@ onBeforeUnmount(() => {
 }
 
 :deep(.code-display) .token.number {
-    color: theme('colors.indigo.500');
+    color: theme('colors.primary.500');
 }
 
 :deep(.code-display) .token.important,

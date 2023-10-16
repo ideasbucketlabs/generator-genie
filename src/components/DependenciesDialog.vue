@@ -205,7 +205,7 @@ onBeforeUnmount(() => {
                         name="dependencies-input-filter"
                         tabindex="-1"
                         ref="inputElement"
-                        class="h-12 w-full border-b border-l-0 border-r-0 border-t-0 transition duration-200 ease-linear dark:hover:border-indigo-400 hover:border-indigo-500 dark:focus:border-indigo-400 focus:border-indigo-500 focus:shadow-lg focus:outline-none focus:ring-1 dark:focus:ring-indigo-400 focus:ring-indigo-500 focus:ring-offset-0 dark:bg-gray-800"
+                        class="h-12 w-full border-b border-l-0 border-r-0 border-t-0 transition duration-200 ease-linear dark:hover:border-primary-400 hover:border-primary-500 dark:focus:border-primary-400 focus:border-primary-500 focus:shadow-lg focus:outline-none focus:ring-1 dark:focus:ring-primary-400 focus:ring-primary-500 focus:ring-offset-0 dark:bg-gray-800"
                         :class="{ 'pr-56': !isMobile }"
                         autocomplete="off"
                         :placeholder="
@@ -230,18 +230,18 @@ onBeforeUnmount(() => {
                         <div v-for="dependency in dependencies" :key="dependency.id">
                             <template v-if="dependency.packages.length !== 0">
                                 <div
-                                    class="sticky top-0 flex items-center border-b border-indigo-200 bg-white p-2 pl-2 text-white shadow dark:border-indigo-400 dark:bg-gray-700"
+                                    class="sticky top-0 flex items-center border-b border-primary-200 bg-white p-2 pl-2 text-white shadow dark:border-primary-400 dark:bg-gray-700"
                                 >
-                                    <span class="block rounded bg-indigo-500 px-2 py-1 text-sm uppercase">{{
+                                    <span class="block rounded bg-primary-500 px-2 py-1 text-sm uppercase">{{
                                         dependency.group
                                     }}</span>
                                 </div>
                                 <template v-for="packages in dependency.packages" :key="dependency.id + packages.id">
                                     <div
                                         @click="selectPackage(packages.id)"
-                                        class="flex cursor-pointer border-b border-indigo-200 p-2 transition duration-100 ease-linear dark:border-indigo-500"
+                                        class="flex cursor-pointer border-b border-primary-200 p-2 transition duration-100 ease-linear dark:border-primary-500"
                                         :class="{
-                                            'keyboard-select bg-indigo-100 dark:bg-indigo-500':
+                                            'keyboard-select bg-primary-100 dark:bg-primary-500':
                                                 keyboardSelection === packages.id
                                         }"
                                         @mousemove="onHover(packages.id)"
