@@ -3,7 +3,7 @@ import { type PropType, ref } from 'vue'
 const props = defineProps({
     rippleClass: {
         type: String as PropType<string>,
-        default: 'bg-white dark:bg-gray-900 opacity-25',
+        default: 'bg-white dark:bg-primary-dark-900 opacity-25',
         required: false
     }
 })

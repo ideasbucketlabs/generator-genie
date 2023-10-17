@@ -181,7 +181,7 @@ function validate() {
             <div class="">
                 <div class="block">Package Name:</div>
                 <div
-                    class="w-full cursor-not-allowed bg-white hover:border-primary-500 border rounded border-gray-700 px-3 py-2 dark:bg-gray-800 dark:border-gray-500"
+                    class="w-full cursor-not-allowed bg-white hover:border-primary-500 border rounded border-gray-700 px-3 py-2 dark:bg-primary-dark-800 dark:border-gray-500"
                 >
                     {{ packageName }}
                 </div>

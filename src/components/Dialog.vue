@@ -47,7 +47,9 @@ onMounted(() => {
     >
         <transition name="fade" @after-enter="show" @after-leave="onClose">
             <div class="absolute left-0 top-0 h-full w-full" v-if="displayOverlay" @click="emit('overlayClicked')">
-                <div class="absolute left-0 top-0 h-full w-full bg-primary-100 opacity-50 dark:bg-gray-700"></div>
+                <div
+                    class="absolute left-0 top-0 h-full w-full bg-primary-100 opacity-50 dark:bg-primary-dark-700"
+                ></div>
             </div>
         </transition>
         <transition name="fade-bottom" @after-leave="displayOverlay = false">
@@ -58,9 +60,9 @@ onMounted(() => {
             >
                 <div
                     v-if="title"
-                    class="flex items-center justify-between rounded-t border-b border-primary-300 bg-primary-500 px-2 py-2 dark:border-gray-800 dark:bg-gray-700"
+                    class="flex items-center justify-between rounded-t border-b border-primary-300 bg-primary-500 px-2 py-2 dark:border-gray-800 dark:bg-primary-dark-700"
                 >
-                    <div class="select-none font-medium text-white dark:text-gray-100">{{ title }}</div>
+                    <div class="select-none font-medium text-white dark:text-primary-dark-100">{{ title }}</div>
                 </div>
                 <div class="flex flex-grow flex-col">
                     <slot></slot>

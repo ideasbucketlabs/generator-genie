@@ -47,7 +47,7 @@ describe('BaseInput', () => {
         })
 
         // Assert that the error message is displayed
-        expect(wrapper.find('div > div > div.text-red-500').text()).toBe('Error Message')
+        expect(wrapper.find('div > div > div.text-error-500').text()).toBe('Error Message')
     })
 
     it('renders a radio input field when type is "radio"', async () => {

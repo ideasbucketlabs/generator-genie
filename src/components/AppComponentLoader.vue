@@ -2,7 +2,7 @@
     <Teleport to="body">
         <div class="z-5 absolute flex h-full w-full cursor-wait content-center items-center justify-center rounded">
             <div
-                class="z-20 flex items-center rounded border border-primary-500 bg-primary-100 px-4 py-2 text-primary-500 shadow dark:border-gray-800 dark:bg-gray-700 dark:text-gray-100"
+                class="z-20 flex items-center rounded border border-primary-500 bg-primary-100 px-4 py-2 text-primary-500 shadow dark:border-gray-800 dark:bg-primary-dark-700 dark:text-primary-dark-100"
             >
                 <svg
                     class="mr-3 h-4 w-4 animate-spin"
@@ -19,7 +19,7 @@
                 </svg>
                 <div class="select-none text-sm"><slot>Loading...</slot></div>
             </div>
-            <div class="absolute z-10 h-full w-full rounded bg-primary-100 opacity-50 dark:bg-gray-700"></div>
+            <div class="absolute z-10 h-full w-full rounded bg-primary-100 opacity-50 dark:bg-primary-dark-700"></div>
         </div>
     </Teleport>
 </template>

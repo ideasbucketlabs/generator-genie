@@ -44,6 +44,9 @@ jobs:
             -   name: Update timestamp
                 run: npm run update-timestamp
 
+            -   name: Update CSS file path for 404.html
+                run: npm run update-css
+
             -   name: Publish to Cloudflare Pages
                 uses: cloudflare/pages-action@v1
                 with:

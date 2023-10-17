@@ -14,6 +14,7 @@
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
         "format": "prettier --write src/",
         "update-timestamp": "ts-node ./src/util/UpdateTimestamp.ts",
+        "update-css": "ts-node ./src/util/UpdateCssFor404.ts",
         "process-template": "ts-node ./src/generator/Processor.ts",
         "process-template:watch": "nodemon",
         "prepare": "husky install"
@@ -38,7 +39,7 @@
         "@types/file-saver": "^2.0.5",
         "@types/jsdom": "^21.1.1",
         "@types/lodash.partition": "^4.6.7",
-        "@types/marked": "^5.0.1",
+        "@types/marked": "^6.0.0",
         "@types/node": "^18.17.0",
         "@types/prismjs": "^1.26.1",
         "@vitejs/plugin-vue": "^4.2.3",

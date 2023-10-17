@@ -270,15 +270,11 @@ function removePackage(packageId: string) {
 </script>
 <template>
     <AppComponentLoader v-if="isLoading"></AppComponentLoader>
-    <header class="bg-primary-500 shadow-inner dark:bg-gray-900 flex items-center justify-between" role="banner">
-        <a
-            href="/"
-            class="mx-2 my-3"
-            role="navigation"
-            aria-label="Generator Genie"
-            tabindex="-1"
-            title="Generator Genie"
-        >
+    <header
+        class="bg-primary-500 shadow-inner dark:bg-primary-dark-900 flex items-center justify-between"
+        role="banner"
+    >
+        <a href="/" class="mx-2 my-3" aria-label="Generator Genie" tabindex="-1" title="Generator Genie">
             <Logo class="w-80 fill-current text-white drop-shadow-lg"></Logo>
         </a>
         <div class="flex space-y-3 flex-col items-center justify-center mr-2 md:flex-row md:space-y-0 md:space-x-4">
@@ -316,7 +312,10 @@ function removePackage(packageId: string) {
             </a>
         </div>
     </header>
-    <main class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 dark:bg-gray-800 dark:text-gray-100" role="main">
+    <main
+        class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 dark:bg-primary-dark-800 dark:text-primary-dark-100"
+        role="main"
+    >
         <Explorer
             v-if="showExplorer && contentTree !== null"
             :content="contentTree"
@@ -371,7 +370,7 @@ function removePackage(packageId: string) {
                 <div class="flex items-center justify-between">
                     <div class="font-medium">Dependencies</div>
                     <button
-                        class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
+                        class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
                         type="button"
                         @click="showDependenciesDialog = true"
                     >
@@ -395,7 +394,9 @@ function removePackage(packageId: string) {
                             v-for="p in selectedPackageInformation"
                             :key="'package-' + p.id"
                             class="flex items-center justify-between rounded p-2 shadow"
-                            :class="[p.supported ? 'bg-white dark:bg-gray-700' : 'bg-red-100 dark:bg-red-500']"
+                            :class="[
+                                p.supported ? 'bg-white dark:bg-primary-dark-700' : 'bg-error-100 dark:bg-error-500'
+                            ]"
                         >
                             <div>
                                 <div class="space-x-2 font-medium">
@@ -408,14 +409,14 @@ function removePackage(packageId: string) {
                                     </div>
                                 </div>
                                 <div>{{ p.description }}</div>
-                                <div class="text-red-500 dark:text-red-900" v-if="!p.supported">
+                                <div class="text-error-500 dark:text-error-900" v-if="!p.supported">
                                     Not supported for selected Spring Boot version
                                 </div>
                             </div>
                             <div class="w-6">
                                 <button
                                     type="button"
-                                    class="flex w-6 items-center rounded-full bg-red-500 hover:shadow-lg dark:bg-red-700"
+                                    class="flex w-6 items-center rounded-full bg-error-500 hover:shadow-lg dark:bg-error-700"
                                     title="Remove this package"
                                     @click="removePackage(p.id)"
                                 >
@@ -432,7 +433,7 @@ function removePackage(packageId: string) {
     </main>
     <footer role="contentinfo" class="flex border-primary-50 z-0 relative items-center">
         <div
-            class="h-16 flex relative flex-1 z-0 bg-white items-center justify-center space-x-4 border-t dark:border-gray-900 dark:bg-gray-700"
+            class="h-16 flex relative flex-1 z-0 bg-white items-center justify-center space-x-4 border-t dark:border-gray-900 dark:bg-primary-dark-700"
         >
             <button
                 v-if="haveValidProjectMetaData()"
@@ -456,7 +457,7 @@ function removePackage(packageId: string) {
                 v-if="haveValidProjectMetaData()"
                 type="button"
                 @click="onExplore"
-                class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700"
+                class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
             >
                 <Ripple></Ripple>
                 <span>Explore</span>
@@ -466,7 +467,7 @@ function removePackage(packageId: string) {
                 v-else
                 type="button"
                 @click="onExplore"
-                class="relative flex cursor-not-allowed dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 text-gray-400 dark:text-gray-100"
+                class="relative flex cursor-not-allowed dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 text-gray-400 dark:text-primary-dark-100"
             >
                 <span>Explore</span>
             </button>

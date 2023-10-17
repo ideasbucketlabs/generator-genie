@@ -53,7 +53,7 @@ function isCollapsed(id: string): boolean {
                             ? 'cursor-not-allowed text-gray-400'
                             : 'hover:bg-primary-100 dark:hover:bg-gray-700 cursor-pointer transition duration-200 ease-linear',
                         {
-                            'font-medium dark:text-blue-500 text-primary-500 bg-primary-100 dark:bg-gray-700':
+                            'font-medium dark:text-blue-500 text-primary-500 bg-primary-100 dark:bg-primary-dark-700':
                                 ((c as File)?.id ?? 'NA') === selectedId
                         }
                     ]"

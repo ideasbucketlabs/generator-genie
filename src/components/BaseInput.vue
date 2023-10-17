@@ -78,11 +78,11 @@ onBeforeMount(() => {
     <div
         class="flex items-center"
         :class="[
-            { 'text-red-500 dark:text-red-700': hasError },
+            { 'text-error-500 dark:text-error-700': hasError },
             [type === 'radio' ? 'space-x-2' : 'flex-col-reverse justify-start items-stretch']
         ]"
     >
-        <div class="text-red-500 dark:text-red-700" v-if="hasError">
+        <div class="text-error-500 dark:text-error-700" v-if="hasError">
             {{ error }}
         </div>
         <input
@@ -103,10 +103,10 @@ onBeforeMount(() => {
             :name="name"
             :value="modelValue"
             @input="onInput"
-            class="w-full rounded transition duration-200 ease-linear focus:shadow-lg focus:outline-none focus:ring-1 focus:ring-offset-0 dark:bg-gray-800"
+            class="w-full rounded transition duration-200 ease-linear focus:shadow-lg focus:outline-none focus:ring-1 focus:ring-offset-0 dark:bg-primary-dark-800"
             :class="[
                 hasError
-                    ? 'border-red-500 dark:border-red-700 have-error focus:border-red-500 focus:ring-red-500 dark:focus:ring-red-700'
+                    ? 'border-error-500 dark:border-error-700 have-error focus:border-error-500 focus:ring-error-500 dark:focus:ring-error-700'
                     : 'hover:border-primary-500 focus:border-primary-500 focus:ring-primary-500 dark:hover:border-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500'
             ]"
         />
@@ -117,10 +117,10 @@ onBeforeMount(() => {
             @input="onInput"
             :value="modelValue as string"
             :placeholder="placeholder"
-            class="h-32 w-full rounded transition duration-200 ease-linear focus:shadow-lg focus:outline-none focus:ring-1 focus:ring-offset-0 dark:bg-gray-800"
+            class="h-32 w-full rounded transition duration-200 ease-linear focus:shadow-lg focus:outline-none focus:ring-1 focus:ring-offset-0 dark:bg-primary-dark-800"
             :class="[
                 hasError
-                    ? 'border-red-500 dark:border-red-700 have-error focus:border-red-500 focus:ring-red-500 dark:focus:ring-red-700'
+                    ? 'border-error-500 dark:border-error-700 have-error focus:border-error-500 focus:ring-error-500 dark:focus:ring-error-700'
                     : 'hover:border-primary-500 focus:border-primary-500 focus:ring-primary-500'
             ]"
         ></textarea>

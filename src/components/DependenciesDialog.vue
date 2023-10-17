@@ -198,14 +198,17 @@ onBeforeUnmount(() => {
             title=""
             @close="emit('close')"
         >
-            <div style="height: calc(100dvh - 5dvw)" class="flex flex-col bg-white dark:bg-gray-800 dark:text-gray-100">
+            <div
+                style="height: calc(100dvh - 5dvw)"
+                class="flex flex-col bg-white dark:bg-primary-dark-800 dark:text-primary-dark-100"
+            >
                 <div class="relative">
                     <input
                         type="text"
                         name="dependencies-input-filter"
                         tabindex="-1"
                         ref="inputElement"
-                        class="h-12 w-full border-b border-l-0 border-r-0 border-t-0 transition duration-200 ease-linear dark:hover:border-primary-400 hover:border-primary-500 dark:focus:border-primary-400 focus:border-primary-500 focus:shadow-lg focus:outline-none focus:ring-1 dark:focus:ring-primary-400 focus:ring-primary-500 focus:ring-offset-0 dark:bg-gray-800"
+                        class="h-12 w-full border-b border-l-0 border-r-0 border-t-0 transition duration-200 ease-linear dark:hover:border-primary-400 hover:border-primary-500 dark:focus:border-primary-400 focus:border-primary-500 focus:shadow-lg focus:outline-none focus:ring-1 dark:focus:ring-primary-400 focus:ring-primary-500 focus:ring-offset-0 dark:bg-primary-dark-800"
                         :class="{ 'pr-56': !isMobile }"
                         autocomplete="off"
                         :placeholder="
@@ -230,7 +233,7 @@ onBeforeUnmount(() => {
                         <div v-for="dependency in dependencies" :key="dependency.id">
                             <template v-if="dependency.packages.length !== 0">
                                 <div
-                                    class="sticky top-0 flex items-center border-b border-primary-200 bg-white p-2 pl-2 text-white shadow dark:border-primary-400 dark:bg-gray-700"
+                                    class="sticky top-0 flex items-center border-b border-primary-200 bg-white p-2 pl-2 text-white shadow dark:border-primary-400 dark:bg-primary-dark-700"
                                 >
                                     <span class="block rounded bg-primary-500 px-2 py-1 text-sm uppercase">{{
                                         dependency.group
@@ -253,7 +256,7 @@ onBeforeUnmount(() => {
                                         <div class="flex items-center justify-between">
                                             <div class="w-6">
                                                 <return-icon
-                                                    class="w-full fill-current text-white dark:text-gray-800"
+                                                    class="w-full fill-current text-white dark:text-primary-dark-800"
                                                 ></return-icon>
                                             </div>
                                         </div>

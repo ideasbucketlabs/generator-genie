@@ -145,7 +145,7 @@ function validate() {
             <div class="">
                 <div class="block">Artifact (name of the zip file):</div>
                 <div
-                    class="w-full cursor-not-allowed bg-white hover:border-primary-500 border rounded border-gray-700 px-3 py-2 dark:bg-gray-800 dark:border-gray-500"
+                    class="w-full cursor-not-allowed bg-white hover:border-primary-500 border rounded border-gray-700 px-3 py-2 dark:bg-primary-dark-800 dark:border-gray-500"
                 >
                     {{ artifact === '' ? '&nbsp;' : artifact + '.zip' }}
                 </div>
