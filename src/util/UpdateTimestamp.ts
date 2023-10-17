@@ -22,7 +22,7 @@ fs.writeFileSync(
 )
 
 console.log(
-    `Changed timestamp to ${current.toLocaleString('en-US', { timeZone: 'America/New_York' })} ${
-        current.toLocaleTimeString('en-us', { timeZoneName: 'short' }).split(' ')[2]
-    } - UTC ${currentUtcTimestamp}`
+    `Changed timestamp to ${current.toLocaleString('en-US', {
+        timeZone: 'America/New_York'
+    })} EDT/EST - UTC ${currentUtcTimestamp}`
 )
