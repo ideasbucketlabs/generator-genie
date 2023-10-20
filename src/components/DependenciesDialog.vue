@@ -229,7 +229,7 @@ onBeforeUnmount(() => {
                     </div>
                 </div>
                 <div class="flex h-12 flex-grow overflow-auto" style="margin-top: 2px" ref="packagesList">
-                    <div class="relative flex-1">
+                    <div class="relative flex-1" data-dependencies-list="true">
                         <div v-for="dependency in dependencies" :key="dependency.id">
                             <template v-if="dependency.packages.length !== 0">
                                 <div
@@ -241,6 +241,8 @@ onBeforeUnmount(() => {
                                 </div>
                                 <template v-for="packages in dependency.packages" :key="dependency.id + packages.id">
                                     <div
+                                        data-package-item="true"
+                                        :data-package-item-id="packages.id"
                                         @click="selectPackage(packages.id)"
                                         class="flex cursor-pointer border-b border-primary-200 p-2 transition duration-100 ease-linear dark:border-primary-500"
                                         :class="{
