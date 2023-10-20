@@ -70,7 +70,7 @@ const springProject = ref<{ active: boolean; valid: boolean; metaData: SpringPro
     valid: true,
     metaData: {
         language: Language.Java,
-        springBootVersion: SpringBootVersion['3_1_4'] as SpringBootVersion,
+        springBootVersion: SpringBootVersion['3_1_5'] as SpringBootVersion,
         group: defaultGroup,
         name: 'demo',
         artifact: 'demo',
@@ -393,6 +393,8 @@ function removePackage(packageId: string) {
                         <div
                             v-for="p in selectedPackageInformation"
                             :key="'package-' + p.id"
+                            data-selected-package-item="true"
+                            :data-selected-package-item-id="p.id"
                             class="flex items-center justify-between rounded p-2 shadow"
                             :class="[
                                 p.supported ? 'bg-white dark:bg-primary-dark-700' : 'bg-error-100 dark:bg-error-500'

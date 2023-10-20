@@ -13,7 +13,7 @@ const data: Dependency[] = [
                     'Support for compiling Spring applications to native executables using the GraalVM native-image compiler.',
                 plugin: true,
                 groupId: 'org.graalvm.buildtools.native',
-                version: '0.9.24'
+                version: '0.9.27'
             },
             {
                 name: 'Spring Boot DevTools',
@@ -527,7 +527,7 @@ const data: Dependency[] = [
                     'Spotless is a general-purpose formatting plugin. It is completely à la carte, but also includes powerful "batteries-included" if you opt-in.',
                 parentName: 'Code Formatter',
                 groupId: 'com.diffplug.spotless',
-                version: '6.20.0',
+                version: '6.22.0',
                 plugin: true
             }
         ]

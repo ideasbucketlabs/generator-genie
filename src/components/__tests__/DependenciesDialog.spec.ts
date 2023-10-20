@@ -24,17 +24,28 @@ describe('DependenciesDialog works correctly', () => {
         expect(wrapper.exists()).toBe(true)
     })
 
-    it('filters dependencies based on input', async () => {
+    it('shows dependencies list', async () => {
         const wrapper = mount(DependenciesDialog, {
             props: {
-                projectType: ProjectType.Spring,
+                projectType: ProjectType.VueJS,
                 modelValue: new Set<string>(),
                 'onUpdate:modelValue': (e: string) => wrapper.setProps({ modelValue: e })
+            },
+            global: {
+                stubs: {
+                    teleport: true
+                }
             }
         })
 
         const dialog = wrapper.getComponent(Dialog)
         await dialog.vm.$nextTick()
-        expect(dialog.isVisible()).toBe(true)
+        await (dialog.vm as any).show()
+
+        const input = dialog.find('input[name="dependencies-input-filter"]')
+        expect(input.exists()).toBe(true)
+
+        const dependenciesListContainer = dialog.find('div[data-dependencies-list]')
+        expect(dependenciesListContainer.exists()).toBe(true)
     })
 })
