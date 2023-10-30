@@ -87,7 +87,7 @@ const vueJsProject = ref<{ active: boolean; valid: boolean; metaData: VueJsProje
         language: Language.Typescript,
         name: 'demo',
         artifact: 'demo',
-        nodeVersion: 18,
+        nodeVersion: 20,
         includeUnitTest: true,
         includePinia: false,
         indentSize: 2,
