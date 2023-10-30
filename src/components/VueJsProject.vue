@@ -3,7 +3,6 @@ import { computed, ref, watch } from 'vue'
 import type { VueJsProject as VueJsProjectType } from '@/entity/VueJsProject'
 import { clone } from '@/util/Util'
 import { Language } from '@/entity/Language'
-import InformationIcon from '@/icons/InformationIcon.vue'
 import BaseInput from '@/components/BaseInput.vue'
 
 const props = defineProps<{
@@ -19,7 +18,7 @@ const information = clone(props.modelValue.metaData)
 const description = ref<string>(information.description)
 const name = ref<string>(information.name)
 const language = ref<Language.Javascript | Language.Typescript>(information.language)
-const nodeVersion = ref<number>(information.nodeVersion)
+const nodeVersion = ref<18 | 20>(information.nodeVersion)
 const includeRouter = ref<boolean>(information.includeRouter)
 const includeUnitTest = ref<boolean>(information.includeUnitTest)
 const includePinia = ref<boolean>(information.includePinia)
@@ -124,6 +123,13 @@ function validate() {
 <template>
     <div class="space-y-4">
         <div class="">
+            <div class="font-medium">Node version</div>
+            <div class="flex space-x-4">
+                <BaseInput type="radio" v-model.number="nodeVersion" :value="18" label="18"></BaseInput>
+                <BaseInput type="radio" v-model.number="nodeVersion" :value="20" label="20"></BaseInput>
+            </div>
+        </div>
+        <div class="">
             <div class="font-medium">Language Preference</div>
             <div class="flex space-x-4">
                 <BaseInput type="radio" v-model="language" :value="Language.Typescript" label="Typescript"></BaseInput>
@@ -132,15 +138,6 @@ function validate() {
         </div>
         <div class="font-medium">Project Metadata</div>
         <div class="space-y-4">
-            <div class="flex items-center rounded bg-primary-100 dark:bg-primary-500 shadow-lg p-4 space-x-4">
-                <div class="">
-                    <InformationIcon
-                        class="w-10 fill-current text-primary-500 dark:text-white"
-                        aria-label="Information"
-                    ></InformationIcon>
-                </div>
-                <div class="">Please note project will be generated based on Node 18 (LTS).</div>
-            </div>
             <BaseInput v-model="name" label="Name:" :error="nameError" :has-error="haveError('name')"></BaseInput>
             <div class="">
                 <div class="block">Artifact (name of the zip file):</div>

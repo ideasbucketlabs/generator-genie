@@ -5,7 +5,7 @@ export interface VueJsProject {
     name: string
     description: string
     artifact: string
-    nodeVersion: number
+    nodeVersion: 18 | 20
     includeUnitTest: boolean
     includePinia: boolean
     includeRouter: boolean

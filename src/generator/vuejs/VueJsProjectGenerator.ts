@@ -133,8 +133,10 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
         },
         ...(typescriptSelected
             ? {
-                  'type-check': 'vue-tsc --noEmit -p tsconfig.app.json --composite false',
-                  build: 'run-p type-check build-only',
+                  'type-check': projectMetaData.includeUnitTest
+                      ? 'vue-tsc --noEmit -p tsconfig.vitest.json --composite false'
+                      : 'vue-tsc --noEmit -p tsconfig.app.json --composite false',
+                  build: 'run-p type-check "build-only {@}" --',
                   'build-only': 'vite build'
               }
             : {
@@ -197,36 +199,37 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
             },
             ...(projectMetaData.includeRouter
                 ? {
-                      'vue-router': '^4.2.4'
+                      'vue-router': '^4.2.5'
                   }
                 : {}),
             ...(projectMetaData.includePinia
                 ? {
-                      pinia: '^2.1.6'
+                      pinia: '^2.1.7'
                   }
                 : {}),
             ...userChosenExplicitDependency
         },
         devDependencies: {
             ...{
-                '@vitejs/plugin-vue': '^4.3.1',
-                vite: '^4.4.9'
+                '@vitejs/plugin-vue': '^4.4.0',
+                vite: '^4.4.11'
             },
             ...(typescriptSelected
                 ? {
-                      '@tsconfig/node18': '^18.2.0',
-                      '@types/node': '^18.17.5',
+                      [`@tsconfig/node${projectMetaData.nodeVersion}`]:
+                          projectMetaData.nodeVersion === 18 ? '^18.2.2' : '^20.1.2',
+                      '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.8.9',
                       '@vue/tsconfig': '^0.4.0',
-                      'npm-run-all': '^4.1.5',
-                      'vue-tsc': '^1.8.8',
+                      'npm-run-all2': '^6.1.1',
+                      'vue-tsc': '^1.8.19',
                       typescript: '~5.2.0'
                   }
                 : {}),
             ...(projectMetaData.includeEslint
                 ? {
-                      '@rushstack/eslint-patch': '^1.3.2',
-                      eslint: '^8.46.0',
-                      'eslint-plugin-vue': '^9.16.1'
+                      '@rushstack/eslint-patch': '^1.3.3',
+                      eslint: '^8.49.0',
+                      'eslint-plugin-vue': '^9.17.1'
                   }
                 : {}),
             ...(projectMetaData.includeEslint && typescriptSelected
@@ -236,47 +239,47 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 : {}),
             ...(projectMetaData.includePrettier
                 ? {
-                      prettier: '^3.0.0',
+                      prettier: '^3.0.3',
                       '@vue/eslint-config-prettier': '^8.0.0'
                   }
                 : {}),
             ...(projectMetaData.includeUnitTest
                 ? {
                       jsdom: '^22.1.0',
-                      vitest: '^0.34.2',
+                      vitest: '^0.34.6',
                       '@vue/test-utils': '^2.4.1'
                   }
                 : {}),
             ...(projectMetaData.includeUnitTest && typescriptSelected
                 ? {
-                      '@types/jsdom': '^21.1.1'
+                      '@types/jsdom': '^21.1.3'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'playwright'
                 ? {
-                      '@playwright/test': '^1.37.0'
+                      '@playwright/test': '^1.39.0'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'cypress'
                 ? {
-                      cypress: '^12.17.4',
-                      'start-server-and-test': '^2.0.0'
+                      cypress: '^13.3.1',
+                      'start-server-and-test': '^2.0.1'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'nightwatch'
                 ? {
                       '@nightwatch/vue': '0.4.5',
-                      '@types/nightwatch': '^2.3.25',
-                      chromedriver: '^115.0.1',
-                      geckodriver: '^4.2.0',
-                      nightwatch: '^3.1.2',
+                      '@types/nightwatch': '^2.3.26',
+                      chromedriver: '^118.0.1',
+                      geckodriver: '^4.2.1',
+                      nightwatch: '^3.2.1',
                       'wait-on': '^7.0.1',
                       'ts-node': '^10.9.1'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'cypress' && projectMetaData.includeEslint
                 ? {
-                      'eslint-plugin-cypress': '^2.14.0'
+                      'eslint-plugin-cypress': '^2.15.1'
                   }
                 : {}),
             ...userChosenExplicitDevDependency
@@ -286,10 +289,10 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
     return JSON.stringify(final, null, projectMetaData.indentSize)
 }
 
-function getTsConfigNodeJson(indentSize: number): string {
+function getTsConfigNodeJson(metadata: VueJsProject): string {
     return JSON.stringify(
         {
-            extends: '@tsconfig/node18/tsconfig.json',
+            extends: `@tsconfig/node${metadata.nodeVersion}/tsconfig.json`,
             include: [
                 'vite.config.*',
                 'vitest.config.*',
@@ -305,7 +308,7 @@ function getTsConfigNodeJson(indentSize: number): string {
             }
         },
         null,
-        indentSize
+        metadata.indentSize
     )
 }
 
@@ -600,7 +603,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                 lang: Language.Json,
                 id: getId(),
                 type: ContentType.File,
-                content: getTsConfigNodeJson(projectMetaData.metadata.indentSize)
+                content: getTsConfigNodeJson(projectMetaData.metadata)
             },
             {
                 name: 'env.d.ts',
