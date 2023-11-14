@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, nextTick, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import Logo from '@/icons/Logo.vue'
 import Ripple from '@/components/Ripple.vue'
@@ -12,13 +12,14 @@ import { ProjectType } from '@/entity/ProjectType'
 import { SpringBootVersion } from '@/entity/SpringBootVersion'
 import type { SpringProject as SpringProjectType } from '@/entity/SpringProject'
 import type { VueJsProject as VueJsProjectType } from '@/entity/VueJsProject'
-import { clone, zipContentTree } from '@/util/Util'
+import { clone, extractDataFromParameters, getId, zipContentTree } from '@/util/Util'
 import type { ContentTree } from '@/entity/ContentTree'
 import { Language } from '@/entity/Language'
 import VueJsProject from '@/components/VueJsProject.vue'
 import GithubIcon from '@/icons/GithubIcon.vue'
 import XIcon from '@/icons/XIcon.vue'
 import BaseInput from '@/components/BaseInput.vue'
+import ShareIcon from '@/icons/ShareIcon.vue'
 
 const defaultGroup = import.meta.env.VITE_DEFAULT_GROUP ?? 'com.example'
 const dependencyStore = dStore()
@@ -33,6 +34,7 @@ const keys = useMagicKeys({
         }
     }
 })
+const renderKey = ref<string>(getId())
 const DependenciesDialog = defineAsyncComponent({
     loader: () => import('@/components/DependenciesDialog.vue'),
     loadingComponent: AppComponentLoader,
@@ -43,20 +45,27 @@ const Explorer = defineAsyncComponent({
     loadingComponent: AppComponentLoader,
     delay: 100
 })
+const ShareDialog = defineAsyncComponent({
+    loader: () => import('@/components/ShareDialog.vue'),
+    loadingComponent: AppComponentLoader,
+    delay: 100
+})
 const contentTree = ref<ContentTree | null>(null)
 const generateButtonLabel = ref<string>('Generate')
 const isLoading = ref<boolean>(false)
 const showExplorer = ref<boolean>(false)
+const showShareDialog = ref<boolean>(false)
 const ctrlB = keys['Ctrl+B']
 const metaB = keys['Meta+B']
-//const metaEnter = keys['Meta+Enter']
+const metaEnter = keys['Meta+Enter']
 const ctrlSpace = keys['Ctrl+Space']
 const ctrlEnter = keys['Ctrl+Enter']
 const projectType = ref<ProjectType>(ProjectType.Spring)
 const isMac = inject<boolean>('isMac') as boolean
 const isMobile = inject<boolean>('isMobile') as boolean
 const showDependenciesDialog = ref<boolean>(false)
-const selectedPackages = ref<Set<string>>(new Set<string>())
+const selectedPackagesPerProject = ref<Map<string, Set<string>>>(new Map())
+//const selectedPackages = ref<Set<string>>(new Set<string>())
 const projectMetadata = ref<
     Map<
         ProjectType,
@@ -103,30 +112,50 @@ projectMetadata.value.set(ProjectType.Spring, springProject.value)
 projectMetadata.value.set(ProjectType.VueJS, vueJsProject.value)
 const springProjectComponent = ref<InstanceType<typeof SpringProject> | null>(null)
 const vueJsProjectComponent = ref<InstanceType<typeof VueJsProject> | null>(null)
+const selectedPackages = computed<Set<string>>({
+    // getter
+    get() {
+        if (selectedPackagesPerProject.value.has(projectType.value)) {
+            return selectedPackagesPerProject.value.get(projectType.value) as Set<string>
+        }
+        return new Set()
+    },
+    // setter
+    set(newValue) {
+        // Note: we are using destructuring assignment syntax here.
+        selectedPackagesPerProject.value.set(projectType.value, newValue)
+    }
+})
 
 const selectedPackageInformation = computed<Package[]>(() => {
-    return Array.from(selectedPackages.value).map((packageId: string) => {
-        const packageInformation = dependencyStore.packageInformationByProjectType(projectType.value, packageId)
-        if (projectType.value !== ProjectType.Spring) {
-            return packageInformation
-        }
-        return {
-            name: packageInformation.name,
-            id: packageInformation.id,
-            groupId: packageInformation.groupId,
-            artifactId: packageInformation.artifactId,
-            version: packageInformation.version,
-            description: packageInformation.description,
-            supported: dependencyStore.checkPackageSupportForSpring(
-                (projectMetadata.value.get(projectType.value)?.metaData as SpringProjectType)?.springBootVersion ??
-                    null,
-                packageId
-            ),
-            plugin: packageInformation.plugin,
-            parentName: packageInformation.parentName,
-            testPackages: packageInformation.testPackages
-        }
-    })
+    return Array.from(selectedPackages.value)
+        .map((packageId: string) => {
+            try {
+                const packageInformation = dependencyStore.packageInformationByProjectType(projectType.value, packageId)
+                if (projectType.value !== ProjectType.Spring) {
+                    return packageInformation
+                }
+                return {
+                    name: packageInformation.name,
+                    id: packageInformation.id,
+                    groupId: packageInformation.groupId,
+                    artifactId: packageInformation.artifactId,
+                    version: packageInformation.version,
+                    description: packageInformation.description,
+                    supported: dependencyStore.checkPackageSupportForSpring(
+                        (projectMetadata.value.get(projectType.value)?.metaData as SpringProjectType)
+                            ?.springBootVersion ?? null,
+                        packageId
+                    ),
+                    plugin: packageInformation.plugin,
+                    parentName: packageInformation.parentName,
+                    testPackages: packageInformation.testPackages
+                }
+            } catch (error) {
+                return null
+            }
+        })
+        .filter((it) => it !== null) as Array<Package>
 })
 
 function haveValidProjectMetaData(): boolean {
@@ -156,11 +185,11 @@ watch(
     }
 )
 
-// watch(metaEnter, (v) => {
-//     if (v && isMac && !showDependenciesDialog.value) {
-//         console.log('CMD + Enter is pressed.')
-//     }
-// })
+watch(metaEnter, async (v) => {
+    if (v && isMac && !showDependenciesDialog.value) {
+        await onGenerate()
+    }
+})
 
 watch(metaB, (v) => {
     if (v) {
@@ -168,9 +197,9 @@ watch(metaB, (v) => {
     }
 })
 
-watch(ctrlEnter, (v) => {
+watch(ctrlEnter, async (v) => {
     if (v && !isMac && !showDependenciesDialog.value) {
-        console.log('CTRL + Enter is pressed.')
+        await onGenerate()
     }
 })
 
@@ -187,8 +216,6 @@ watch(ctrlB, (v) => {
 })
 
 watch(projectType, (newProjectType) => {
-    // If Project Type changes we need to clear out the dependencies.
-    selectedPackages.value = new Set<string>()
     projectMetadata.value.forEach((project, key) => {
         const clonedProject = clone(project)
         clonedProject.active = false
@@ -235,19 +262,26 @@ async function onGenerate() {
     if (projectMetadata.value.has(projectType.value) && haveValidProjectMetaData()) {
         isLoading.value = true
         generateButtonLabel.value = 'Generating'
-        nextTick().then(async () => {
-            await getProjectContent()
-            if (contentTree.value !== null) {
-                generateButtonLabel.value = 'Generate'
-                await zipContentTree(
-                    contentTree.value,
-                    projectMetadata.value.get(projectType.value)?.metaData.artifact ?? 'demo'
-                )
-            }
-        })
+        await nextTick()
+        await getProjectContent()
+        if (contentTree.value !== null) {
+            generateButtonLabel.value = 'Generate'
+            await zipContentTree(
+                contentTree.value,
+                projectMetadata.value.get(projectType.value)?.metaData.artifact ?? 'demo'
+            )
+        }
     }
 }
 
+async function onShare() {
+    validateSelectedProject()
+    await nextTick()
+    if (!haveValidProjectMetaData()) {
+        return
+    }
+    showShareDialog.value = true
+}
 async function onExplore() {
     validateSelectedProject()
     await nextTick()
@@ -257,16 +291,40 @@ async function onExplore() {
 
     if (projectMetadata.value.has(projectType.value)) {
         isLoading.value = true
-        nextTick().then(async () => {
-            await getProjectContent()
-            showExplorer.value = true
-        })
+        await nextTick()
+        await getProjectContent()
+        showExplorer.value = true
     }
 }
 
 function removePackage(packageId: string) {
     selectedPackages.value.delete(packageId)
 }
+
+onMounted(async () => {
+    const parameters = new URLSearchParams(window.location.search).get('param')
+    if (parameters !== null) {
+        const result = extractDataFromParameters(parameters, springProject.value.metaData, vueJsProject.value.metaData)
+        if (result !== null) {
+            if (result.projectType === ProjectType.Spring) {
+                springProject.value = {
+                    metaData: result.metaData as SpringProjectType,
+                    active: true,
+                    valid: true
+                }
+            } else {
+                vueJsProject.value = {
+                    metaData: result.metaData as VueJsProjectType,
+                    active: true,
+                    valid: true
+                }
+            }
+            projectType.value = result.projectType
+            selectedPackages.value = new Set(result.packages)
+            renderKey.value = getId() // Re-render project options
+        }
+    }
+})
 </script>
 <template>
     <AppComponentLoader v-if="isLoading"></AppComponentLoader>
@@ -322,6 +380,13 @@ function removePackage(packageId: string) {
             :artifact="projectMetadata.get(projectType)?.metaData.artifact ?? 'demo'"
             @close="showExplorer = false"
         ></Explorer>
+        <ShareDialog
+            v-if="showShareDialog"
+            @close="showShareDialog = false"
+            :metaData="projectMetadata.get(projectType)?.metaData!!"
+            :projectType="projectType"
+            :packages="selectedPackageInformation"
+        ></ShareDialog>
         <DependenciesDialog
             v-if="showDependenciesDialog"
             title="Dependencies"
@@ -357,7 +422,7 @@ function removePackage(packageId: string) {
                         </div>
                     </div>
                 </div>
-                <div class="p-2">
+                <div class="p-2" :key="renderKey">
                     <SpringProject
                         v-if="projectType === ProjectType.Spring"
                         ref="springProjectComponent"
@@ -433,7 +498,7 @@ function removePackage(packageId: string) {
             </div>
         </div>
     </main>
-    <footer role="contentinfo" class="flex border-primary-50 z-0 relative items-center">
+    <footer role="contentinfo" class="flex footer border-primary-50 z-0 relative items-center">
         <div
             class="h-16 flex relative flex-1 z-0 bg-white items-center justify-center space-x-4 border-t dark:border-gray-900 dark:bg-primary-dark-700"
         >
@@ -445,8 +510,8 @@ function removePackage(packageId: string) {
             >
                 <Ripple></Ripple>
                 <span class="block">{{ generateButtonLabel }}</span>
-                <span class="ml-2 block font-extralight" v-if="!isMobile && isMac">⌘ + ⏎</span>
-                <span class="ml-2 block font-extralight" v-if="!isMobile && !isMac">Ctrl + ⏎</span>
+                <span class="ml-2 font-extralight hidden md:block" v-if="!isMobile && isMac">⌘ + ⏎</span>
+                <span class="ml-2 hidden md:block font-extralight" v-if="!isMobile && !isMac">Ctrl + ⏎</span>
             </button>
             <button
                 v-else
@@ -463,29 +528,36 @@ function removePackage(packageId: string) {
             >
                 <Ripple></Ripple>
                 <span>Explore</span>
-                <span v-if="!isMobile" class="ml-2 font-extralight">Ctrl + Space</span>
+                <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Ctrl + Space</span>
             </button>
             <button
                 v-else
                 type="button"
-                @click="onExplore"
                 class="relative flex cursor-not-allowed dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 text-gray-400 dark:text-primary-dark-100"
             >
                 <span>Explore</span>
             </button>
+            <button
+                type="button"
+                v-if="haveValidProjectMetaData()"
+                @click="onShare"
+                class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
+            >
+                <span class="w-4 h-4 hidden md:block mr-2"
+                    ><ShareIcon class="fill-current text-primary-500 dark:text-primary-200"></ShareIcon
+                ></span>
+                <span>Share</span>
+            </button>
+            <button
+                v-else
+                type="button"
+                class="relative flex cursor-not-allowed dark:border-gray-950 border-gray-400 items-center overflow-hidden rounded border px-4 py-2 text-gray-400 dark:text-primary-dark-100"
+            >
+                <span class="w-4 h-4 hidden md:block mr-2"
+                    ><ShareIcon class="fill-current text-gray-500 dark:text-primary-200"></ShareIcon
+                ></span>
+                <span>Share</span>
+            </button>
         </div>
     </footer>
 </template>
-
-<style scoped>
-footer::before {
-    width: 98%;
-    height: 100%;
-    top: 2px;
-    position: absolute;
-    border-radius: 35px;
-    box-shadow: 0 -4px 33px -17px rgba(0, 0, 0, 0.29);
-    z-index: -1;
-    content: '';
-}
-</style>

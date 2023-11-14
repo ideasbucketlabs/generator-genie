@@ -90,3 +90,14 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
     -moz-appearance: textfield;
 }
+
+.footer::before {
+    width: 98%;
+    height: 100%;
+    top: 2px;
+    position: absolute;
+    border-radius: 35px;
+    box-shadow: 0 -4px 33px -17px rgba(0, 0, 0, 0.29);
+    z-index: -1;
+    content: '';
+}

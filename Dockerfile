@@ -1,9 +1,11 @@
-FROM public.ecr.aws/docker/library/node:18 AS asset-builder
+FROM public.ecr.aws/docker/library/node:20 AS asset-builder
 WORKDIR /usr/src/app
 COPY . .
-RUN npm ci
-RUN npm run process-template
-RUN npm run build
+RUN npm ci &&  \
+    npm run process-template &&  \
+    npm run build && \
+    npm run update-css &&  \
+    npm run update-timestamp
 
 FROM nginx:stable-alpine as builder
 RUN set -ex && \
@@ -32,7 +34,7 @@ RUN set -ex && \
 
 FROM nginx:stable-alpine
 COPY --from=builder /tmp/packages /tmp/packages
-COPY dist /usr/share/nginx/html
+COPY --from=asset-builder /usr/src/app/dist /usr/share/nginx/html
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 COPY conf/default.conf /etc/nginx/conf.d/default.conf
 

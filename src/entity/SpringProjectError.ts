@@ -4,4 +4,7 @@ export interface SpringProjectError {
     artifact?: string
     packageName?: string
     description?: string
+    language?: string
+    springBootVersion?: string
+    javaVersion?: string
 }
