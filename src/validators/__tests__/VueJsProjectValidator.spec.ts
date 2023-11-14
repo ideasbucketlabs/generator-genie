@@ -1,23 +1,6 @@
 /* eslint-disable vue/max-len */
-import { Language } from '../../entity/Language'
-import type { VueJsProject } from '../../entity/VueJsProject'
 import { describe, expect, it } from 'vitest'
 import { isValid } from '../VueJsProjectValidator'
-
-const defaultVueJsProject = {
-    language: Language.Typescript,
-    name: 'demo',
-    artifact: 'demo',
-    nodeVersion: 20,
-    includeUnitTest: true,
-    includePinia: false,
-    indentSize: 2,
-    description: 'This application needs some description to be filled out.',
-    includeRouter: false,
-    integrationTest: 'playwright',
-    includeEslint: true,
-    includePrettier: true
-} as VueJsProject
 
 describe('Can validate VueJS project', () => {
     it.concurrent('it can validate name for VueJS Project', () => {
