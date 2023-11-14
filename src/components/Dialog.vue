@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref, onBeforeUnmount } from 'vue'
 
-withDefaults(defineProps<{ title?: string | null; width?: string }>(), {
+withDefaults(defineProps<{ title?: string | null; width?: string; dialogClass?: string }>(), {
     title: null,
-    width: 'w-full md:w-8/12 lg:w-5/12 xl:w-4/12'
+    width: 'w-full md:w-8/12 lg:w-5/12 xl:w-4/12',
+    dialogClass:
+        // eslint-disable-next-line vue/max-len
+        'absolute flex flex-col overflow-hidden rounded border border-primary-300 bg-transparent shadow-lg dark:border-gray-800 dark:shadow-gray-900'
 })
 
 const displayContent = ref<boolean>(false)
 const displayOverlay = ref<boolean>(false)
 const root = ref<HTMLElement | null>(null)
 
-const emit = defineEmits<{ (e: 'close'): void; (e: 'overlayClicked'): void }>()
+const emit = defineEmits<{ (e: 'close'): void; (e: 'overlayClicked'): void; (e: 'escaped'): void }>()
 
 function hide() {
     displayContent.value = false
@@ -30,16 +33,26 @@ defineExpose({
     hide
 })
 
-onMounted(() => {
-    nextTick(() => {
-        displayOverlay.value = true
-    })
+function listenForKeyboardEvent(event: KeyboardEvent) {
+    if (event.key.toLowerCase() === 'escape') {
+        emit('escaped')
+    }
+}
+
+onMounted(async () => {
+    await nextTick()
+    displayOverlay.value = true
+    document.addEventListener('keydown', listenForKeyboardEvent)
+})
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keydown', listenForKeyboardEvent)
 })
 </script>
 
 <template>
     <div
-        class="absolute left-0 top-0 z-30 flex h-full w-full content-center items-center justify-center overflow-hidden"
+        class="absolute left-0 top-0 z-30 flex h-full w-full content-center items-end md:items-center justify-center overflow-hidden"
         ref="root"
         role="dialog"
         aria-modal="true"
@@ -53,11 +66,7 @@ onMounted(() => {
             </div>
         </transition>
         <transition name="fade-bottom" @after-leave="displayOverlay = false">
-            <div
-                :class="width"
-                class="absolute flex flex-col overflow-hidden rounded border border-primary-300 bg-transparent shadow-lg dark:border-gray-800 dark:shadow-gray-900"
-                v-if="displayContent"
-            >
+            <div :class="[dialogClass, width]" v-if="displayContent">
                 <div
                     v-if="title"
                     class="flex items-center justify-between rounded-t border-b border-primary-300 bg-primary-500 px-2 py-2 dark:border-gray-800 dark:bg-primary-dark-700"

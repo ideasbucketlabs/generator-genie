@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { ContentTree, Folder } from '@/entity/ContentTree'
 import Dialog from '@/components/Dialog.vue'
-import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, inject, onMounted, ref } from 'vue'
 import Ripple from '@/components/Ripple.vue'
 import highlight from '@/util/highlighter'
 import type { File } from '@/entity/File'
 import TreeNode from '@/components/TreeNode.vue'
-import { getId } from '@/util/Util'
+import { getId, copyToClipboard as copyString } from '@/util/Util'
 import { ContentType } from '@/entity/ContentType'
 import { Language } from '@/entity/Language'
 import NestedOption from '@/components/NestedOption.vue'
@@ -69,39 +69,13 @@ function closeDialog() {
     }
 }
 
-function listenForKeyboardEvent(event: KeyboardEvent) {
-    if (event.key.toLowerCase() === 'escape') {
-        closeDialog()
-    }
-}
-
 async function copyToClipboard(textToCopy: string) {
-    // Navigator clipboard api needs a secure context (https)
-    if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(textToCopy)
-    } else {
-        // Use the 'out of viewport hidden text area' trick
-        const textArea = document.createElement('textarea')
-        textArea.value = textToCopy
-
-        // Move textarea out of the viewport so that it's not visible
-        textArea.style.position = 'absolute'
-        textArea.style.left = '-999999px'
-
-        document.body.prepend(textArea)
-        textArea.select()
-
-        try {
-            document.execCommand('copy')
-        } catch (error) {
-            copyText.value = 'Copy failed'
-            setTimeout(() => {
-                copyText.value = 'Copy'
-            }, 3000)
-        } finally {
-            textArea.remove()
-        }
-    }
+    await copyString(textToCopy, () => {
+        copyText.value = 'Copy failed'
+        setTimeout(() => {
+            copyText.value = 'Copy'
+        }, 3000)
+    })
 }
 
 async function copyContent() {
@@ -149,7 +123,6 @@ function findFirstFile(contentTree: ContentTree): File | null {
 }
 
 onMounted(async () => {
-    document.addEventListener('keydown', listenForKeyboardEvent)
     if (props.content !== null) {
         fillMap(props.content.tree)
         code.value = '<div class="flex w-full h-full flex-1 items-center justify-center"><div>Loading...</div></div>'
@@ -176,10 +149,6 @@ onMounted(async () => {
         rawCode.value = ''
     }
 })
-
-onBeforeUnmount(() => {
-    document.removeEventListener('keydown', listenForKeyboardEvent)
-})
 </script>
 
 <template>
@@ -188,6 +157,7 @@ onBeforeUnmount(() => {
             ref="dialog"
             width="w-full md:w-10/12 lg:w-7/12 xl:w-10/12"
             @overlay-clicked="closeDialog"
+            @escaped="closeDialog"
             title=""
             @close="emit('close')"
         >
@@ -278,8 +248,8 @@ onBeforeUnmount(() => {
                         >
                             <Ripple></Ripple>
                             <span class="block">Download</span>
-                            <span class="ml-2 block font-extralight" v-if="isMac">⌘ + ⏎</span>
-                            <span class="ml-2 block font-extralight" v-else>Ctrl + ⏎</span>
+                            <span class="ml-2 font-extralight hidden md:block" v-if="isMac">⌘ + ⏎</span>
+                            <span class="ml-2 font-extralight hidden md:block" v-else>Ctrl + ⏎</span>
                         </button>
                         <button
                             type="button"
@@ -296,7 +266,7 @@ onBeforeUnmount(() => {
                         >
                             <Ripple></Ripple>
                             <span>Close</span>
-                            <span v-if="!isMobile" class="ml-2 font-extralight">Esc</span>
+                            <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Esc</span>
                         </button>
                     </div>
                 </div>

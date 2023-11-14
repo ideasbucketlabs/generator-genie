@@ -56,6 +56,11 @@ const props = defineProps({
         default: null,
         required: false,
         type: null as unknown as PropType<any>
+    },
+    readOnly: {
+        default: false,
+        required: false,
+        type: Boolean as PropType<boolean>
     }
 })
 const emit = defineEmits<{
@@ -102,6 +107,7 @@ onBeforeMount(() => {
             :id="id"
             :name="name"
             :value="modelValue"
+            :readonly="readOnly"
             @input="onInput"
             class="w-full rounded transition duration-200 ease-linear focus:shadow-lg focus:outline-none focus:ring-1 focus:ring-offset-0 dark:bg-primary-dark-800"
             :class="[

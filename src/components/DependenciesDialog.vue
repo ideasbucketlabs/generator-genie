@@ -96,7 +96,6 @@ watch(inputElement, (v) => {
 
 function handleKeyArrowEvent(direction: 'UP' | 'DOWN') {
     if (keyboardSelection.value === null) {
-        console.log('Null')
         keyboardSelection.value = selectablePackages.value[0]
     } else {
         if (selectablePackages.value.length !== 0) {
@@ -157,20 +156,20 @@ function listenForKeyboardEvent(event: KeyboardEvent) {
         handleKeyArrowEvent('DOWN')
     } else if (event.key.toLowerCase() === 'arrowup') {
         handleKeyArrowEvent('UP')
-    } else if (event.key.toLowerCase() === 'escape') {
-        closeDialog()
     } else if (event.key.toLowerCase() === 'enter' && keyboardSelection.value !== null) {
         if ((event.metaKey && isMac) || (event.ctrlKey && !isMac)) {
             // handleKeyArrowEvent('DOWN')
             const index = selectablePackages.value.indexOf(keyboardSelection.value)
-            emit('update:model-value', new Set([...props.modelValue, keyboardSelection.value]))
-            nextTick(() => {
-                if (index === selectablePackages.value.length - 1) {
-                    keyboardSelection.value = selectablePackages.value[0]
-                } else {
-                    keyboardSelection.value = selectablePackages.value[index]
-                }
-            })
+            if (index !== -1) {
+                emit('update:model-value', new Set([...props.modelValue, keyboardSelection.value]))
+                nextTick(() => {
+                    if (index === selectablePackages.value.length - 1) {
+                        keyboardSelection.value = selectablePackages.value[0]
+                    } else {
+                        keyboardSelection.value = selectablePackages.value[index]
+                    }
+                })
+            }
         } else {
             selectPackage(keyboardSelection.value)
         }
@@ -195,6 +194,7 @@ onBeforeUnmount(() => {
             ref="dialog"
             width="w-full md:w-10/12 lg:w-7/12 xl:w-6/12"
             @overlay-clicked="closeDialog"
+            @escaped="closeDialog"
             title=""
             @close="emit('close')"
         >
