@@ -17,6 +17,7 @@ const isMac = inject<boolean>('isMac') as boolean
 const isMobile = inject<boolean>('isMobile') as boolean
 const emit = defineEmits<{
     (e: 'close'): void
+    (e: 'downloadClicked'): void
     (e: 'update:model-value', selectedPackage: Set<string>): void
 }>()
 const code = ref<string>('')
@@ -244,6 +245,7 @@ onMounted(async () => {
                         <button
                             type="button"
                             v-if="!isMobile"
+                            @click="emit('downloadClicked')"
                             class="relative flex items-center overflow-hidden rounded border border-primary-600 bg-primary-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-primary-600 hover:shadow-lg"
                         >
                             <Ripple></Ripple>
