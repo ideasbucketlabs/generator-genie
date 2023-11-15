@@ -384,6 +384,7 @@ onMounted(async () => {
             :content="contentTree"
             :artifact="projectMetadata.get(projectType)?.metaData.artifact ?? 'demo'"
             @close="showExplorer = false"
+            @downloadClicked="onGenerate"
         ></Explorer>
         <ShareDialog
             v-if="showShareDialog"
