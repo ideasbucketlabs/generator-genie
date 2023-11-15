@@ -189,7 +189,7 @@ watch(
 )
 
 watch(metaEnter, async (v) => {
-    if (v && isMac && !isAnyDialogShown.value) {
+    if (v && isMac && !showDependenciesDialog.value && !showShareDialog.value) {
         await onGenerate()
     }
 })
@@ -201,7 +201,7 @@ watch(metaB, (v) => {
 })
 
 watch(ctrlEnter, async (v) => {
-    if (v && !isMac && !isAnyDialogShown.value) {
+    if (v && !isMac && !showDependenciesDialog.value && !showShareDialog.value) {
         await onGenerate()
     }
 })
