@@ -122,7 +122,6 @@ const selectedPackages = computed<Set<string>>({
     },
     // setter
     set(newValue) {
-        // Note: we are using destructuring assignment syntax here.
         selectedPackagesPerProject.value.set(projectType.value, newValue)
     }
 })
@@ -158,6 +157,10 @@ const selectedPackageInformation = computed<Package[]>(() => {
         .filter((it) => it !== null) as Array<Package>
 })
 
+const isAnyDialogShown = computed<boolean>(() => {
+    return showShareDialog.value || showExplorer.value || showDependenciesDialog.value
+})
+
 function haveValidProjectMetaData(): boolean {
     if (projectMetadata.value.has(projectType.value)) {
         return projectMetadata.value.get(projectType.value)?.valid ?? true
@@ -186,25 +189,25 @@ watch(
 )
 
 watch(metaEnter, async (v) => {
-    if (v && isMac && !showDependenciesDialog.value) {
+    if (v && isMac && !isAnyDialogShown.value) {
         await onGenerate()
     }
 })
 
 watch(metaB, (v) => {
-    if (v) {
+    if (v && !isAnyDialogShown.value) {
         showDependenciesDialog.value = true
     }
 })
 
 watch(ctrlEnter, async (v) => {
-    if (v && !isMac && !showDependenciesDialog.value) {
+    if (v && !isMac && !isAnyDialogShown.value) {
         await onGenerate()
     }
 })
 
 watch(ctrlSpace, async (v) => {
-    if (v) {
+    if (v && !isAnyDialogShown.value) {
         await onExplore()
     }
 })
@@ -329,7 +332,8 @@ onMounted(async () => {
 <template>
     <AppComponentLoader v-if="isLoading"></AppComponentLoader>
     <header
-        class="bg-primary-500 shadow-inner dark:bg-primary-dark-900 flex items-center justify-between"
+        class="bg-primary-500 shadow-inner dark:bg-primary-dark-900 flex items-center justify-between transition ease-linear duration-200"
+        :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
         role="banner"
     >
         <a href="/" class="mx-2 my-3" aria-label="Generator Genie" tabindex="-1" title="Generator Genie">
@@ -371,7 +375,8 @@ onMounted(async () => {
         </div>
     </header>
     <main
-        class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 dark:bg-primary-dark-800 dark:text-primary-dark-100"
+        class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 dark:bg-primary-dark-800 dark:text-primary-dark-100 transition ease-linear duration-200"
+        :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
         role="main"
     >
         <Explorer
@@ -498,7 +503,11 @@ onMounted(async () => {
             </div>
         </div>
     </main>
-    <footer role="contentinfo" class="flex footer border-primary-50 z-0 relative items-center">
+    <footer
+        role="contentinfo"
+        class="flex footer border-primary-50 z-0 relative items-center transition ease-linear duration-200"
+        :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
+    >
         <div
             class="h-16 flex relative flex-1 z-0 bg-white items-center justify-center space-x-4 border-t dark:border-gray-900 dark:bg-primary-dark-700"
         >
