@@ -14,9 +14,9 @@ const { devices } = require('@playwright/test')
 
 /**
  * @see https://playwright.dev/docs/test-configuration
- {%- if javascriptSelected %}
+ {%- if javascriptSelected -%}
  * @type {import('@playwright/test').PlaywrightTestConfig}
- {%- endif %}
+ {%- endif -%}
  */
 const config = {
   testDir: './e2e',
@@ -116,7 +116,7 @@ const config = {
   }
 }
 
-{% if typescriptSelected %}export default config{% else %}module.exports = config{%- endif %}
+{%- if typescriptSelected %}export default config{% else %}module.exports = config{%- endif %}
 {%- else -%}
 {%- if typescriptSelected -%}
 import type { PlaywrightTestConfig } from '@playwright/test'
@@ -236,5 +236,5 @@ const config = {
     }
 }
 
-{% if typescriptSelected %}export default config{% else %}module.exports = config{%- endif %}
+{%- if typescriptSelected %}export default config{% else %}module.exports = config{%- endif %}
 {%- endif -%}
