@@ -13,7 +13,8 @@ import partition from 'lodash.partition'
 
 const engine = new Liquid({
     jsTruthy: true,
-    cache: true
+    cache: true,
+    greedy: false
 })
 
 let compilationComplete = false

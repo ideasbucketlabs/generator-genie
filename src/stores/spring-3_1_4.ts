@@ -475,6 +475,13 @@ const data: Dependency[] = [
                 description: 'Build command line applications with spring.',
                 groupId: 'org.springframework.shell',
                 artifactId: 'spring-shell-starter'
+            },
+            {
+                name: 'Timefold Solver',
+                id: 'timefold-solver',
+                description: 'AI solver to optimize operations and scheduling.',
+                groupId: 'ai.timefold.solver',
+                artifactId: 'timefold-solver-spring-boot-starter'
             }
         ]
     },

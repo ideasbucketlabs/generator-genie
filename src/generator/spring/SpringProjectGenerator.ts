@@ -12,7 +12,8 @@ import { javaGitIgnore } from '@/generator/common/gitignore'
 
 const engine = new Liquid({
     jsTruthy: true,
-    cache: true
+    cache: true,
+    greedy: false
 })
 
 const springCloudDependencies = [
@@ -269,6 +270,7 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         testDependencies: Array.from(testDependencies.values()),
         haveLombok: dependenciesIds.has('lombok'),
         haveSpringShellDependency: dependenciesIds.has('spring-shell'),
+        haveTimeFoldSolverDependency: dependenciesIds.has('timefold-solver'),
         haveSpringCloudDependency: haveCloudDependencies(dependenciesIds),
         annotationDependencies: annotationDependencies,
         kotlin: Language.Kotlin,

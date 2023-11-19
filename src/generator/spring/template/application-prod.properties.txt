@@ -14,4 +14,4 @@ spring.datasource.password=${POSTGRES_PASSWORD:secret}
 {%- if dependenciesIds contains "data-redis" -%}
 spring.data.redis.host=${REDIS_HOST:localhost}
 spring.data.redis.port=${REDIS_PORT:6379}
-{% endif -%}
+{%- endif -%}

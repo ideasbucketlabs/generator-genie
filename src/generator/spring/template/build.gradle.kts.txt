@@ -1,20 +1,20 @@
 plugins {
-    {%- if javaSelected %}
+    {%- if javaSelected -%}
     java
     id("org.springframework.boot") version "{{ metadata.springBootVersion }}"
     id("io.spring.dependency-management") version "1.1.3"
-    {%- else %}
+    {%- else -%}
     id("org.springframework.boot") version "{{ metadata.springBootVersion }}"
     id("io.spring.dependency-management") version "1.1.3"
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
-        {%- if dependenciesIds contains "data-jpa" %}
+        {%- if dependenciesIds contains "data-jpa" -%}
     kotlin("plugin.jpa") version "1.8.22"
-        {%- endif %}
-    {%- endif %}
-    {%- for plugin in plugins %}
+        {%- endif -%}
+    {%- endif -%}
+    {%- for plugin in plugins -%}
     id("{{ plugin.groupId }}") version "{{ plugin.version }}"
-    {%- endfor %}
+    {%- endfor -%}
 }
 
 group = "{{ metadata.group }}"
@@ -23,123 +23,112 @@ version = "0.0.1-SNAPSHOT"
 java {
     sourceCompatibility = JavaVersion.VERSION_{%- if javaSelected -%}{{ metadata.javaVersion}}{%- else -%}17{%- endif %}
 }
-
-{%- if annotationDependencies.size != 0 %}
+{%- if annotationDependencies.size != 0 -%}
 
 configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
 }
-{%- endif %}
+{%- endif -%}
 
 repositories {
     mavenCentral()
 }
+{%- if haveSpringCloudDependency or haveSpringShellDependency or haveTimeFoldSolverDependency -%}
 
-{%- if haveSpringCloudDependency or haveSpringShellDependency %}
-    {%- if haveSpringCloudDependency and haveSpringShellDependency %}
-
+{%- if haveSpringCloudDependency -%}
 extra["springCloudVersion"] = "2022.0.4"
+{%- endif -%}
+{%- if haveSpringShellDependency -%}
 extra["springShellVersion"] = "3.1.3"
-
-    {%- elsif haveSpringCloudDependency %}
-
-extra["springCloudVersion"] = "2022.0.4"
-    {%- else %}
-
-extra["springShellVersion"] = "3.1.3"
-    {%- endif %}
-{%- endif %}
+{%- endif -%}
+{%- if haveTimeFoldSolverDependency -%}
+extra["timefoldSolverVersion"] = "1.3.0"
+{%- endif -%}
+{%- endif -%}
 
 dependencies {
-    {%- for dependency in dependencies %}
+    {%- for dependency in dependencies -%}
     implementation("{{ dependency.groupId }}:{{ dependency.artifactId }}{%- if dependency.version %}:{{ dependency.version}}{%- endif %}")
-
-    {%- if dependency.id == "flyway" %}
-        {%- if dependenciesIds contains "mysql" %}
+    {%- if dependency.id == "flyway" -%}
+        {%- if dependenciesIds contains "mysql" -%}
     implementation("org.flywaydb:flyway-mysql")
-        {%- endif %}
-        {%- if dependenciesIds contains "sqlserver" %}
+        {%- endif -%}
+        {%- if dependenciesIds contains "sqlserver" -%}
     implementation("org.flywaydb:flyway-sqlserver")
-        {%- endif %}
-    {%- endif %}
-
-    {%- if dependency.id == "security" and dependenciesIds contains "thymeleaf" %}
+        {%- endif -%}
+    {%- endif -%}
+    {%- if dependency.id == "security" and dependenciesIds contains "thymeleaf" -%}
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
-    {%- endif %}
-
-    {%- else %}
+    {%- endif -%}
+    {%- else -%}
     implementation("org.springframework.boot:spring-boot-starter")
-    {%- endfor %}
-
-    {%- if kotlinSelected %}
+    {%- endfor -%}
+    {%- if dependenciesIds.size == 1 and dependenciesIds contains "timefold-solver" -%}
+    implementation("org.springframework.boot:spring-boot-starter")
+    {%- endif -%}
+    {%- if kotlinSelected -%}
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    {%- endif %}
-
-    {%- if kotlinSelected %}
-        {%- if dependenciesIds contains "web" or dependenciesIds contains "webflux" %}
+    {%- endif -%}
+    {%- if kotlinSelected -%}
+        {%- if dependenciesIds contains "web" or dependenciesIds contains "webflux" -%}
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-        {%- endif %}
-        {%- if dependenciesIds contains "webflux" or dependenciesIds contains "data-r2dbc" or dependenciesIds contains "data-redis-reactive" or dependenciesIds contains "rsocket" %}
+        {%- endif -%}
+        {%- if dependenciesIds contains "webflux" or dependenciesIds contains "data-r2dbc" or dependenciesIds contains "data-redis-reactive" or dependenciesIds contains "rsocket" -%}
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-        {%- endif %}
-    {%- endif %}
-
-    {%- for runtimeDependency in runtimeDependencies %}
-    runtimeOnly("{{ runtimeDependency.groupId }}:{{ runtimeDependency.artifactId }}{%- if runtimeDependency.version %}:{{ runtimeDependency.version}}{%- endif %}")
-    {%- if dependenciesIds contains "data-r2dbc" %}
-        {%- if runtimeDependency.id == "h2" %}
+        {%- endif -%}
+    {%- endif -%}
+    {%- for runtimeDependency in runtimeDependencies -%}
+    runtimeOnly("{{ runtimeDependency.groupId }}:{{ runtimeDependency.artifactId }}{%- if runtimeDependency.version %}:{{ runtimeDependency.version}}{%- endif -%}")
+    {%- if dependenciesIds contains "data-r2dbc" -%}
+        {%- if runtimeDependency.id == "h2" -%}
     runtimeOnly("io.r2dbc:r2dbc-h2")
-        {%- elsif runtimeDependency.id == "mariadb" %}
+        {%- elsif runtimeDependency.id == "mariadb" -%}
     runtimeOnly("org.mariadb:r2dbc-mariadb:1.1.3")
-        {%- elsif runtimeDependency.id == "sqlserver" %}
+        {%- elsif runtimeDependency.id == "sqlserver" -%}
     runtimeOnly("io.r2dbc:r2dbc-mssql:1.0.0.RELEASE")
-        {%- elsif runtimeDependency.id == "postgresql" %}
+        {%- elsif runtimeDependency.id == "postgresql" -%}
     runtimeOnly("org.postgresql:r2dbc-postgresql")
-        {%- endif %}
-    {%- endif %}
-    {%- endfor %}
-
-
-    {%- for developmentDependency in developmentDependencies %}
-    developmentOnly("{{ developmentDependency.groupId }}:{{ developmentDependency.artifactId }}{%- if developmentDependency.version %}:{{ developmentDependency.version}}{%- endif %}")
-    {%- endfor %}
-
-    {%- for annotationDependency in annotationDependencies %}
-    annotationProcessor("{{ annotationDependency.groupId }}:{{ annotationDependency.artifactId }}{%- if annotationDependency.version %}:{{ annotationDependency.version}}{%- endif %}")
-    {%- endfor %}
-    {%- if haveLombok %}
+        {%- endif -%}
+    {%- endif -%}
+    {%- endfor -%}
+    {%- for developmentDependency in developmentDependencies -%}
+    developmentOnly("{{ developmentDependency.groupId }}:{{ developmentDependency.artifactId }}{%- if developmentDependency.version %}:{{ developmentDependency.version}}{%- endif -%}")
+    {%- endfor -%}
+    {%- for annotationDependency in annotationDependencies -%}
+    annotationProcessor("{{ annotationDependency.groupId }}:{{ annotationDependency.artifactId }}{%- if annotationDependency.version %}:{{ annotationDependency.version}}{%- endif -%}")
+    {%- endfor -%}
+    {%- if haveLombok -%}
     compileOnly("org.projectlombok:lombok")
-    {%- endif %}
-    {%- for compileDependency in compileDependencies %}
-    compile("{{ compileDependency.groupId }}:{{ compileDependency.artifactId }}{%- if compileDependency.version %}:{{ compileDependency.version}}{%- endif %}")
-    {%- endfor %}
-
-    {%- for testDependency in testDependencies %}
-    testImplementation("{{ testDependency.groupId }}:{{ testDependency.artifactId }}{%- if testDependency.version %}:{{ testDependency.version}}{%- endif %}")
-    {%- endfor %}
+    {%- endif -%}
+    {%- for compileDependency in compileDependencies -%}
+    compile("{{ compileDependency.groupId }}:{{ compileDependency.artifactId }}{%- if compileDependency.version %}:{{ compileDependency.version}}{%- endif -%}")
+    {%- endfor -%}
+    {%- for testDependency in testDependencies -%}
+    testImplementation("{{ testDependency.groupId }}:{{ testDependency.artifactId }}{%- if testDependency.version -%}:{{ testDependency.version}}{%- endif -%}")
+    {%- endfor -%}
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
-
-
-{%- if haveSpringShellDependency or haveSpringCloudDependency %}
+{%- if haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency -%}
 
 dependencyManagement {
     imports {
-        {%- if haveSpringShellDependency %}
+        {%- if haveSpringShellDependency -%}
         mavenBom("org.springframework.shell:spring-shell-dependencies:${property("springShellVersion")}")
-        {%- endif %}
-        {%- if haveSpringCloudDependency %}
+        {%- endif -%}
+        {%- if haveSpringCloudDependency -%}
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-        {%- endif %}
+        {%- endif -%}
+        {%- if haveTimeFoldSolverDependency -%}
+        mavenBom("ai.timefold.solver:timefold-solver-bom:${property("timefoldSolverVersion")}")
+        {%- endif -%}
     }
 }
-{%- endif %}
+{%- endif -%}
 
-{%- if kotlinSelected %}
-
+{%- if kotlinSelected -%}
 tasks.compileKotlin {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
@@ -153,13 +142,12 @@ tasks.compileTestKotlin {
         jvmTarget = "17"
     }
 }
-{%- endif %}
 
+{%- endif -%}
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
-{%- if dependenciesIds contains "spotless" %}
+{%- if dependenciesIds contains "spotless" -%}
 
 spotless {
     format("misc") {
@@ -175,7 +163,7 @@ spotless {
         indentWithSpaces(4)
         trimTrailingWhitespace()
     }
-    {%- if javaSelected %}
+    {%- if javaSelected -%}
     java {
         palantirJavaFormat()
         target("src/*/java/**/*.java")
@@ -183,7 +171,7 @@ spotless {
         removeUnusedImports()
         toggleOffOn("formatter:off", "formatter:on")
     }
-    {%- else %}
+    {%- else -%}
     kotlin {
         ktlint("0.47.1").editorConfigOverride(mapOf("indent_size" to 4, "max_line_length" to 120))
         target("src/*/kotlin/**/*.kt")
@@ -192,6 +180,10 @@ spotless {
         endWithNewline()
         trimTrailingWhitespace()
     }
-    {%- endif %}
+    {%- endif -%}
 }
-{%- endif %}
+{%- endif-%}
+
+tasks.bootBuildImage {
+    builder.set("paketobuildpacks/builder-jammy-base:latest")
+}
