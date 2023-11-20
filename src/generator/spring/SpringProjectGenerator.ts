@@ -96,9 +96,9 @@ function getProjectFolders(metadata: SpringProject, context: 'main' | 'test'): F
                 id: getId(),
                 children: [
                     {
-                        name: `${metadata.name.charAt(0).toUpperCase()}${metadata.name.slice(1)}Application${
-                            context === 'main' ? '' : 'Tests'
-                        }.${metadata.language === Language.Java ? 'java' : 'kt'}`,
+                        name: `${metadata.name}Application${context === 'main' ? '' : 'Tests'}.${
+                            metadata.language === Language.Java ? 'java' : 'kt'
+                        }`,
                         content: context === 'main' ? getApplicationCode(metadata) : getTestApplicationCode(metadata),
                         id: getId(),
                         type: ContentType.File,
@@ -358,7 +358,17 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         contentTree.push(getDockerYaml(dependenciesIds))
     }
 
-    contentTree.push(getSrcFolder(projectMetaData.metadata, dependenciesIds))
+    contentTree.push(
+        getSrcFolder(
+            {
+                ...projectMetaData.metadata,
+                ...{
+                    name: projectMetaData.metadata.name.charAt(0).toUpperCase() + projectMetaData.metadata.name.slice(1)
+                }
+            },
+            dependenciesIds
+        )
+    )
     return {
         tree: contentTree
     }
