@@ -9,6 +9,7 @@ import partition from 'lodash.partition'
 import content from '@/generator/spring/template/compiled/content'
 import { Language } from '@/entity/Language'
 import { javaGitIgnore } from '@/generator/common/gitignore'
+import { SpringBootVersion } from '@/entity/SpringBootVersion'
 
 const engine = new Liquid({
     jsTruthy: true,
@@ -30,6 +31,7 @@ const springCloudDependencies = [
 ]
 
 const supportedDatabases = new Set(['mariadb', 'sqlserver', 'mysql', 'postgresql', 'h2', 'hsql'])
+const runtimeEntries = new Set(['prometheus', 'influx', 'graphite', 'wavefront', 'newrelic'])
 
 let compilationComplete = false
 const parsedTemplates: Map<string, Template[]> = new Map()
@@ -84,10 +86,12 @@ function getTestApplicationCode(metadata: SpringProject): string {
         metadata
     ) as unknown as string
 }
-function getProjectFolders(metadata: SpringProject, context: 'main' | 'test'): Folder {
+function getProjectFolders(metadata: SpringProject, context: 'main' | 'test', dependenciesIds: Set<string>): Folder {
     const parts = metadata.packageName.split('.').reverse()
     let folder: Folder | null = null
-
+    if (context === 'test') {
+        console.log(dependenciesIds)
+    }
     parts.forEach((part) => {
         if (folder === null) {
             folder = {
@@ -95,15 +99,38 @@ function getProjectFolders(metadata: SpringProject, context: 'main' | 'test'): F
                 type: ContentType.Folder,
                 id: getId(),
                 children: [
-                    {
-                        name: `${metadata.name}Application${context === 'main' ? '' : 'Tests'}.${
-                            metadata.language === Language.Java ? 'java' : 'kt'
-                        }`,
-                        content: context === 'main' ? getApplicationCode(metadata) : getTestApplicationCode(metadata),
-                        id: getId(),
-                        type: ContentType.File,
-                        lang: metadata.language
-                    }
+                    ...[
+                        {
+                            name: `${metadata.name}Application${context === 'main' ? '' : 'Tests'}.${
+                                metadata.language === Language.Java ? 'java' : 'kt'
+                            }`,
+                            content:
+                                context === 'main' ? getApplicationCode(metadata) : getTestApplicationCode(metadata),
+                            id: getId(),
+                            type: ContentType.File,
+                            lang: metadata.language
+                        }
+                    ],
+                    ...(context === 'test' && dependenciesIds.has('testcontainers')
+                        ? [
+                              {
+                                  id: getId(),
+                                  name: `Test${metadata.name}Application.${
+                                      metadata.language === Language.Java ? 'java' : 'kt'
+                                  }`,
+                                  content: engine.renderSync(
+                                      parsedTemplates.get(
+                                          `test-container-application.${
+                                              metadata.language === Language.Kotlin ? 'kt' : 'java'
+                                          }`
+                                      )!!,
+                                      metadata
+                                  ) as unknown as string,
+                                  type: ContentType.File,
+                                  lang: metadata.language
+                              } as File
+                          ]
+                        : [])
                 ]
             }
         } else {
@@ -163,6 +190,14 @@ function getPropertiesFolderContent(packages: Set<string>): Array<File | Folder>
         )
     }
 
+    if (packages.has('graphql-code-generation')) {
+        content.push({
+            name: 'graphql-client',
+            id: getId(),
+            type: ContentType.Folder
+        })
+    }
+
     if (packages.has('liquibase') || packages.has('flyway')) {
         const children = []
 
@@ -193,8 +228,8 @@ function getPropertiesFolderContent(packages: Set<string>): Array<File | Folder>
     return content
 }
 function getSrcFolder(metadata: SpringProject, packages: Set<string>): Folder | File {
-    const mainFolder: Folder = getProjectFolders(metadata, 'main')
-    const testFolder: Folder = getProjectFolders(metadata, 'test')
+    const mainFolder: Folder = getProjectFolders(metadata, 'main', packages)
+    const testFolder: Folder = getProjectFolders(metadata, 'test', packages)
     return {
         name: 'src',
         type: ContentType.Folder,
@@ -224,9 +259,25 @@ function getSrcFolder(metadata: SpringProject, packages: Set<string>): Folder | 
     }
 }
 
+function getMinimumJdkCompatibility(
+    language: Language.Java | Language.Kotlin,
+    selectedJavaVersion: number,
+    selectedSpringBootVersion: SpringBootVersion
+): number {
+    if (language === Language.Java) {
+        return selectedJavaVersion
+    }
+
+    if (selectedSpringBootVersion === SpringBootVersion['3_1_6']) {
+        return 17
+    }
+
+    return selectedJavaVersion
+}
+
 export function getContent(projectMetaData: { metadata: SpringProject; dependencies: Package[] }): ContentTree {
     compileTemplates()
-    const testDependencies: Map<string, Package> = new Map()
+    const testDependenciesIds: Set<string> = new Set()
 
     const enabledDependencies = projectMetaData.dependencies.filter((it) => it.supported ?? true)
     const dependenciesIds: Set<string> = new Set<string>(enabledDependencies.map((it) => it.id))
@@ -244,26 +295,57 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
     })
 
     const [runtimeDependencies, g] = partition(f, (pointer: Package) => {
-        return supportedDatabases.has(pointer.id)
+        return supportedDatabases.has(pointer.id) || runtimeEntries.has(pointer.id)
     })
 
-    const [annotationDependencies, dependencies] = partition(g, (pointer: Package) => {
+    const [annotationDependencies, h] = partition(g, (pointer: Package) => {
         return pointer.id === 'lombok' || pointer.id === 'configuration-processor'
+    })
+
+    const [testDependencies, dependencies] = partition(h, (pointer: Package) => {
+        return pointer.id === 'embedded-ldap' || pointer.id === 'testcontainers'
+    })
+
+    testDependencies.forEach((it) => {
+        testDependenciesIds.add(it.id)
     })
 
     dependencies.forEach((dependency) => {
         ;(dependency.testPackages ?? []).forEach((it) => {
-            if (!dependenciesIds.has(it.id)) {
-                testDependencies.set(it.id, it)
+            // This is one of the edge case in case of GraphQL, Spring Webflux is needed as testDependency if not
+            // present in dependency so this check solves that use case.
+            if (!dependenciesIds.has(it.id) && !testDependenciesIds.has(it.id)) {
+                testDependencies.push(it)
+                testDependenciesIds.add(it.id)
             }
         })
     })
+
+    testDependencies.forEach((dependency) => {
+        ;(dependency.testPackages ?? []).forEach((it) => {
+            // This is one of the edge case in case of GraphQL, Spring Webflux is needed as testDependency if not
+            // present in dependency so this check solves that use case.
+            if (!dependenciesIds.has(it.id) && !testDependenciesIds.has(it.id)) {
+                testDependencies.push(it)
+                testDependenciesIds.add(it.id)
+            }
+        })
+    })
+
+    const includeActuatorExplicitly =
+        !dependenciesIds.has('actuator') &&
+        (dependenciesIds.has('zipkin') ||
+            dependenciesIds.has('newrelic') ||
+            dependenciesIds.has('graphite') ||
+            dependenciesIds.has('distributed-tracing') ||
+            dependenciesIds.has('wavefront'))
 
     const payload = {
         metadata: projectMetaData.metadata,
         plugins: plugins,
         dependencies: dependencies,
         runtimeDependencies: runtimeDependencies,
+        includeActuatorExplicitly: includeActuatorExplicitly,
         developmentDependencies: developmentDependencies,
         compileDependencies: compileDependencies,
         dependenciesIds: Array.from(dependenciesIds),
@@ -275,8 +357,18 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         annotationDependencies: annotationDependencies,
         kotlin: Language.Kotlin,
         java: Language.Java,
+        explicitDockerImageForGradleIsRequired:
+            SpringBootVersion['3_1_6'] === projectMetaData.metadata.springBootVersion,
         kotlinSelected: projectMetaData.metadata.language === Language.Kotlin,
-        javaSelected: projectMetaData.metadata.language === Language.Java
+        javaSelected: projectMetaData.metadata.language === Language.Java,
+        springCloudVersion:
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_6'] ? '2022.0.4' : '2023.0.0',
+        jdkSourceCompatibility: getMinimumJdkCompatibility(
+            projectMetaData.metadata.language,
+            projectMetaData.metadata.javaVersion,
+            projectMetaData.metadata.springBootVersion
+        ),
+        kotlinPlugin: projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_6'] ? '1.8.22' : '1.9.20'
     }
 
     const contentTree: Array<File | Folder> = [
@@ -369,6 +461,8 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
             dependenciesIds
         )
     )
+
+    console.log(contentTree)
     return {
         tree: contentTree
     }

@@ -16,4 +16,4 @@ describe('My First Test', () => {
         cy.get('body').its('length').should('eq', 1)
     })
 })
-{%- endif %}
+{%- endif -%}

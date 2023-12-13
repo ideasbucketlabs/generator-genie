@@ -17,7 +17,7 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
     1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
     2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-{%- endif %}
+{%- endif -%}
 
 ## Customize configuration
 
@@ -43,16 +43,16 @@ npm run dev -- --host
 npm run build
 ```
 
-{%- if metadata.includeUnitTest %}
+{%- if metadata.includeUnitTest -%}
 
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh
 npm run test:unit
 ```
-{%- endif %}
+{%- endif -%}
 
-{%- if metadata.integrationTest == 'playwright' %}
+{%- if metadata.integrationTest == 'playwright' -%}
 
 ### Run End-to-End Tests with [Playwright](https://playwright.dev)
 
@@ -73,7 +73,7 @@ npm run test:e2e -- tests/example.spec.ts
 npm run test:e2e -- --debug
 ```
 
-{%- elsif metadata.integrationTest == 'nightwatch' %}
+{%- elsif metadata.integrationTest == 'nightwatch' -%}
 
 ### Run End-to-End Tests with [Nightwatch](https://nightwatchjs.org/)
 
@@ -97,7 +97,7 @@ npm run test:e2e -- --debug
 npm run test:unit
 npm run test:unit -- --headless # for headless testing
 ```
-{%- elsif metadata.integrationTest == 'cypress' %}
+{%- elsif metadata.integrationTest == 'cypress' -%}
 
 ### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
 
@@ -115,21 +115,21 @@ npm run build
 npm run test:e2e
 ```
 
-{%- endif %}
-{%- if metadata.includeEslint %}
+{%- endif -%}
+{%- if metadata.includeEslint -%}
 
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
 npm run lint
 ```
-{%- endif %}
+{%- endif -%}
 
-{%- if metadata.includePrettier %}
+{%- if metadata.includePrettier -%}
 
 ### Format Code with [Prettify](https://prettier.io/)
 
 ```sh
 npm run format
 ```
-{%- endif %}
+{%- endif -%}

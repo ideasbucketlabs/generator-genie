@@ -60,4 +60,4 @@ const router = createRouter({
 })
 
 export default router
-{%- endif %}
+{%- endif -%}

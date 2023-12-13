@@ -13,7 +13,16 @@ const data: Dependency[] = [
                     'Support for compiling Spring applications to native executables using the GraalVM native-image compiler.',
                 plugin: true,
                 groupId: 'org.graalvm.buildtools.native',
-                version: '0.9.27'
+                version: '0.9.28'
+            },
+            {
+                name: 'GraphQL DGS Code Generation',
+                id: 'graphql-code-generation',
+                description:
+                    'Generate data types and type-safe APIs for querying GraphQL APIs by parsing schema files.',
+                groupId: 'com.netflix.dgs.codegen',
+                version: '6.0.3',
+                plugin: true
             },
             {
                 name: 'Spring Boot DevTools',
@@ -37,6 +46,13 @@ const data: Dependency[] = [
                     'Generate metadata for developers to offer contextual help and "code completion" when working with custom configuration keys (ex.application.properties/.yml files).',
                 groupId: 'org.springframework.boot',
                 artifactId: 'spring-boot-configuration-processor'
+            },
+            {
+                name: 'Docker Compose Support',
+                id: 'docker-compose-setup',
+                description: 'Provides docker compose support for enhanced development experience.',
+                groupId: 'org.springframework.boot',
+                artifactId: 'spring-boot-docker-compose'
             }
         ]
     },
@@ -209,7 +225,7 @@ const data: Dependency[] = [
                     'Okta specific configuration for Spring Security/Spring Boot OAuth2 features. Enable your Spring Boot application to work with Okta via OAuth 2.0/OIDC.',
                 groupId: 'com.okta.spring',
                 artifactId: 'okta-spring-boot-starter',
-                version: '3.0.4'
+                version: '3.0.6'
             }
         ]
     },
@@ -388,14 +404,32 @@ const data: Dependency[] = [
                 description:
                     'Gives your applications a common platform to send and receive messages, and your messages a safe place to live until received.',
                 groupId: 'org.springframework.boot',
-                artifactId: 'spring-boot-starter-amqp'
+                artifactId: 'spring-boot-starter-amqp',
+                testPackages: [
+                    {
+                        name: 'Spring for RabbitMQ Test',
+                        id: 'amqp-test',
+                        description: '',
+                        groupId: 'org.springframework.amqp',
+                        artifactId: 'spring-rabbit-test'
+                    }
+                ]
             },
             {
                 name: 'Spring for Apache Kafka',
                 id: 'kafka',
                 description: 'Publish, subscribe, store, and process streams of records.',
                 groupId: 'org.springframework.kafka',
-                artifactId: 'spring-kafka'
+                artifactId: 'spring-kafka',
+                testPackages: [
+                    {
+                        name: 'Spring for Apache Kafka Test',
+                        id: 'kafka-test',
+                        description: '',
+                        groupId: 'org.springframework.kafka',
+                        artifactId: 'spring-kafka-test'
+                    }
+                ]
             },
             {
                 name: 'Spring for Apache Kafka Streams',
@@ -438,7 +472,16 @@ const data: Dependency[] = [
                 id: 'batch',
                 description: 'Batch applications with transactions, retry/skip and chunk based processing.',
                 groupId: 'org.springframework.boot',
-                artifactId: 'spring-boot-starter-batch'
+                artifactId: 'spring-boot-starter-batch',
+                testPackages: [
+                    {
+                        name: 'Spring Batch Test',
+                        id: 'batch-test',
+                        description: '',
+                        groupId: 'org.springframework.batch',
+                        artifactId: 'spring-batch-test'
+                    }
+                ]
             },
             {
                 name: 'Validation',
@@ -468,6 +511,14 @@ const data: Dependency[] = [
                 description: 'Build command line applications with spring.',
                 groupId: 'org.springframework.shell',
                 artifactId: 'spring-shell-starter'
+            },
+            {
+                name: 'Picolli',
+                id: 'picolli',
+                description: 'Build command line applications with Picolli.',
+                groupId: 'info.picocli',
+                artifactId: 'picocli-spring-boot-starter',
+                version: '4.7.5'
             },
             {
                 name: 'Timefold Solver',
@@ -513,13 +564,51 @@ const data: Dependency[] = [
                 artifactId: 'micrometer-registry-prometheus'
             },
             {
+                name: 'Graphite',
+                id: 'graphite',
+                description:
+                    'Publish Micrometer metrics to Graphite, a hierarchical metrics system backed by a fixed-size database.',
+                groupId: 'io.micrometer',
+                artifactId: 'micrometer-registry-graphite'
+            },
+            {
                 name: 'Elastic APM',
                 id: 'elastic-apm',
                 description:
                     'Elastic APM is an application performance monitoring system built on the Elastic Stack. It allows you to monitor software services and applications in real-time, by collecting detailed performance information on response time for incoming requests, database queries, calls to caches, external HTTP requests, and more. This makes it easy to pinpoint and fix performance problems quickly.',
                 groupId: 'co.elastic.apm',
                 artifactId: 'apm-agent-api',
-                version: '1.42.0'
+                version: '1.44.0'
+            },
+            {
+                name: 'Distributed Tracing',
+                id: 'distributed-tracing',
+                description: 'Enable span and trace IDs logs.',
+                groupId: 'io.micrometer',
+                artifactId: 'micrometer-tracing-bridge-brave'
+            },
+            {
+                name: 'Wavefront',
+                id: 'wavefront',
+                description:
+                    'Publish metrics and optionally distributed traces to Tanzu Observability by Wavefront, a SaaS-based metrics monitoring and analytics platform that lets you visualize, query, and alert over data from across your entire stack.',
+                groupId: 'io.micrometer',
+                artifactId: 'micrometer-tracing-reporter-wavefront'
+            },
+            {
+                name: 'New Relic',
+                id: 'newrelic',
+                description:
+                    'Publish Micrometer metrics to New Relic, a SaaS offering with a full UI and a query language called NRQL.',
+                groupId: 'io.micrometer',
+                artifactId: 'micrometer-registry-new-relic'
+            },
+            {
+                name: 'Zipkin',
+                id: 'zipkin',
+                description: 'Enable and expose span and trace IDs to Zipkin.',
+                groupId: 'io.zipkin.reporter2',
+                artifactId: 'zipkin-reporter-brave'
             }
         ]
     },
@@ -549,7 +638,16 @@ const data: Dependency[] = [
                 description:
                     'Provide lightweight, throwaway instances of common databases, Selenium web browsers, or anything else that can run in a Docker container.',
                 groupId: 'org.springframework.boot',
-                artifactId: 'spring-boot-testcontainers'
+                artifactId: 'spring-boot-testcontainers',
+                testPackages: [
+                    {
+                        name: '',
+                        id: 'testcontainers-test',
+                        description: '',
+                        groupId: 'org.testcontainers',
+                        artifactId: 'junit-jupiter'
+                    }
+                ]
             },
             {
                 name: 'Contract Verifier',
@@ -611,12 +709,21 @@ const data: Dependency[] = [
         group: 'Spring Cloud Routing',
         packages: [
             {
-                name: 'Gateway',
-                id: 'cloud-gateway',
+                name: 'Reactive Gateway',
+                id: 'reactive-cloud-gateway',
                 description:
-                    'Provides a simple, yet effective way to route to APIs and provide cross cutting concerns to them such as security, monitoring/metrics, and resiliency.',
+                    'Provides a simple, yet effective way to route to APIs in reactive applications. Provides cross-cutting concerns to those APIs such as security, monitoring/metrics, and resiliency.',
                 groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-gateway'
+                artifactId: 'spring-cloud-starter-gateway',
+                testPackages: [
+                    {
+                        name: 'Reactor Test',
+                        id: 'reactor-test',
+                        description: '',
+                        groupId: 'io.projectreactor',
+                        artifactId: 'reactor-test'
+                    }
+                ]
             }
         ]
     },
@@ -651,7 +758,16 @@ const data: Dependency[] = [
                 description:
                     'Framework for building highly scalable event-driven microservices connected with shared messaging systems (requires a binder, e.g. Apache Kafka, Apache Pulsar, RabbitMQ, or Solace PubSub+).',
                 groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-stream'
+                artifactId: 'spring-cloud-stream',
+                testPackages: [
+                    {
+                        name: 'Cloud Stream Test',
+                        id: 'cloud-stream-test',
+                        description: '',
+                        groupId: 'org.springframework.cloud',
+                        artifactId: 'spring-cloud-stream-test-binder'
+                    }
+                ]
             }
         ]
     }

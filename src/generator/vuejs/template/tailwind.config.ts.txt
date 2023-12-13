@@ -1,7 +1,7 @@
 {%- if javascriptSelected -%}
 /* eslint-env node */
 /** @type {import('tailwindcss').Config} */
-{%- if metadata.indentSize == 2 %}
+{%- if metadata.indentSize == 2 -%}
 module.exports = {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
@@ -9,7 +9,7 @@ module.exports = {
   },
   plugins: [],
 }
-{%- else %}
+{%- else -%}
 module.exports = {
     content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     theme: {
@@ -44,4 +44,4 @@ const config: Config = {
 
 export default config
 {%- endif -%}
-{%- endif %}
+{%- endif -%}

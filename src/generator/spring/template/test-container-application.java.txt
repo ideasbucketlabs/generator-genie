@@ -1,0 +1,12 @@
+package {{ packageName }};
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.test.context.TestConfiguration;
+
+@TestConfiguration(proxyBeanMethods = false)
+public class Test{{ name }}Application {
+
+    public static void main(String[] args) {
+        SpringApplication.from({{ name }}Application::main).with(Test{{ name }}Application.class).run(args);
+    }
+}

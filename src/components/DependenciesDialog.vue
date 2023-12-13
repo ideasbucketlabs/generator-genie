@@ -141,10 +141,12 @@ function closeDialog() {
 function onHover(packageId: string) {
     keyboardSelection.value = packageId
 }
-function selectPackage(packageId: string) {
+function selectPackage(packageId: string, wasMouseClick = false) {
     emit('update:model-value', new Set([...props.modelValue, packageId]))
     if (dialog.value !== null && !multipleSelectionActivated.value) {
         dialog.value.hide()
+    } else if (wasMouseClick && multipleSelectionActivated.value) {
+        inputElement.value?.focus()
     }
 }
 
@@ -243,7 +245,7 @@ onBeforeUnmount(() => {
                                     <div
                                         data-package-item="true"
                                         :data-package-item-id="packages.id"
-                                        @click="selectPackage(packages.id)"
+                                        @click="selectPackage(packages.id, true)"
                                         class="flex cursor-pointer border-b border-primary-200 p-2 transition duration-100 ease-linear dark:border-primary-500"
                                         :class="{
                                             'keyboard-select bg-primary-100 dark:bg-primary-500':

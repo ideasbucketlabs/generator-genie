@@ -7,6 +7,20 @@ import type { SpringProject } from '@/entity/SpringProject'
 import type { File } from '@/entity/File'
 import type { Package } from '@/entity/Dependency'
 import { Language } from '../../../entity/Language'
+import spring3_1_6 from '../../../stores/spring-3_1_6'
+import spring3_2_0 from '../../../stores/spring-3_2_0'
+
+const spring3_1_6Packages: Package[] = spring3_1_6.flatMap((it) => {
+    return it.packages.map((pack) => {
+        return pack
+    })
+})
+
+const spring3_2_0Packages: Package[] = spring3_2_0.flatMap((it) => {
+    return it.packages.map((pack) => {
+        return pack
+    })
+})
 
 function getOutput(fileName: string) {
     return fs.readFileSync(
@@ -15,26 +29,43 @@ function getOutput(fileName: string) {
     )
 }
 
-function getMetadata(language: Language.Kotlin | Language.Java = Language.Java): SpringProject {
+function getMetadata(
+    language: Language.Kotlin | Language.Java = Language.Java,
+    springBootVersion: SpringBootVersion = SpringBootVersion['3_1_6'],
+    jdkVersion: 17 | 21 = 17
+): SpringProject {
     return {
         language: language,
-        springBootVersion: SpringBootVersion['3_1_5'],
+        springBootVersion: springBootVersion,
         group: 'com.test',
         artifact: 'demo',
         packageName: 'demo',
         name: 'demo',
         description: 'demo',
-        javaVersion: 17
+        javaVersion: jdkVersion
     }
 }
 
-function getGradleContent(dependencies: Package[], language: Language.Kotlin | Language.Java = Language.Java): string {
+function getGradleContent(
+    dependencies: Package[],
+    language: Language.Kotlin | Language.Java = Language.Java,
+    springBootVersion: SpringBootVersion = SpringBootVersion['3_1_6'],
+    jdkVersion: 17 | 21 = 17
+): string {
     return (
         getContent({
-            metadata: getMetadata(language),
+            metadata: getMetadata(language, springBootVersion, jdkVersion),
             dependencies: dependencies
         }).tree[0] as File
     ).content!!
+}
+
+function getDependencies(input: string[], springBootVersion: SpringBootVersion = SpringBootVersion['3_1_6']) {
+    if (springBootVersion === SpringBootVersion['3_1_6']) {
+        return spring3_1_6Packages.filter((it) => input.includes(it.id))
+    }
+
+    return spring3_2_0Packages.filter((it) => input.includes(it.id))
 }
 
 describe('Can generate build.gradle properly', () => {
@@ -49,46 +80,37 @@ describe('Can generate build.gradle properly', () => {
     it('Can generate build.gradle with Developer tools selected for Kotlin', () => {
         expect(
             getGradleContent(
-                [
-                    {
-                        name: 'GraalVM Native Support',
-                        id: 'native',
-                        description: 'test',
-                        plugin: true,
-                        groupId: 'org.graalvm.buildtools.native',
-                        version: '0.9.27'
-                    },
-                    {
-                        name: 'Spring Boot DevTools',
-                        id: 'devtools',
-                        description: 'test',
-                        groupId: 'org.springframework.boot',
-                        artifactId: 'spring-boot-devtools'
-                    },
-                    {
-                        name: 'Lombok',
-                        id: 'lombok',
-                        description: 'test',
-                        groupId: 'org.projectlombok',
-                        artifactId: 'lombok'
-                    },
-                    {
-                        name: 'Spring Configuration Processor',
-                        id: 'configuration-processor',
-                        description: 'test',
-                        groupId: 'org.springframework.boot',
-                        artifactId: 'spring-boot-configuration-processor'
-                    },
-                    {
-                        name: 'Docker Compose Support',
-                        id: 'docker-compose-setup',
-                        description: 'test.',
-                        groupId: 'org.springframework.boot',
-                        artifactId: 'spring-boot-docker-compose'
-                    }
-                ],
+                getDependencies(['native', 'devtools', 'lombok', 'configuration-processor', 'docker-compose-setup']),
                 Language.Kotlin
             )
         ).toBe(getOutput('all-developer-tools-selected-with-kotlin'))
+    })
+
+    it('Can generate build.gradle with Developer tools selected for Kotlin for Spring Boot 3.2', () => {
+        expect(
+            getGradleContent(
+                getDependencies([
+                    'native',
+                    'devtools',
+                    'graphql-code-generation',
+                    'lombok',
+                    'configuration-processor',
+                    'docker-compose-setup'
+                ]),
+                Language.Kotlin,
+                SpringBootVersion['3_2_0']
+            )
+        ).toBe(getOutput('all-developer-tools-selected-with-kotlin-for-spring-3-2'))
+    })
+
+    it('Can generate build.gradle with Distributed tracing and Wavefront for Spring Boot 3.2', () => {
+        expect(
+            getGradleContent(
+                getDependencies(['wavefront', 'distributed-tracing']),
+                Language.Java,
+                SpringBootVersion['3_2_0'],
+                21
+            )
+        ).toBe(getOutput('distributed-tracing-with-wavefront-with-java-spring_3_2_JDK_21'))
     })
 })

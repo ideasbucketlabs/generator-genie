@@ -79,7 +79,7 @@ const springProject = ref<{ active: boolean; valid: boolean; metaData: SpringPro
     valid: true,
     metaData: {
         language: Language.Java,
-        springBootVersion: SpringBootVersion['3_1_5'] as SpringBootVersion,
+        springBootVersion: SpringBootVersion['3_2_0'] as SpringBootVersion,
         group: defaultGroup,
         name: 'demo',
         artifact: 'demo',
@@ -466,7 +466,7 @@ onMounted(async () => {
                             :key="'package-' + p.id"
                             data-selected-package-item="true"
                             :data-selected-package-item-id="p.id"
-                            class="flex items-center justify-between rounded p-2 shadow"
+                            class="flex items-center justify-between rounded p-2 shadow border border-gray-200 dark:border-gray-500"
                             :class="[
                                 p.supported ? 'bg-white dark:bg-primary-dark-700' : 'bg-error-100 dark:bg-error-500'
                             ]"
@@ -486,7 +486,7 @@ onMounted(async () => {
                                     Not supported for selected Spring Boot version
                                 </div>
                             </div>
-                            <div class="w-6">
+                            <div class="w-7 pl-1">
                                 <button
                                     type="button"
                                     class="flex w-6 items-center rounded-full bg-error-500 hover:shadow-lg dark:bg-error-700"
