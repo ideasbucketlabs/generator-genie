@@ -5,43 +5,43 @@ import { isValid } from '../SpringProjectValidator'
 describe('Can validate Spring project', () => {
     it.concurrent('it can validate description name for Spring Project', () => {
         const input =
-            '{"language":"kotlin","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21}'
+            '{"language":"kotlin","name":"demoo","springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ description: 'Description cannot be null or blank.' })
     })
 
     it.concurrent('it can validate description data type for Spring Project #1', () => {
         const input =
-            '{"language":"kotlin","name":"demoo","description":false, "springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21}'
+            '{"language":"kotlin","name":"demoo","description":false, "springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ description: 'Description cannot be null or blank.' })
     })
 
     it.concurrent('it can validate description data type for Spring Project #2', () => {
         const input =
-            '{"language":"kotlin","name":"demoo","description":234234, "springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"kotlin","name":"demoo","description":234234, "springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ description: 'Description cannot be null or blank.' })
     })
 
     it.concurrent('it can validate language type for Spring Project #1', () => {
         const input =
-            '{"language":"potlin","name":"demoo","description":"test", "springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"potlin","name":"demoo","description":"test", "springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ language: 'Language should be either Kotlin or Java.' })
     })
 
     it.concurrent('it can validate language type for Spring Project #2', () => {
         const input =
-            '{"language":false,"name":"demoo","description":"test", "springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":false,"name":"demoo","description":"test", "springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ language: 'Language should be either Kotlin or Java.' })
     })
 
     it.concurrent('it can validate language type for Spring Project #3', () => {
         const input =
-            '{"name":"demoo","description":"test", "springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"name":"demoo","description":"test", "springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ language: 'Language should be either Kotlin or Java.' })
     })
 
     it.concurrent('it can validate name for Spring Project #1', () => {
         const input =
-            '{"name":"","language":"kotlin","description":"test", "springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"name":"","language":"kotlin","description":"test", "springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             name: 'Name cannot be null or blank and must be at least 2 characters.'
         })
@@ -49,7 +49,7 @@ describe('Can validate Spring project', () => {
 
     it.concurrent('it can validate name for Spring Project #2', () => {
         const input =
-            '{"name":false,"language":"kotlin","description":"test", "springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"name":false,"language":"kotlin","description":"test", "springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             name: 'Name cannot be null or blank and must be all lower case.'
         })
@@ -57,7 +57,7 @@ describe('Can validate Spring project', () => {
 
     it.concurrent('it can validate name for Spring Project #3', () => {
         const input =
-            '{"language":"kotlin","description":"test", "springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"kotlin","description":"test", "springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             name: 'Name cannot be null or blank and must be at least 2 characters.'
         })
@@ -65,7 +65,7 @@ describe('Can validate Spring project', () => {
 
     it.concurrent('it can validate name for length for Spring Project #4', () => {
         const input =
-            '{"name":"tt","language":"kotlin","description":"test", "springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"name":"tt","language":"kotlin","description":"test", "springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             name: 'Name cannot be null or blank and must be at least 2 characters.'
         })
@@ -73,7 +73,7 @@ describe('Can validate Spring project', () => {
 
     it.concurrent('it can validate name for length for Spring Project #5', () => {
         const input =
-            '{"name":"9tt","language":"kotlin","description":"test", "springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"name":"9tt","language":"kotlin","description":"test", "springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             name: 'Name must be all alpha numeric and must begin with alpha character.'
         })
@@ -105,55 +105,55 @@ describe('Can validate Spring project', () => {
 
     it.concurrent('it can validate Java version for Spring Project #1', () => {
         const input =
-            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":41}'
+            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":41}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ javaVersion: 'Invalid Java version.' })
     })
 
     it.concurrent('it can validate Java version for Spring Project #2', () => {
         const input =
-            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":false}'
+            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":false}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ javaVersion: 'Invalid Java version.' })
     })
 
     it.concurrent('it can validate Java version for Spring Project #3', () => {
         const input =
-            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo"}'
+            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo"}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ javaVersion: 'Invalid Java version.' })
     })
 
     it.concurrent('it can validate Java version for Spring Project #4', () => {
         const input =
-            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo"}'
+            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.6","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo"}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ javaVersion: 'Invalid Java version.' })
     })
 
     it.concurrent('it can validate Artifact name for Spring Project #1', () => {
         const input =
-            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.6","group":"com.playpen","artifact":"","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ artifact: 'Artifact cannot be null or blank.' })
     })
 
     it.concurrent('it can validate Artifact name for Spring Project #2', () => {
         const input =
-            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":false,"packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.6","group":"com.playpen","artifact":false,"packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ artifact: 'Artifact cannot be null or blank.' })
     })
 
     it.concurrent('it can validate Artifact name for Spring Project #3', () => {
         const input =
-            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"kotlin","description":"test","name":"demoo","springBootVersion":"3.1.6","group":"com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ artifact: 'Artifact cannot be null or blank.' })
     })
 
     it.concurrent('it can validate Artifact name for Spring Project #4', () => {
         const input =
-            '{"language":"kotlin","description":"test","artifact":234,"name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"kotlin","description":"test","artifact":234,"name":"demoo","springBootVersion":"3.1.6","group":"com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({ artifact: 'Artifact cannot be null or blank.' })
     })
 
     it.concurrent('it can validate Artifact name for Spring Project #5', () => {
         const input =
-            '{"language":"kotlin","description":"test","artifact":".wefwef","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"kotlin","description":"test","artifact":".wefwef","name":"demoo","springBootVersion":"3.1.6","group":"com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             artifact: 'Artifact cannot begin and end with number or non alpha characters.'
         })
@@ -161,7 +161,7 @@ describe('Can validate Spring project', () => {
 
     it.concurrent('it can validate Group format Spring Project #1', () => {
         const input =
-            '{"language":"kotlin","description":"test","artifact":"wefwef","name":"demoo","springBootVersion":"3.1.5","group":".com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"kotlin","description":"test","artifact":"wefwef","name":"demoo","springBootVersion":"3.1.6","group":".com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             group: 'Group must not begin or end with `.`, cannot have two consecutive `.`, must begin with alpha character and must be alpha numeric.'
         })
@@ -169,7 +169,7 @@ describe('Can validate Spring project', () => {
 
     it.concurrent('it can validate Group format Spring Project #2', () => {
         const input =
-            '{"language":"kotlin","description":"test","artifact":"wefwef","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen.","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"kotlin","description":"test","artifact":"wefwef","name":"demoo","springBootVersion":"3.1.6","group":"com.playpen.","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             group: 'Group must not begin or end with `.`, cannot have two consecutive `.`, must begin with alpha character and must be alpha numeric.'
         })
@@ -177,7 +177,7 @@ describe('Can validate Spring project', () => {
 
     it.concurrent('it can validate Group presence in Spring Project #2', () => {
         const input =
-            '{"language":"kotlin","description":"test","artifact":"wefwef","name":"demoo","springBootVersion":"3.1.5","group":"","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"language":"kotlin","description":"test","artifact":"wefwef","name":"demoo","springBootVersion":"3.1.6","group":"","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             group: 'Group cannot be null or blank and must be all lower case.'
         })

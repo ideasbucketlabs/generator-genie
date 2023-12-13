@@ -29,7 +29,7 @@ describe('DependenciesDialog works correctly', () => {
             props: {
                 projectType: ProjectType.VueJS,
                 modelValue: new Set<string>(),
-                'onUpdate:modelValue': (e: string) => wrapper.setProps({ modelValue: e })
+                'onUpdate:modelValue': (e: Set<string>) => wrapper.setProps({ modelValue: e })
             },
             global: {
                 stubs: {

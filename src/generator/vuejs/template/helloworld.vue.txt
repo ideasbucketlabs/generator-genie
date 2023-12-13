@@ -1,4 +1,4 @@
-{% assign placeholder = "{{ msg }}" %}
+{%- assign placeholder = "{{ msg }}" -%}
 {%- if typescriptSelected -%}
     {%- if metadata.indentSize == 2 -%}
 <script setup lang="ts">
@@ -32,13 +32,13 @@ defineProps({
     }
 })
 </script>
-    {%- endif %}
-{%- endif %}
+    {%- endif -%}
+{%- endif -%}
 
 <template>
-  {%- if metadata.indentSize == 2 %}
+  {%- if metadata.indentSize == 2 -%}
   <div>{{ placeholder }}</div>
-  {%- else %}
+  {%- else -%}
     <div>{{ placeholder }}</div>
-  {%- endif %}
+  {%- endif -%}
 </template>

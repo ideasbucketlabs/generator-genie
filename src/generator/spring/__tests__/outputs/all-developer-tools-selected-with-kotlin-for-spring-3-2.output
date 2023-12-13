@@ -1,9 +1,10 @@
 plugins {
-    id("org.springframework.boot") version "3.1.6"
+    id("org.springframework.boot") version "3.2.0"
     id("io.spring.dependency-management") version "1.1.4"
     id("org.graalvm.buildtools.native") version "0.9.28"
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.spring") version "1.8.22"
+    id("com.netflix.dgs.codegen") version "6.0.3"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.spring") version "1.9.20"
 }
 
 group = "com.test"
@@ -52,6 +53,8 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.bootBuildImage {
-    builder.set("paketobuildpacks/builder-jammy-base:latest")
+tasks.generateJava {
+    schemaPaths.add("${projectDir}/src/main/resources/graphql-client")
+    packageName = "demo"
+    generateClient = true
 }

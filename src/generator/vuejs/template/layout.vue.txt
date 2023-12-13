@@ -10,4 +10,4 @@
     <main><router-view /></main>
     <footer>Footer (from MainLayout.vue)</footer>
 </template>
-{%- endif %}
+{%- endif -%}

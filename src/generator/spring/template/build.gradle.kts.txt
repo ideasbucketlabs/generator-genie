@@ -1,27 +1,26 @@
 plugins {
     {%- if javaSelected -%}
     java
-    id("org.springframework.boot") version "{{ metadata.springBootVersion }}"
-    id("io.spring.dependency-management") version "1.1.3"
-    {%- else -%}
-    id("org.springframework.boot") version "{{ metadata.springBootVersion }}"
-    id("io.spring.dependency-management") version "1.1.3"
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.spring") version "1.8.22"
-        {%- if dependenciesIds contains "data-jpa" -%}
-    kotlin("plugin.jpa") version "1.8.22"
-        {%- endif -%}
     {%- endif -%}
+    id("org.springframework.boot") version "{{ metadata.springBootVersion }}"
+    id("io.spring.dependency-management") version "1.1.4"
     {%- for plugin in plugins -%}
     id("{{ plugin.groupId }}") version "{{ plugin.version }}"
     {%- endfor -%}
+    {%- if kotlinSelected -%}
+    kotlin("jvm") version "{{ kotlinPlugin }}"
+    kotlin("plugin.spring") version "{{ kotlinPlugin }}"
+        {%- if dependenciesIds contains "data-jpa" -%}
+    kotlin("plugin.jpa") version "{{ kotlinPlugin }}"
+        {%- endif -%}
+    {%- endif -%}
 }
 
 group = "{{ metadata.group }}"
 version = "0.0.1-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_{%- if javaSelected -%}{{ metadata.javaVersion}}{%- else -%}17{%- endif %}
+    sourceCompatibility = JavaVersion.VERSION_{{ jdkSourceCompatibility }}
 }
 {%- if annotationDependencies.size != 0 -%}
 
@@ -38,7 +37,7 @@ repositories {
 {%- if haveSpringCloudDependency or haveSpringShellDependency or haveTimeFoldSolverDependency -%}
 
 {%- if haveSpringCloudDependency -%}
-extra["springCloudVersion"] = "2022.0.4"
+extra["springCloudVersion"] = "{{ springCloudVersion }}"
 {%- endif -%}
 {%- if haveSpringShellDependency -%}
 extra["springShellVersion"] = "3.1.3"
@@ -49,8 +48,11 @@ extra["timefoldSolverVersion"] = "1.3.0"
 {%- endif -%}
 
 dependencies {
+    {%- if includeActuatorExplicitly -%}
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    {%- endif -%}
     {%- for dependency in dependencies -%}
-    implementation("{{ dependency.groupId }}:{{ dependency.artifactId }}{%- if dependency.version %}:{{ dependency.version}}{%- endif %}")
+    implementation("{{ dependency.groupId }}:{{ dependency.artifactId }}{%- if dependency.version -%}:{{ dependency.version}}{%- endif -%}")
     {%- if dependency.id == "flyway" -%}
         {%- if dependenciesIds contains "mysql" -%}
     implementation("org.flywaydb:flyway-mysql")
@@ -63,7 +65,9 @@ dependencies {
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     {%- endif -%}
     {%- else -%}
+    {%- if includeActuatorExplicitly == false -%}
     implementation("org.springframework.boot:spring-boot-starter")
+    {%- endif -%}
     {%- endfor -%}
     {%- if dependenciesIds.size == 1 and dependenciesIds contains "timefold-solver" -%}
     implementation("org.springframework.boot:spring-boot-starter")
@@ -80,8 +84,21 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
         {%- endif -%}
     {%- endif -%}
+    {%- unless dependenciesIds contains "distributed-tracing" -%}
+    {%- if dependenciesIds contains "zipkin" -%}
+    implementation("io.micrometer:micrometer-tracing-bridge-brave")
+    {%- endif -%}
+    {%- endunless -%}
     {%- for runtimeDependency in runtimeDependencies -%}
-    runtimeOnly("{{ runtimeDependency.groupId }}:{{ runtimeDependency.artifactId }}{%- if runtimeDependency.version %}:{{ runtimeDependency.version}}{%- endif -%}")
+    runtimeOnly("{{ runtimeDependency.groupId }}:{{ runtimeDependency.artifactId }}{%- if runtimeDependency.version -%}:{{ runtimeDependency.version}}{%- endif -%}")
+    {%- if runtimeDependency.id == 'wavefront' -%}
+        {%- if dependenciesIds contains "zipkin" -%}
+    runtimeOnly("io.micrometer:micrometer-registry-wavefront")
+        {%- endif -%}
+        {%- if dependenciesIds contains "distributed-tracing" -%}
+    runtimeOnly("io.micrometer:micrometer-registry-wavefront")
+        {%- endif -%}
+    {%- endif -%}
     {%- if dependenciesIds contains "data-r2dbc" -%}
         {%- if runtimeDependency.id == "h2" -%}
     runtimeOnly("io.r2dbc:r2dbc-h2")
@@ -95,16 +112,16 @@ dependencies {
     {%- endif -%}
     {%- endfor -%}
     {%- for developmentDependency in developmentDependencies -%}
-    developmentOnly("{{ developmentDependency.groupId }}:{{ developmentDependency.artifactId }}{%- if developmentDependency.version %}:{{ developmentDependency.version}}{%- endif -%}")
+    developmentOnly("{{ developmentDependency.groupId }}:{{ developmentDependency.artifactId }}{%- if developmentDependency.version -%}:{{ developmentDependency.version}}{%- endif -%}")
     {%- endfor -%}
     {%- for annotationDependency in annotationDependencies -%}
-    annotationProcessor("{{ annotationDependency.groupId }}:{{ annotationDependency.artifactId }}{%- if annotationDependency.version %}:{{ annotationDependency.version}}{%- endif -%}")
+    annotationProcessor("{{ annotationDependency.groupId }}:{{ annotationDependency.artifactId }}{%- if annotationDependency.version -%}:{{ annotationDependency.version}}{%- endif -%}")
     {%- endfor -%}
     {%- if haveLombok -%}
     compileOnly("org.projectlombok:lombok")
     {%- endif -%}
     {%- for compileDependency in compileDependencies -%}
-    compile("{{ compileDependency.groupId }}:{{ compileDependency.artifactId }}{%- if compileDependency.version %}:{{ compileDependency.version}}{%- endif -%}")
+    compile("{{ compileDependency.groupId }}:{{ compileDependency.artifactId }}{%- if compileDependency.version -%}:{{ compileDependency.version}}{%- endif -%}")
     {%- endfor -%}
     {%- for testDependency in testDependencies -%}
     testImplementation("{{ testDependency.groupId }}:{{ testDependency.artifactId }}{%- if testDependency.version -%}:{{ testDependency.version}}{%- endif -%}")
@@ -132,14 +149,14 @@ dependencyManagement {
 tasks.compileKotlin {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+        jvmTarget = "{{ jdkSourceCompatibility }}"
     }
 }
 
 tasks.compileTestKotlin {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+        jvmTarget = "{{ jdkSourceCompatibility }}"
     }
 }
 
@@ -183,7 +200,17 @@ spotless {
     {%- endif -%}
 }
 {%- endif-%}
+{%- if explicitDockerImageForGradleIsRequired -%}
 
 tasks.bootBuildImage {
     builder.set("paketobuildpacks/builder-jammy-base:latest")
 }
+{%- endif-%}
+{%- if dependenciesIds contains "graphql-code-generation" -%}
+
+tasks.generateJava {
+    schemaPaths.add("${projectDir}/src/main/resources/graphql-client")
+    packageName = "{{ metadata.packageName }}"
+    generateClient = true
+}
+{%- endif-%}

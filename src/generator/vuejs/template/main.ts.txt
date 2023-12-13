@@ -1,11 +1,11 @@
 import './assets/main.css'
 import { createApp } from 'vue'
-{%- if metadata.includePinia %}
+{%- if metadata.includePinia -%}
 import { createPinia } from 'pinia'
-{%- endif %}
+{%- endif -%}
 import App from './App.vue'
-{%- if metadata.includeRouter %}
+{%- if metadata.includeRouter -%}
 import router from './router'
-{%- endif %}
+{%- endif -%}
 
 createApp(App){%- if metadata.includePinia -%}.use(createPinia()){%- endif -%}{%- if metadata.includeRouter -%}.use(router){%- endif -%}.mount('#app')

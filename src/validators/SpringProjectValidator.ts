@@ -50,8 +50,8 @@ export function isValid(springProject: SpringProject): SpringProjectError {
     }
 
     if (
-        (springProject.springBootVersion ?? '') !== SpringBootVersion['3_1_5'] &&
-        (springProject.springBootVersion ?? '') !== SpringBootVersion['3_0_12']
+        (springProject.springBootVersion ?? '') !== SpringBootVersion['3_1_6'] &&
+        (springProject.springBootVersion ?? '') !== SpringBootVersion['3_2_0']
     ) {
         error.springBootVersion = 'Spring Boot version is invalid.'
     }

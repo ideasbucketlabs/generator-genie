@@ -7,13 +7,13 @@
  *
  * For more information on custom assertions see:
  *   https://nightwatchjs.org/guide/extending-nightwatch/adding-custom-assertions.html
- {%- if javascriptSelected %}
+ {%- if javascriptSelected -%}
  * @param {string} selector
  * @param {number} count
- {%- endif %}
+ {%- endif -%}
  */
 
-exports.assertion = function elementHasCount(selector{%- if typescriptSelected %}: string{%- endif %}, count{%- if typescriptSelected %}: number{%- endif %}) {
+exports.assertion = function elementHasCount(selector{%- if typescriptSelected -%}: string{%- endif -%}, count{%- if typescriptSelected -%}: number{%- endif -%}) {
   // Message to be displayed on the console while running this assertion.
   this.message = `Testing if element <${selector}> has count: ${count}`
 
@@ -22,26 +22,26 @@ exports.assertion = function elementHasCount(selector{%- if typescriptSelected %
 
   // Given the result value (from `this.value` below), this function will
   // evaluate if the assertion has passed.
-  this.evaluate = function (value{%- if typescriptSelected %}: any{%- endif %}) {
+  this.evaluate = function (value{%- if typescriptSelected -%}: any{%- endif -%}) {
     return value === count
   }
 
   // Retrieve the value from the result object we got after running the
   // assertion command (defined below), which is to be evaluated against
   // the value passed into the assertion as the second argument.
-  this.value = function (result{%- if typescriptSelected %}: Record<string, any>{%- endif %}) {
+  this.value = function (result{%- if typescriptSelected -%}: Record<string, any>{%- endif -%}) {
     return result.value
   }
 
   // Script to be executed in the browser to find the actual element count.
-  function elementCountScript(_selector{%- if typescriptSelected %}: string{%- endif %}) {
+  function elementCountScript(_selector{%- if typescriptSelected -%}: string{%- endif -%}) {
     // eslint-disable-next-line
     return document.querySelectorAll(_selector).length
   }
 
   // The command to be executed by the assertion runner, to find the actual
   // result. Nightwatch API is available as `this.api`.
-  this.command = function (callback{%- if typescriptSelected %}: () => void{%- endif %}) {
+  this.command = function (callback{%- if typescriptSelected -%}: () => void{%- endif -%}) {
     this.api.execute(elementCountScript, [selector], callback)
   }
 }
@@ -56,13 +56,13 @@ exports.assertion = function elementHasCount(selector{%- if typescriptSelected %
  * For more information on custom assertions see:
  *   https://nightwatchjs.org/guide/extending-nightwatch/adding-custom-assertions.html
  *
- {%- if javascriptSelected %}
+ {%- if javascriptSelected -%}
  * @param {string} selector
  * @param {number} count
- {%- endif %}
+ {%- endif -%}
  */
 
-exports.assertion = function elementHasCount(selector{%- if typescriptSelected %}: string{%- endif %}, count{%- if typescriptSelected %}: number{%- endif %}) {
+exports.assertion = function elementHasCount(selector{%- if typescriptSelected -%}: string{%- endif -%}, count{%- if typescriptSelected -%}: number{%- endif -%}) {
     // Message to be displayed on the console while running this assertion.
     this.message = `Testing if element <${selector}> has count: ${count}`
 
@@ -71,28 +71,28 @@ exports.assertion = function elementHasCount(selector{%- if typescriptSelected %
 
     // Given the result value (from `this.value` below), this function will
     // evaluate if the assertion has passed.
-    this.evaluate = function (value{%- if typescriptSelected %}: any{%- endif %}) {
+    this.evaluate = function (value{%- if typescriptSelected -%}: any{%- endif -%}) {
         return value === count
     }
 
     // Retrieve the value from the result object we got after running the
     // assertion command (defined below), which is to be evaluated against
     // the value passed into the assertion as the second argument.
-    this.value = function (result{%- if typescriptSelected %}: Record<string, any>{%- endif %}) {
+    this.value = function (result{%- if typescriptSelected -%}: Record<string, any>{%- endif -%}) {
         return result.value
     }
 
     // Script to be executed in the browser to find the actual element count.
-    function elementCountScript(_selector{%- if typescriptSelected %}: string{%- endif %}) {
+    function elementCountScript(_selector{%- if typescriptSelected -%}: string{%- endif -%}) {
         // eslint-disable-next-line
         return document.querySelectorAll(_selector).length
     }
 
     // The command to be executed by the assertion runner, to find the actual
     // result. Nightwatch API is available as `this.api`.
-    this.command = function (callback{%- if typescriptSelected %}: () => void{%- endif %}) {
+    this.command = function (callback{%- if typescriptSelected -%}: () => void{%- endif -%}) {
         this.api.execute(elementCountScript, [selector], callback)
     }
 }
 
-{%- endif %}
+{%- endif -%}

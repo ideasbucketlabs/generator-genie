@@ -193,6 +193,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
         name: projectMetaData.name,
         version: '0.0.0',
         private: true,
+        type: 'module',
         scripts: scripts,
         dependencies: {
             ...{
@@ -212,8 +213,8 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
         },
         devDependencies: {
             ...{
-                '@vitejs/plugin-vue': '^4.4.0',
-                vite: '^4.4.11'
+                '@vitejs/plugin-vue': '^4.5.1',
+                vite: '^5.0.5'
             },
             ...(typescriptSelected
                 ? {
@@ -222,7 +223,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                       '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.8.9',
                       '@vue/tsconfig': '^0.4.0',
                       'npm-run-all2': '^6.1.1',
-                      'vue-tsc': '^1.8.19',
+                      'vue-tsc': '^1.8.25',
                       typescript: '~5.2.0'
                   }
                 : {}),
@@ -246,14 +247,14 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 : {}),
             ...(projectMetaData.includeUnitTest
                 ? {
-                      jsdom: '^22.1.0',
-                      vitest: '^0.34.6',
-                      '@vue/test-utils': '^2.4.1'
+                      jsdom: '^23.0.1',
+                      vitest: '^1.0.1',
+                      '@vue/test-utils': '^2.4.3'
                   }
                 : {}),
             ...(projectMetaData.includeUnitTest && typescriptSelected
                 ? {
-                      '@types/jsdom': '^21.1.3'
+                      '@types/jsdom': '^21.1.6'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'playwright'
@@ -263,18 +264,18 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 : {}),
             ...(projectMetaData.integrationTest === 'cypress'
                 ? {
-                      cypress: '^13.3.1',
-                      'start-server-and-test': '^2.0.1'
+                      cypress: '^13.6.1',
+                      'start-server-and-test': '^2.0.3'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'nightwatch'
                 ? {
                       '@nightwatch/vue': '0.4.5',
-                      '@types/nightwatch': '^2.3.26',
-                      chromedriver: '^118.0.1',
+                      '@types/nightwatch': '^2.3.30',
+                      chromedriver: '^119.0.1',
                       geckodriver: '^4.2.1',
-                      nightwatch: '^3.2.1',
-                      'wait-on': '^7.0.1',
+                      nightwatch: '^3.3.2',
+                      'vite-plugin-nightwatch': '^0.4.5',
                       'ts-node': '^10.9.1'
                   }
                 : {}),
@@ -683,7 +684,8 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                                   type: ContentType.File,
                                   content: JSON.stringify(
                                       {
-                                          extends: '@tsconfig/node18/tsconfig.json',
+                                          // eslint-disable-next-line vue/max-len
+                                          extends: `@tsconfig/node${projectMetaData.metadata.nodeVersion}/tsconfig.json`,
                                           include: ['./**/*']
                                       },
                                       null,

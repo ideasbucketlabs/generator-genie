@@ -8,19 +8,19 @@
  *
  * For more information on working with custom-commands see:
  * https://nightwatchjs.org/guide/extending-nightwatch/adding-custom-commands.html
- {%- if javascriptSelected %}
+ {%- if javascriptSelected -%}
  * @param {string} selector
- {%- endif %}
+ {%- endif -%}
  */
-{%- if indentSize == 2 %}
+{%- if indentSize == 2 -%}
 module.exports = {
-  command: function (selector{%- if typescriptSelected %}: string{%- endif %}) {
+  command: function (selector{%- if typescriptSelected -%}: string{%- endif -%}) {
     return this.waitForElementVisible(selector).click(selector)
   }
 }
-{%- else %}
+{%- else -%}
 module.exports = {
-    command: function (selector{%- if typescriptSelected %}: string{%- endif %}) {
+    command: function (selector{%- if typescriptSelected -%}: string{%- endif -%}) {
         return this.waitForElementVisible(selector).click(selector)
     }
 }

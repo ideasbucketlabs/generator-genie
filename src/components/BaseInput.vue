@@ -84,7 +84,7 @@ onBeforeMount(() => {
         class="flex items-center"
         :class="[
             { 'text-error-500 dark:text-error-700': hasError },
-            [type === 'radio' ? 'space-x-2' : 'flex-col-reverse justify-start items-stretch']
+            [type === 'radio' ? '[&>label]:pl-2' : 'flex-col-reverse justify-start items-stretch']
         ]"
     >
         <div class="text-error-500 dark:text-error-700" v-if="hasError">
@@ -99,7 +99,7 @@ onBeforeMount(() => {
             :checked="value === modelValue"
             @change="emit('update:model-value', value)"
             :aria-label="label.replace(/(<([^>]+)>)/gi, '')"
-            class="text-primary-500 dark:text-primary-400 hover:border hover:border-primary-500 focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-primary-500"
+            class="cursor-pointer text-primary-500 dark:text-primary-400 hover:border hover:border-primary-500 focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-primary-500"
         />
         <input
             v-else-if="type === 'text' || type === 'number'"

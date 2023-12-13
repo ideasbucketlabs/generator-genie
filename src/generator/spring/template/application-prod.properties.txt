@@ -3,13 +3,13 @@
 spring.r2dbc.url=r2dbc:postgresql://${POSTGRES_URL:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DBNAME:dbname}?ssl=true&sslMode=require
 spring.r2dbc.username=${POSTGRES_USERNAME:user}
 spring.r2dbc.password=${POSTGRES_PASSWORD:secret}
-    {%- endif %}
-    {%- if dependenciesIds contains "jdbc" %}
+    {%- endif -%}
+    {%- if dependenciesIds contains "jdbc" -%}
 spring.datasource.url=jdbc:postgresql://${POSTGRES_URL:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DBNAME:dbname}?ssl=true&sslMode=require
 spring.datasource.username=${POSTGRES_USERNAME:user}
 spring.datasource.password=${POSTGRES_PASSWORD:secret}
-    {%- endif %}
-{%- endif %}
+    {%- endif -%}
+{%- endif -%}
 
 {%- if dependenciesIds contains "data-redis" -%}
 spring.data.redis.host=${REDIS_HOST:localhost}

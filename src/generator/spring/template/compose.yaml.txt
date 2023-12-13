@@ -1,5 +1,5 @@
 services:
-    {%- if dependenciesIds contains "data-elasticsearch" %}
+    {%- if dependenciesIds contains "data-elasticsearch" -%}
     elasticsearch:
         image: 'docker.elastic.co/elasticsearch/elasticsearch:7.17.10'
         environment:
@@ -9,8 +9,8 @@ services:
         ports:
             - '9200'
             - '9300'
-    {%- endif %}
-    {%- if dependenciesIds contains "mariadb" %}
+    {%- endif -%}
+    {%- if dependenciesIds contains "mariadb" -%}
     mariadb:
         image: 'mariadb:latest'
         environment:
@@ -21,7 +21,7 @@ services:
         ports:
             - '3306'
     {%- endif -%}
-    {%- if dependenciesIds contains "mysql" %}
+    {%- if dependenciesIds contains "mysql" -%}
     mysql:
         image: 'mysql:latest'
         environment:
@@ -32,7 +32,7 @@ services:
         ports:
             - '3306'
     {%- endif -%}
-    {%- if dependenciesIds contains "postgresql" %}
+    {%- if dependenciesIds contains "postgresql" -%}
     postgres:
         image: 'postgres:alpine'
         environment:
@@ -42,13 +42,19 @@ services:
         ports:
             - '5432'
     {%- endif -%}
-    {%- if dependenciesIds contains "data-redis" %}
+    {%- if dependenciesIds contains "data-redis" -%}
     redis:
         image: 'redis:alpine'
         ports:
             - '6379'
-    {%- endif %}
-    {%- if dependenciesIds contains "sqlserver" %}
+    {%- endif -%}
+    {%- if dependenciesIds contains "zipkin" -%}
+    zipkin:
+        image: 'openzipkin/zipkin:latest'
+        ports:
+          - '9411'
+    {%- endif -%}
+    {%- if dependenciesIds contains "sqlserver" -%}
     sqlserver:
         image: 'mcr.microsoft.com/mssql/server:latest'
         environment:
@@ -58,7 +64,7 @@ services:
         ports:
             - '1433'
     {%- endif -%}
-    {%- if dependenciesIds contains "kafka" %}
+    {%- if dependenciesIds contains "kafka" -%}
     kafka-broker:
         image: confluentinc/cp-kafka:7.4.1
         hostname: kafka-broker

@@ -55,14 +55,14 @@ const springProject = computed<SpringProject>(() => {
 
 watch(
     springProject,
-    (newGradleProject) => {
+    (newSpringProject) => {
         if (isDataDirty.value) {
             validate()
         }
         emit('update:model-value', {
             active: props.modelValue.active,
             valid: Object.entries(errors.value).length === 0,
-            metaData: newGradleProject
+            metaData: newSpringProject
         })
     },
     {
@@ -132,17 +132,17 @@ function validate() {
             <div class="space-x-4 flex">
                 <BaseInput
                     v-model="springBootVersion"
-                    :label="SpringBootVersion['3_0_12']"
+                    :label="SpringBootVersion['3_2_0']"
                     name="springBootVersion"
                     type="radio"
-                    :value="SpringBootVersion['3_0_12']"
+                    :value="SpringBootVersion['3_2_0']"
                 ></BaseInput>
                 <BaseInput
                     v-model="springBootVersion"
-                    :label="SpringBootVersion['3_1_5']"
+                    :label="SpringBootVersion['3_1_6']"
                     name="springBootVersion"
                     type="radio"
-                    :value="SpringBootVersion['3_1_5']"
+                    :value="SpringBootVersion['3_1_6']"
                 ></BaseInput>
             </div>
         </div>
