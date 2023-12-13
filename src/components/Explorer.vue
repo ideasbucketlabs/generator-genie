@@ -246,7 +246,8 @@ onMounted(async () => {
                             type="button"
                             v-if="!isMobile"
                             @click="emit('downloadClicked')"
-                            class="relative flex items-center overflow-hidden rounded border border-primary-600 bg-primary-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-primary-600 hover:shadow-lg"
+                            tabindex="-1"
+                            class="relative focus:ring-1 ring-indigo-600 dark:ring-gray-600 flex items-center overflow-hidden rounded border border-primary-600 bg-primary-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-primary-600 hover:shadow-lg"
                         >
                             <Ripple></Ripple>
                             <span class="block">Download</span>
@@ -256,7 +257,8 @@ onMounted(async () => {
                         <button
                             type="button"
                             @click="copyContent"
-                            class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
+                            tabindex="-1"
+                            class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
                         >
                             <Ripple></Ripple>
                             <span>{{ copyText }}</span>
@@ -264,7 +266,8 @@ onMounted(async () => {
                         <button
                             type="button"
                             @click="closeDialog"
-                            class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
+                            tabindex="-1"
+                            class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
                         >
                             <Ripple></Ripple>
                             <span>Close</span>

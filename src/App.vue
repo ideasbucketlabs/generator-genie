@@ -65,6 +65,11 @@ const isMac = inject<boolean>('isMac') as boolean
 const isMobile = inject<boolean>('isMobile') as boolean
 const showDependenciesDialog = ref<boolean>(false)
 const selectedPackagesPerProject = ref<Map<string, Set<string>>>(new Map())
+const addDependencyButton = ref<HTMLElement | null>(null)
+const focusTrapInputElement = ref<HTMLInputElement | null>(null)
+const generateButton = ref<HTMLElement | null>(null)
+const exploreButton = ref<HTMLElement | null>(null)
+const shareButton = ref<HTMLElement | null>(null)
 //const selectedPackages = ref<Set<string>>(new Set<string>())
 const projectMetadata = ref<
     Map<
@@ -328,6 +333,26 @@ onMounted(async () => {
         }
     }
 })
+
+function displayDependencyDialog() {
+    showDependenciesDialog.value = true
+    focusTrapInputElement.value?.focus()
+}
+
+function onCloseDependencyDialog() {
+    showDependenciesDialog.value = false
+    addDependencyButton.value?.focus()
+}
+
+function onCloseExplorerDialog() {
+    showExplorer.value = false
+    exploreButton.value?.focus()
+}
+
+function onCloseShareDialog() {
+    showShareDialog.value = false
+    shareButton.value?.focus()
+}
 </script>
 <template>
     <AppComponentLoader v-if="isLoading"></AppComponentLoader>
@@ -336,9 +361,14 @@ onMounted(async () => {
         :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
         role="banner"
     >
-        <a href="/" class="mx-2 my-3" aria-label="Generator Genie" tabindex="-1" title="Generator Genie">
-            <Logo class="w-80 fill-current text-white drop-shadow-lg"></Logo>
+        <a href="/" class="mx-2 my-3" aria-label="Generator Genie" tabindex="0" title="Generator Genie">
+            <Logo class="w-80 fill-current text-white drop-shadow-lg" alt="Generator Genie"></Logo>
         </a>
+        <input
+            type="text"
+            class="absolute top-0 left-0 w-px h-px bg-transparent p-0 m-0 border-0"
+            ref="focusTrapInputElement"
+        />
         <div class="flex space-y-3 flex-col items-center justify-center mr-2 md:flex-row md:space-y-0 md:space-x-4">
             <a
                 href="https://github.com/ideasbucketlabs/generator-genie"
@@ -383,12 +413,12 @@ onMounted(async () => {
             v-if="showExplorer && contentTree !== null"
             :content="contentTree"
             :artifact="projectMetadata.get(projectType)?.metaData.artifact ?? 'demo'"
-            @close="showExplorer = false"
+            @close="onCloseExplorerDialog"
             @downloadClicked="onGenerate"
         ></Explorer>
         <ShareDialog
             v-if="showShareDialog"
-            @close="showShareDialog = false"
+            @close="onCloseShareDialog"
             :metaData="projectMetadata.get(projectType)?.metaData!!"
             :projectType="projectType"
             :packages="selectedPackageInformation"
@@ -396,7 +426,7 @@ onMounted(async () => {
         <DependenciesDialog
             v-if="showDependenciesDialog"
             title="Dependencies"
-            @close="showDependenciesDialog = false"
+            @close="onCloseDependencyDialog"
             :projectType="projectType"
             v-model="selectedPackages"
             :springVersion="
@@ -441,9 +471,11 @@ onMounted(async () => {
                 <div class="flex items-center justify-between">
                     <div class="font-medium">Dependencies</div>
                     <button
-                        class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
+                        class="focus:ring-1 ring-indigo-600 dark:ring-gray-600 relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
                         type="button"
-                        @click="showDependenciesDialog = true"
+                        tabindex="-1"
+                        ref="addDependencyButton"
+                        @click="displayDependencyDialog"
                     >
                         <ripple></ripple>
                         <span class="block">Add dependencies</span>
@@ -514,9 +546,11 @@ onMounted(async () => {
         >
             <button
                 v-if="haveValidProjectMetaData()"
+                ref="generateButton"
                 @click="onGenerate"
                 type="button"
-                class="relative flex items-center overflow-hidden rounded border border-primary-600 bg-primary-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-primary-600 hover:shadow-lg"
+                tabindex="-1"
+                class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 items-center overflow-hidden rounded border border-primary-600 bg-primary-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-primary-600 hover:shadow-lg"
             >
                 <Ripple></Ripple>
                 <span class="block">{{ generateButtonLabel }}</span>
@@ -533,8 +567,10 @@ onMounted(async () => {
             <button
                 v-if="haveValidProjectMetaData()"
                 type="button"
+                tabindex="-1"
+                ref="exploreButton"
                 @click="onExplore"
-                class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
+                class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
             >
                 <Ripple></Ripple>
                 <span>Explore</span>
@@ -551,7 +587,9 @@ onMounted(async () => {
                 type="button"
                 v-if="haveValidProjectMetaData()"
                 @click="onShare"
-                class="relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
+                ref="shareButton"
+                tabindex="-1"
+                class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
             >
                 <span class="w-4 h-4 hidden md:block mr-2"
                     ><ShareIcon class="fill-current text-primary-500 dark:text-primary-200"></ShareIcon
