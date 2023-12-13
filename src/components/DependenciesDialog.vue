@@ -87,10 +87,12 @@ watch(filter, () => {
 watch(inputElement, (v) => {
     if (v !== null) {
         v.focus()
-        v.click()
-        v.select()
-        // TODO: Keyboard is not displayed in mobile iOS devices
         v.addEventListener('keydown', listenForKeyboardEvent)
+        nextTick().then(() => {
+            setTimeout(() => {
+                v.scrollIntoView()
+            }, 200)
+        })
     }
 })
 
