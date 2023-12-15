@@ -364,8 +364,10 @@ function onCloseShareDialog() {
         <a href="/" class="mx-2 my-3" aria-label="Generator Genie" tabindex="0" title="Generator Genie">
             <Logo class="w-80 fill-current text-white drop-shadow-lg" alt="Generator Genie"></Logo>
         </a>
+        <label for="focus-trap-input-element-ui-1" class="hidden" aria-hidden="true"></label>
         <input
             type="text"
+            id="focus-trap-input-element-ui-1"
             class="absolute top-0 left-0 w-px h-px bg-transparent p-0 m-0 border-0"
             ref="focusTrapInputElement"
         />

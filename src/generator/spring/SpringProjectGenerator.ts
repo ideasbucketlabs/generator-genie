@@ -89,9 +89,6 @@ function getTestApplicationCode(metadata: SpringProject): string {
 function getProjectFolders(metadata: SpringProject, context: 'main' | 'test', dependenciesIds: Set<string>): Folder {
     const parts = metadata.packageName.split('.').reverse()
     let folder: Folder | null = null
-    if (context === 'test') {
-        console.log(dependenciesIds)
-    }
     parts.forEach((part) => {
         if (folder === null) {
             folder = {
@@ -462,7 +459,6 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         )
     )
 
-    console.log(contentTree)
     return {
         tree: contentTree
     }
