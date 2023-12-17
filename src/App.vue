@@ -20,6 +20,7 @@ import GithubIcon from '@/icons/GithubIcon.vue'
 import XIcon from '@/icons/XIcon.vue'
 import BaseInput from '@/components/BaseInput.vue'
 import ShareIcon from '@/icons/ShareIcon.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 const defaultGroup = import.meta.env.VITE_DEFAULT_GROUP ?? 'com.example'
 const dependencyStore = dStore()
@@ -65,11 +66,10 @@ const isMac = inject<boolean>('isMac') as boolean
 const isMobile = inject<boolean>('isMobile') as boolean
 const showDependenciesDialog = ref<boolean>(false)
 const selectedPackagesPerProject = ref<Map<string, Set<string>>>(new Map())
-const addDependencyButton = ref<HTMLElement | null>(null)
+const addDependencyButton = ref<InstanceType<typeof BaseButton> | null>(null)
 const focusTrapInputElement = ref<HTMLInputElement | null>(null)
-const generateButton = ref<HTMLElement | null>(null)
-const exploreButton = ref<HTMLElement | null>(null)
-const shareButton = ref<HTMLElement | null>(null)
+const exploreButton = ref<InstanceType<typeof BaseButton> | null>(null)
+const shareButton = ref<InstanceType<typeof BaseButton> | null>(null)
 //const selectedPackages = ref<Set<string>>(new Set<string>())
 const projectMetadata = ref<
     Map<
@@ -472,18 +472,15 @@ function onCloseShareDialog() {
             <div class="flex-1 xl:flex xl:flex-col p-2">
                 <div class="flex items-center justify-between">
                     <div class="font-medium">Dependencies</div>
-                    <button
-                        class="focus:ring-1 ring-indigo-600 dark:ring-gray-600 relative flex dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
-                        type="button"
-                        tabindex="-1"
-                        ref="addDependencyButton"
-                        @click="displayDependencyDialog"
-                    >
-                        <ripple></ripple>
+                    <BaseButton :primary="false" ref="addDependencyButton" @click="displayDependencyDialog">
+                        <template #shortcut>
+                            <span v-if="!isMobile && isMac" class="ml-2 block font-extralight">⌘ + b</span>
+                            <span v-if="!isMobile && !isMac" class="font-mono ml-2 block font-extralight"
+                                >Ctrl + b</span
+                            >
+                        </template>
                         <span class="block">Add dependencies</span>
-                        <span v-if="!isMobile && isMac" class="ml-2 block font-extralight">⌘ + b</span>
-                        <span v-if="!isMobile && !isMac" class="font-mono ml-2 block font-extralight">Ctrl + b</span>
-                    </button>
+                    </BaseButton>
                 </div>
                 <hr class="my-2 dark:border-gray-500" />
                 <div class="mt-2 italic" v-if="selectedPackages.size === 0">No dependency selected</div>
@@ -546,68 +543,34 @@ function onCloseShareDialog() {
         <div
             class="h-16 flex relative flex-1 z-0 bg-white items-center justify-center space-x-4 border-t dark:border-gray-900 dark:bg-primary-dark-700"
         >
-            <button
-                v-if="haveValidProjectMetaData()"
-                ref="generateButton"
-                @click="onGenerate"
-                type="button"
-                tabindex="-1"
-                class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 items-center overflow-hidden rounded border border-primary-600 bg-primary-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-primary-600 hover:shadow-lg"
-            >
-                <Ripple></Ripple>
+            <BaseButton :primary="true" :enabled="haveValidProjectMetaData()" @click="onGenerate">
                 <span class="block">{{ generateButtonLabel }}</span>
-                <span class="ml-2 font-extralight hidden md:block" v-if="!isMobile && isMac">⌘ + ⏎</span>
-                <span class="ml-2 hidden md:block font-extralight" v-if="!isMobile && !isMac">Ctrl + ⏎</span>
-            </button>
-            <button
-                v-else
-                type="button"
-                class="relative flex cursor-not-allowed items-center overflow-hidden rounded border border-gray-600 bg-gray-500 px-4 py-2 text-white"
-            >
-                <span class="block">Generate</span>
-            </button>
-            <button
-                v-if="haveValidProjectMetaData()"
-                type="button"
-                tabindex="-1"
-                ref="exploreButton"
-                @click="onExplore"
-                class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
-            >
-                <Ripple></Ripple>
+                <template #shortcut>
+                    <span class="ml-2 font-extralight hidden md:block" v-if="!isMobile && isMac">⌘ + ⏎</span>
+                    <span class="ml-2 hidden md:block font-extralight" v-if="!isMobile && !isMac">Ctrl + ⏎</span>
+                </template>
+            </BaseButton>
+
+            <BaseButton :enabled="haveValidProjectMetaData()" ref="exploreButton" @click="onExplore">
                 <span>Explore</span>
-                <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Ctrl + Space</span>
-            </button>
-            <button
-                v-else
-                type="button"
-                class="relative flex cursor-not-allowed dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 text-gray-400 dark:text-primary-dark-100"
-            >
-                <span>Explore</span>
-            </button>
-            <button
-                type="button"
-                v-if="haveValidProjectMetaData()"
-                @click="onShare"
+                <template #shortcut>
+                    <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Ctrl + Space</span>
+                </template>
+            </BaseButton>
+
+            <BaseButton
+                :enabled="haveValidProjectMetaData()"
                 ref="shareButton"
-                tabindex="-1"
-                class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
+                @click="onShare"
+                class="flex-row-reverse"
             >
-                <span class="w-4 h-4 hidden md:block mr-2"
-                    ><ShareIcon class="fill-current text-primary-500 dark:text-primary-200"></ShareIcon
-                ></span>
+                <template #shortcut>
+                    <span class="w-4 h-4 hidden md:block mr-2"
+                        ><ShareIcon class="fill-current text-primary-500 dark:text-primary-200"></ShareIcon
+                    ></span>
+                </template>
                 <span>Share</span>
-            </button>
-            <button
-                v-else
-                type="button"
-                class="relative flex cursor-not-allowed dark:border-gray-950 border-gray-400 items-center overflow-hidden rounded border px-4 py-2 text-gray-400 dark:text-primary-dark-100"
-            >
-                <span class="w-4 h-4 hidden md:block mr-2"
-                    ><ShareIcon class="fill-current text-gray-500 dark:text-primary-200"></ShareIcon
-                ></span>
-                <span>Share</span>
-            </button>
+            </BaseButton>
         </div>
     </footer>
 </template>

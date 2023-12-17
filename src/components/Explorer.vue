@@ -11,6 +11,7 @@ import { ContentType } from '@/entity/ContentType'
 import { Language } from '@/entity/Language'
 import NestedOption from '@/components/NestedOption.vue'
 import AppComponentLoader from '@/components/AppComponentLoader.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 const dialog = ref<typeof Dialog | null>(null)
 const isMac = inject<boolean>('isMac') as boolean
@@ -242,37 +243,24 @@ onMounted(async () => {
                         <!--                        <pre class="code-display flex-1 rounded-bl overflow-auto relative" v-html="code"></pre>-->
                     </div>
                     <div class="flex justify-center space-x-4 bg-primary-50 dark:bg-primary-dark-800 py-2">
-                        <button
-                            type="button"
-                            v-if="!isMobile"
-                            @click="emit('downloadClicked')"
-                            tabindex="-1"
-                            class="relative focus:ring-1 ring-indigo-600 dark:ring-gray-600 flex items-center overflow-hidden rounded border border-primary-600 bg-primary-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-primary-600 hover:shadow-lg"
-                        >
-                            <Ripple></Ripple>
+                        <BaseButton :primary="true" @click="emit('downloadClicked')" v-if="!isMobile">
                             <span class="block">Download</span>
-                            <span class="ml-2 font-extralight hidden md:block" v-if="isMac">⌘ + ⏎</span>
-                            <span class="ml-2 font-extralight hidden md:block" v-else>Ctrl + ⏎</span>
-                        </button>
-                        <button
-                            type="button"
-                            @click="copyContent"
-                            tabindex="-1"
-                            class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
-                        >
-                            <Ripple></Ripple>
+                            <template #shortcut>
+                                <span class="ml-2 font-extralight hidden md:block" v-if="isMac">⌘ + ⏎</span>
+                                <span class="ml-2 font-extralight hidden md:block" v-else>Ctrl + ⏎</span>
+                            </template>
+                        </BaseButton>
+
+                        <BaseButton @click="copyContent">
                             <span>{{ copyText }}</span>
-                        </button>
-                        <button
-                            type="button"
-                            @click="closeDialog"
-                            tabindex="-1"
-                            class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
-                        >
-                            <Ripple></Ripple>
+                        </BaseButton>
+
+                        <BaseButton @click="closeDialog">
                             <span>Close</span>
-                            <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Esc</span>
-                        </button>
+                            <template #shortcut>
+                                <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Esc</span>
+                            </template>
+                        </BaseButton>
                     </div>
                 </div>
             </div>
