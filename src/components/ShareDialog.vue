@@ -8,6 +8,7 @@ import type { VueJsProject as VueJsProjectType } from '@/entity/VueJsProject'
 import type { Package } from '@/entity/Dependency'
 import BaseInput from '@/components/BaseInput.vue'
 import type { ProjectType } from '@/entity/ProjectType'
+import BaseButton from '@/components/BaseButton.vue'
 
 const { metaData, packages, projectType } = defineProps<{
     projectType: ProjectType
@@ -73,23 +74,15 @@ function closeDialog() {
                 </div>
                 <div class="flex items-center justify-center relative footer z-0">
                     <div class="bg-white dark:bg-primary-dark-700 w-full flex justify-center py-2 space-x-3">
-                        <button
-                            @click="copyToClipboard(information)"
-                            type="button"
-                            tabindex="-1"
-                            class="relative flex items-center focus:ring-1 ring-indigo-600 dark:ring-gray-600 overflow-hidden rounded border border-primary-600 bg-primary-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-primary-600 hover:shadow-lg"
-                        >
-                            <Ripple></Ripple>
+                        <BaseButton :primary="true" @click="copyToClipboard(information)">
                             <span class="block">{{ copyText }}</span>
-                        </button>
-                        <button
-                            @click="closeDialog"
-                            tabindex="-1"
-                            class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
-                        >
+                        </BaseButton>
+                        <BaseButton :primary="false" @click="closeDialog">
                             <span>Close</span>
-                            <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Esc</span>
-                        </button>
+                            <template #shortcut>
+                                <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Esc</span>
+                            </template>
+                        </BaseButton>
                     </div>
                 </div>
             </div>
