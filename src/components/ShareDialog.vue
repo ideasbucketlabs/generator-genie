@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Dialog from '@/components/Dialog.vue'
 import { ref, inject, computed } from 'vue'
-import Ripple from '@/components/Ripple.vue'
 import { copyToClipboard as copyString, encode } from '@/util/Util'
 import type { SpringProject as SpringProjectType } from '@/entity/SpringProject'
 import type { VueJsProject as VueJsProjectType } from '@/entity/VueJsProject'

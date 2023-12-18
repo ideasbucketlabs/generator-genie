@@ -70,6 +70,7 @@ const addDependencyButton = ref<InstanceType<typeof BaseButton> | null>(null)
 const focusTrapInputElement = ref<HTMLInputElement | null>(null)
 const exploreButton = ref<InstanceType<typeof BaseButton> | null>(null)
 const shareButton = ref<InstanceType<typeof BaseButton> | null>(null)
+const generateButton = ref<InstanceType<typeof BaseButton> | null>(null)
 //const selectedPackages = ref<Set<string>>(new Set<string>())
 const projectMetadata = ref<
     Map<
@@ -201,7 +202,7 @@ watch(metaEnter, async (v) => {
 
 watch(metaB, (v) => {
     if (v && !isAnyDialogShown.value) {
-        showDependenciesDialog.value = true
+        displayDependencyDialog()
     }
 })
 
@@ -218,8 +219,8 @@ watch(ctrlSpace, async (v) => {
 })
 
 watch(ctrlB, (v) => {
-    if (v && !isMac) {
-        showDependenciesDialog.value = true
+    if (v && !isMac && !isAnyDialogShown.value) {
+        displayDependencyDialog()
     }
 })
 
@@ -265,6 +266,10 @@ function validateSelectedProject() {
     }
 }
 async function onGenerate() {
+    addDependencyButton.value?.blur()
+    shareButton.value?.blur()
+    exploreButton.value?.blur()
+
     validateSelectedProject()
     await nextTick()
     if (projectMetadata.value.has(projectType.value) && haveValidProjectMetaData()) {
@@ -291,6 +296,9 @@ async function onShare() {
     showShareDialog.value = true
 }
 async function onExplore() {
+    addDependencyButton.value?.blur()
+    shareButton.value?.blur()
+    generateButton.value?.blur()
     validateSelectedProject()
     await nextTick()
     if (!haveValidProjectMetaData()) {
@@ -335,21 +343,37 @@ onMounted(async () => {
 })
 
 function displayDependencyDialog() {
+    exploreButton.value?.blur()
+    shareButton.value?.blur()
+    generateButton.value?.blur()
+
     showDependenciesDialog.value = true
     focusTrapInputElement.value?.focus()
 }
 
 function onCloseDependencyDialog() {
+    exploreButton.value?.blur()
+    shareButton.value?.blur()
+    generateButton.value?.blur()
+
     showDependenciesDialog.value = false
     addDependencyButton.value?.focus()
 }
 
 function onCloseExplorerDialog() {
+    addDependencyButton.value?.blur()
+    shareButton.value?.blur()
+    generateButton.value?.blur()
+
     showExplorer.value = false
     exploreButton.value?.focus()
 }
 
 function onCloseShareDialog() {
+    addDependencyButton.value?.blur()
+    exploreButton.value?.blur()
+    generateButton.value?.blur()
+
     showShareDialog.value = false
     shareButton.value?.focus()
 }
@@ -543,7 +567,7 @@ function onCloseShareDialog() {
         <div
             class="h-16 flex relative flex-1 z-0 bg-white items-center justify-center space-x-4 border-t dark:border-gray-900 dark:bg-primary-dark-700"
         >
-            <BaseButton :primary="true" :enabled="haveValidProjectMetaData()" @click="onGenerate">
+            <BaseButton ref="generateButton" :primary="true" :enabled="haveValidProjectMetaData()" @click="onGenerate">
                 <span class="block">{{ generateButtonLabel }}</span>
                 <template #shortcut>
                     <span class="ml-2 font-extralight hidden md:block" v-if="!isMobile && isMac">⌘ + ⏎</span>
