@@ -5,6 +5,9 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
     content: ['./index.html', 'public/404.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+    future: {
+        hoverOnlyWhenSupported: true
+    },
     theme: {
         extend: {
             colors: {
