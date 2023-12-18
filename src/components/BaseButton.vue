@@ -15,8 +15,13 @@ function focus() {
     root.value?.focus()
 }
 
+function blur() {
+    root.value?.blur()
+}
+
 defineExpose({
-    focus
+    focus,
+    blur
 })
 </script>
 
@@ -35,7 +40,7 @@ defineExpose({
         class="relative flex focus:ring-1 dark:ring-primary-dark-900 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear"
     >
         <Ripple></Ripple>
-        <slot name="default" class="block"></slot>
+        <slot name="default"></slot>
         <slot name="shortcut"></slot>
     </button>
     <button
@@ -43,8 +48,6 @@ defineExpose({
         type="button"
         class="relative flex cursor-not-allowed items-center overflow-hidden rounded border border-gray-600 bg-gray-500 px-4 py-2 text-white"
     >
-        <span class="block">
-            <slot name="default"></slot>
-        </span>
+        <slot name="default"></slot>
     </button>
 </template>
