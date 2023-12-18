@@ -30,12 +30,12 @@ defineExpose({
         tabindex="-1"
         :class="[
             primary
-                ? 'border-primary-600 bg-primary-500 text-white'
-                : 'dark:border-gray-950 border-primary-400 dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700',
+                ? 'ring-primary-800 dark:ring-primary-dark-900  border-primary-600 bg-primary-500 text-white'
+                : 'ring-primary-600 dark:ring-primary-dark-900 dark:border-gray-950 border-primary-400 dark:text-primary-dark-100 dark:bg-primary-dark-600',
             { 'hover:bg-primary-600 hover:shadow-lg': !isMobile && primary },
-            { 'hover:bg-gray-200 hover:shadow-lg': !isMobile && !primary }
+            { 'hover:bg-gray-200 hover:shadow-lg dark:hover:bg-gray-700': !isMobile && !primary }
         ]"
-        class="relative flex focus:ring-1 ring-indigo-600 dark:ring-gray-600 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear"
+        class="relative flex focus:ring-1 items-center overflow-hidden rounded border px-4 py-2 transition duration-200 ease-linear"
     >
         <Ripple></Ripple>
         <slot name="default" class="block"></slot>
