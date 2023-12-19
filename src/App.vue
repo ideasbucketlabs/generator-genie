@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
-import Logo from '@/icons/Logo.vue'
-import Ripple from '@/components/Ripple.vue'
 import AppComponentLoader from '@/components/AppComponentLoader.vue'
 import type { Package } from '@/entity/Dependency'
 import { dependencyStore as dStore } from '@/stores/dependency'
@@ -51,7 +49,13 @@ const ShareDialog = defineAsyncComponent({
     loadingComponent: AppComponentLoader,
     delay: 100
 })
+const LogoIcon = defineAsyncComponent({
+    loader: () => import('@/icons/Logo.vue'),
+    loadingComponent: AppComponentLoader
+})
+
 const contentTree = ref<ContentTree | null>(null)
+const displayLogo = ref<boolean>(false)
 const generateButtonLabel = ref<string>('Generate')
 const isLoading = ref<boolean>(false)
 const showExplorer = ref<boolean>(false)
@@ -318,6 +322,7 @@ function removePackage(packageId: string) {
 }
 
 onMounted(async () => {
+    displayLogo.value = true
     const parameters = new URLSearchParams(window.location.search).get('param')
     if (parameters !== null) {
         const result = extractDataFromParameters(parameters, springProject.value.metaData, vueJsProject.value.metaData)
@@ -385,14 +390,24 @@ function onCloseShareDialog() {
         :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
         role="banner"
     >
-        <a href="/" class="mx-2 my-3" aria-label="Generator Genie" tabindex="0" title="Generator Genie">
-            <Logo class="w-80 fill-current text-white drop-shadow-lg" alt="Generator Genie"></Logo>
+        <a href="/" class="mx-2 my-3 h-[39px]" aria-label="Generator Genie" tabindex="0" title="Generator Genie">
+            <LogoIcon
+                v-if="displayLogo"
+                class="w-80 fill-current text-white drop-shadow-lg"
+                alt="Generator Genie"
+            ></LogoIcon>
         </a>
-        <label for="focus-trap-input-element-ui-1" class="hidden" aria-hidden="true"></label>
+        <label
+            id="focus-trap-label-element-ui-1"
+            for="focus-trap-input-element-ui-1"
+            class="hidden"
+            aria-hidden="true"
+        ></label>
         <input
             type="text"
             id="focus-trap-input-element-ui-1"
             class="absolute top-0 left-0 w-px h-px bg-transparent p-0 m-0 border-0"
+            aria-labelledby="focus-trap-label-element-ui-1"
             ref="focusTrapInputElement"
         />
         <div class="flex space-y-3 flex-col items-center justify-center mr-2 md:flex-row md:space-y-0 md:space-x-4">
