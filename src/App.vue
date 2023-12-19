@@ -19,6 +19,7 @@ import XIcon from '@/icons/XIcon.vue'
 import BaseInput from '@/components/BaseInput.vue'
 import ShareIcon from '@/icons/ShareIcon.vue'
 import BaseButton from '@/components/BaseButton.vue'
+import Logo from '@/icons/Logo.vue'
 
 const defaultGroup = import.meta.env.VITE_DEFAULT_GROUP ?? 'com.example'
 const dependencyStore = dStore()
@@ -49,13 +50,8 @@ const ShareDialog = defineAsyncComponent({
     loadingComponent: AppComponentLoader,
     delay: 100
 })
-const LogoIcon = defineAsyncComponent({
-    loader: () => import('@/icons/Logo.vue'),
-    loadingComponent: AppComponentLoader
-})
 
 const contentTree = ref<ContentTree | null>(null)
-const displayLogo = ref<boolean>(false)
 const generateButtonLabel = ref<string>('Generate')
 const isLoading = ref<boolean>(false)
 const showExplorer = ref<boolean>(false)
@@ -322,7 +318,6 @@ function removePackage(packageId: string) {
 }
 
 onMounted(async () => {
-    displayLogo.value = true
     const parameters = new URLSearchParams(window.location.search).get('param')
     if (parameters !== null) {
         const result = extractDataFromParameters(parameters, springProject.value.metaData, vueJsProject.value.metaData)
@@ -391,11 +386,7 @@ function onCloseShareDialog() {
         role="banner"
     >
         <a href="/" class="mx-2 my-3 h-[39px]" aria-label="Generator Genie" tabindex="0" title="Generator Genie">
-            <LogoIcon
-                v-if="displayLogo"
-                class="w-80 fill-current text-white drop-shadow-lg"
-                alt="Generator Genie"
-            ></LogoIcon>
+            <Logo class="w-80 fill-current text-white drop-shadow-lg" alt="Generator Genie"></Logo>
         </a>
         <label
             id="focus-trap-label-element-ui-1"
