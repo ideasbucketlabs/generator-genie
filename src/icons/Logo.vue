@@ -121,29 +121,3 @@
         </path>
     </svg>
 </template>
-<style scoped>
-.heartbeat-animation {
-    animation-name: heartbeat;
-    animation-duration: 4s;
-    animation-iteration-count: infinite;
-    transform-origin: 80% 60%;
-}
-
-.heartbeat-animation-half {
-    animation-name: heartbeat;
-    animation-duration: 6s;
-    animation-iteration-count: infinite;
-    transform-origin: 80% 60%;
-}
-@keyframes heartbeat {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-</style>
