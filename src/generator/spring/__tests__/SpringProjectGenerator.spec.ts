@@ -8,7 +8,7 @@ import type { File } from '@/entity/File'
 import type { Package } from '@/entity/Dependency'
 import { Language } from '../../../entity/Language'
 import spring3_1_6 from '../../../stores/spring-3_1_6'
-import spring3_2_0 from '../../../stores/spring-3_2_0'
+import spring3_2_1 from '../../../stores/spring-3_2_1'
 
 const spring3_1_6Packages: Package[] = spring3_1_6.flatMap((it) => {
     return it.packages.map((pack) => {
@@ -16,7 +16,7 @@ const spring3_1_6Packages: Package[] = spring3_1_6.flatMap((it) => {
     })
 })
 
-const spring3_2_0Packages: Package[] = spring3_2_0.flatMap((it) => {
+const spring3_2_1Packages: Package[] = spring3_2_1.flatMap((it) => {
     return it.packages.map((pack) => {
         return pack
     })
@@ -65,7 +65,7 @@ function getDependencies(input: string[], springBootVersion: SpringBootVersion =
         return spring3_1_6Packages.filter((it) => input.includes(it.id))
     }
 
-    return spring3_2_0Packages.filter((it) => input.includes(it.id))
+    return spring3_2_1Packages.filter((it) => input.includes(it.id))
 }
 
 describe('Can generate build.gradle properly', () => {
@@ -98,7 +98,7 @@ describe('Can generate build.gradle properly', () => {
                     'docker-compose-setup'
                 ]),
                 Language.Kotlin,
-                SpringBootVersion['3_2_0']
+                SpringBootVersion['3_2_1']
             )
         ).toBe(getOutput('all-developer-tools-selected-with-kotlin-for-spring-3-2'))
     })
@@ -108,7 +108,7 @@ describe('Can generate build.gradle properly', () => {
             getGradleContent(
                 getDependencies(['wavefront', 'distributed-tracing']),
                 Language.Java,
-                SpringBootVersion['3_2_0'],
+                SpringBootVersion['3_2_1'],
                 21
             )
         ).toBe(getOutput('distributed-tracing-with-wavefront-with-java-spring_3_2_JDK_21'))

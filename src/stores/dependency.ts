@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { Dependency, Package } from '@/entity/Dependency'
 import spring3_1_6 from '@/stores/spring-3_1_6'
-import spring3_2_0 from '@/stores/spring-3_2_0'
+import spring3_2_1 from '@/stores/spring-3_2_1'
 import vuejs from '@/stores/vuejs'
 import { ProjectType } from '@/entity/ProjectType'
 import { SpringBootVersion } from '@/entity/SpringBootVersion'
@@ -45,19 +45,19 @@ function getPackageInformationMap(dependencies: Dependency[]): Map<string, Packa
 
 export const dependencyStore = defineStore('dependency', () => {
     const dependencies = new Map<string, Dependency[]>()
-    dependencies.set(`${ProjectType.Spring}${SpringBootVersion['3_2_0']}`, spring3_2_0)
+    dependencies.set(`${ProjectType.Spring}${SpringBootVersion['3_2_1']}`, spring3_2_1)
     dependencies.set(`${ProjectType.Spring}${SpringBootVersion['3_1_6']}`, spring3_1_6)
     dependencies.set(`${ProjectType.VueJS}`, vuejs)
 
     const packagesName = new Map<string, Set<string>>()
-    packagesName.set(`${ProjectType.Spring}${SpringBootVersion['3_2_0']}`, getPackageNamesMap(spring3_2_0))
+    packagesName.set(`${ProjectType.Spring}${SpringBootVersion['3_2_1']}`, getPackageNamesMap(spring3_2_1))
     packagesName.set(`${ProjectType.Spring}${SpringBootVersion['3_1_6']}`, getPackageNamesMap(spring3_1_6))
     packagesName.set(ProjectType.VueJS, getPackageNamesMap(vuejs))
 
     const packageInformation = new Map<string, Map<string, Package>>()
     packageInformation.set(
         ProjectType.Spring,
-        new Map([...getPackageInformationMap(spring3_2_0), ...getPackageInformationMap(spring3_1_6)])
+        new Map([...getPackageInformationMap(spring3_2_1), ...getPackageInformationMap(spring3_1_6)])
     )
 
     packageInformation.set(ProjectType.VueJS, new Map([...getPackageInformationMap(vuejs)]))

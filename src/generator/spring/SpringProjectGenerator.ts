@@ -354,6 +354,10 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         annotationDependencies: annotationDependencies,
         kotlin: Language.Kotlin,
         java: Language.Java,
+        ormVersion:
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_6']
+                ? '"6.2.17.Final"'
+                : '"6.4.1.Final"',
         explicitDockerImageForGradleIsRequired:
             SpringBootVersion['3_1_6'] === projectMetaData.metadata.springBootVersion,
         kotlinSelected: projectMetaData.metadata.language === Language.Kotlin,
@@ -365,7 +369,7 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
             projectMetaData.metadata.javaVersion,
             projectMetaData.metadata.springBootVersion
         ),
-        kotlinPlugin: projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_6'] ? '1.8.22' : '1.9.20'
+        kotlinPlugin: projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_6'] ? '1.8.22' : '1.9.21'
     }
 
     const contentTree: Array<File | Folder> = [
