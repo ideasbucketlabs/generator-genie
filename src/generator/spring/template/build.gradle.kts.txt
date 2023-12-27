@@ -7,6 +7,9 @@ plugins {
     {%- for plugin in plugins -%}
     id("{{ plugin.groupId }}") version "{{ plugin.version }}"
     {%- endfor -%}
+    {%- if dependenciesIds contains "data-jpa" -%}
+    id("org.hibernate.orm") version {{ ormVersion }}
+    {%- endif -%}
     {%- if kotlinSelected -%}
     kotlin("jvm") version "{{ kotlinPlugin }}"
     kotlin("plugin.spring") version "{{ kotlinPlugin }}"
@@ -43,7 +46,7 @@ extra["springCloudVersion"] = "{{ springCloudVersion }}"
 extra["springShellVersion"] = "3.1.3"
 {%- endif -%}
 {%- if haveTimeFoldSolverDependency -%}
-extra["timefoldSolverVersion"] = "1.3.0"
+extra["timefoldSolverVersion"] = "1.5.0"
 {%- endif -%}
 {%- endif -%}
 
@@ -164,6 +167,14 @@ tasks.compileTestKotlin {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+{%- if dependenciesIds contains "data-jpa" -%}
+
+hibernate {
+    enhancement {
+        enableAssociationManagement.set(true)
+    }
+}
+{%- endif -%}
 {%- if dependenciesIds contains "spotless" -%}
 
 spotless {
