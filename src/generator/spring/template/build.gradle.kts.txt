@@ -7,7 +7,7 @@ plugins {
     {%- for plugin in plugins -%}
     id("{{ plugin.groupId }}") version "{{ plugin.version }}"
     {%- endfor -%}
-    {%- if dependenciesIds contains "data-jpa" -%}
+    {%- if dependenciesIds contains "data-jpa" and dependenciesIds contains "native" -%}
     id("org.hibernate.orm") version {{ ormVersion }}
     {%- endif -%}
     {%- if kotlinSelected -%}
@@ -167,7 +167,7 @@ tasks.compileTestKotlin {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-{%- if dependenciesIds contains "data-jpa" -%}
+{%- if dependenciesIds contains "data-jpa" and dependenciesIds contains "native" -%}
 
 hibernate {
     enhancement {

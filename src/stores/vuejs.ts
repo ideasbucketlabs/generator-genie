@@ -12,14 +12,14 @@ const data: Dependency[] = [
                 description:
                     'A utility-first CSS framework packed with classes that can be composed to build any design, directly in your markup. Please not this will install PostCSS as well.',
                 groupId: 'tailwindcss',
-                version: '^3.3.5',
+                version: '^3.4.0',
                 testPackages: [
                     {
                         name: 'Tailwind CSS prettier support',
                         id: 'tailwind-prettier-plugin',
                         description: 'Tailwind CSS prettier plugins',
                         groupId: 'prettier-plugin-tailwindcss',
-                        version: '^0.5.6'
+                        version: '^0.5.9'
                     },
                     {
                         name: 'Autoprefixer',
@@ -33,7 +33,7 @@ const data: Dependency[] = [
                         id: 'postcss',
                         description: 'PostCSS',
                         groupId: 'postcss',
-                        version: '^8.4.31'
+                        version: '^8.4.32'
                     }
                 ]
             }
@@ -49,7 +49,7 @@ const data: Dependency[] = [
                 description:
                     'VueUse is a collection of utility functions based on Composition API. We assume you are already familiar with the basic ideas of Composition API before you continue.',
                 groupId: '@vueuse/core',
-                version: '^10.5.0'
+                version: '^10.7.1'
             },
             {
                 name: 'LoDash Order By',
