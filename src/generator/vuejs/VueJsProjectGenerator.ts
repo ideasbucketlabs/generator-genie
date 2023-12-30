@@ -66,10 +66,10 @@ function getTsConfigAppJson(indentSize: number): string {
     )
 }
 
-function getNightWatchTsConfig(indentSize: number): string {
+function getNightWatchTsConfig(indentSize: number, nodeVersion: number): string {
     return JSON.stringify(
         {
-            extends: '@tsconfig/node18/tsconfig.json',
+            extends: `@tsconfig/node${nodeVersion}/tsconfig.json`,
             compilerOptions: {
                 target: 'ESNext',
                 module: 'commonjs',
@@ -213,18 +213,18 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
         },
         devDependencies: {
             ...{
-                '@vitejs/plugin-vue': '^4.5.1',
-                vite: '^5.0.5'
+                '@vitejs/plugin-vue': '^4.5.2',
+                vite: '^5.0.10'
             },
             ...(typescriptSelected
                 ? {
                       [`@tsconfig/node${projectMetaData.nodeVersion}`]:
                           projectMetaData.nodeVersion === 18 ? '^18.2.2' : '^20.1.2',
                       '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.8.9',
-                      '@vue/tsconfig': '^0.4.0',
+                      '@vue/tsconfig': '^0.5.0',
                       'npm-run-all2': '^6.1.1',
                       'vue-tsc': '^1.8.25',
-                      typescript: '~5.2.0'
+                      typescript: '~5.3.0'
                   }
                 : {}),
             ...(projectMetaData.includeEslint
@@ -248,7 +248,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
             ...(projectMetaData.includeUnitTest
                 ? {
                       jsdom: '^23.0.1',
-                      vitest: '^1.0.1',
+                      vitest: '^1.0.4',
                       '@vue/test-utils': '^2.4.3'
                   }
                 : {}),
@@ -259,7 +259,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 : {}),
             ...(projectMetaData.integrationTest === 'playwright'
                 ? {
-                      '@playwright/test': '^1.39.0'
+                      '@playwright/test': '^1.40.1'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'cypress'
@@ -832,8 +832,8 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
     if (projectMetaData.metadata.integrationTest === 'nightwatch') {
         contentTree.push(
             {
-                name: `nightwatch.conf.${typescriptSelected ? 'ts' : 'js'}`,
-                lang: projectMetaData.metadata.language,
+                name: 'nightwatch.conf.cjs',
+                lang: Language.Javascript,
                 id: getId(),
                 type: ContentType.File,
                 content: engine.renderSync(parsedTemplates.get('nightwatch.conf.js')!!, payload) as unknown as string
@@ -867,52 +867,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                 id: getId(),
                 type: ContentType.Folder,
                 children: [
-                    ...[
-                        {
-                            name: 'custom-assertions',
-                            id: getId(),
-                            type: ContentType.Folder,
-                            children: [
-                                {
-                                    name: `elementHasCount.${typescriptSelected ? 'ts' : 'js'}`,
-                                    lang: projectMetaData.metadata.language,
-                                    type: ContentType.File,
-                                    id: getId(),
-                                    content: engine.renderSync(
-                                        parsedTemplates.get('nightwatch.elementHasCount.ts')!!,
-                                        payload
-                                    ) as unknown as string
-                                }
-                            ]
-                        },
-                        {
-                            name: 'custom-commands',
-                            id: getId(),
-                            type: ContentType.Folder,
-                            children: [
-                                {
-                                    name: `strictClick.${typescriptSelected ? 'ts' : 'js'}`,
-                                    lang: projectMetaData.metadata.language,
-                                    type: ContentType.File,
-                                    id: getId(),
-                                    content: engine.renderSync(
-                                        parsedTemplates.get('nightwatch.strictClick.ts')!!,
-                                        payload
-                                    ) as unknown as string
-                                }
-                            ]
-                        },
-                        {
-                            name: 'globals.js',
-                            lang: projectMetaData.metadata.language,
-                            type: ContentType.File,
-                            id: getId(),
-                            content: engine.renderSync(
-                                parsedTemplates.get('nightwatch.global.js')!!,
-                                payload
-                            ) as unknown as string
-                        }
-                    ],
+                    ...[],
                     ...(typescriptSelected
                         ? [
                               {
@@ -930,7 +885,10 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                                   lang: Language.Json,
                                   type: ContentType.File,
                                   id: getId(),
-                                  content: getNightWatchTsConfig(projectMetaData.metadata.indentSize)
+                                  content: getNightWatchTsConfig(
+                                      projectMetaData.metadata.indentSize,
+                                      projectMetaData.metadata.nodeVersion
+                                  )
                               }
                           ]
                         : [])

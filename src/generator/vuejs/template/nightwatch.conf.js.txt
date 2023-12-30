@@ -30,7 +30,7 @@ module.exports = {
   plugins: ['@nightwatch/vue'],
 
   // See https://nightwatchjs.org/guide/concepts/test-globals.html#external-test-globals
-  globals_path: 'nightwatch/globals.js',
+  globals_path: '',
 
   vite_dev_server: {
     start_vite: false
@@ -169,7 +169,7 @@ module.exports = {
     plugins: ['@nightwatch/vue'],
 
     // See https://nightwatchjs.org/guide/concepts/test-globals.html#external-test-globals
-    globals_path: 'nightwatch/globals.js',
+    globals_path: '',
 
     vite_dev_server: {
         start_vite: false

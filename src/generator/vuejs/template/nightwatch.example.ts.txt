@@ -6,7 +6,6 @@ describe('My First Test', function () {
 
   it('visits the app root url', function () {
     browser.assert.elementHasCount('body', 1)
-    .strictClick('body')
   })
 
   after((browser) => browser.end())
@@ -19,7 +18,6 @@ describe('My First Test', function () {
 
     it('visits the app root url', function () {
         browser.assert.elementHasCount('body', 1)
-        .strictClick('body')
     })
 
     after((browser) => browser.end())

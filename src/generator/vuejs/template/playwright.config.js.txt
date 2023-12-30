@@ -1,11 +1,5 @@
 {%- if indentSize == 2 -%}
-{%- if typescriptSelected -%}
-import type { PlaywrightTestConfig } from '@playwright/test'
-import { devices } from '@playwright/test'
-{%- else -%}
-// @ts-check
-const { devices } = require('@playwright/test')
-{%- endif -%}
+import { defineConfig, devices } from '@playwright/test'
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -14,11 +8,8 @@ const { devices } = require('@playwright/test')
 
 /**
  * @see https://playwright.dev/docs/test-configuration
- {%- if javascriptSelected -%}
- * @type {import('@playwright/test').PlaywrightTestConfig}
- {%- endif -%}
  */
-const config = {
+export default defineConfig({
   testDir: './e2e',
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
@@ -114,17 +105,9 @@ const config = {
     port: 5173,
     reuseExistingServer: !process.env.CI
   }
-}
-
-{%- if typescriptSelected -%}export default config{%- else -%}module.exports = config{%- endif -%}
+})
 {%- else -%}
-{%- if typescriptSelected -%}
-import type { PlaywrightTestConfig } from '@playwright/test'
-import { devices } from '@playwright/test'
-{%- else -%}
-// @ts-check
-const { devices } = require('@playwright/test')
-{%- endif -%}
+import { defineConfig, devices } from '@playwright/test'
 
 /**
  * Read environment variables from file.
@@ -134,11 +117,8 @@ const { devices } = require('@playwright/test')
 
 /**
  * @see https://playwright.dev/docs/test-configuration
- {%- if javascriptSelected -%}
- * @type {import('@playwright/test').PlaywrightTestConfig}
- {%- endif -%}
  */
-const config = {
+export default defineConfig({
     testDir: './e2e',
     /* Maximum time one test can run for. */
     timeout: 30 * 1000,
@@ -194,30 +174,30 @@ const config = {
 
         /* Test against mobile viewports. */
         // {
-        //   name: 'Mobile Chrome',
-        //   use: {
-        //     ...devices['Pixel 5'],
-        //   },
+        //     name: 'Mobile Chrome',
+        //     use: {
+        //         ...devices['Pixel 5'],
+        //     },
         // },
         // {
-        //   name: 'Mobile Safari',
-        //   use: {
-        //     ...devices['iPhone 12'],
-        //   },
+        //     name: 'Mobile Safari',
+        //     use: {
+        //         ...devices['iPhone 12'],
+        //     },
         // },
 
         /* Test against branded browsers. */
         // {
-        //   name: 'Microsoft Edge',
-        //   use: {
-        //     channel: 'msedge',
-        //   },
+        //     name: 'Microsoft Edge',
+        //     use: {
+        //         channel: 'msedge',
+        //     },
         // },
         // {
-        //   name: 'Google Chrome',
-        //   use: {
-        //     channel: 'chrome',
-        //   },
+        //     name: 'Google Chrome',
+        //     use: {
+        //         channel: 'chrome',
+        //     },
         // },
     ],
 
@@ -234,7 +214,5 @@ const config = {
         port: 5173,
         reuseExistingServer: !process.env.CI
     }
-}
-
-{%- if typescriptSelected -%}export default config{%- else -%}module.exports = config{%- endif -%}
+})
 {%- endif -%}
