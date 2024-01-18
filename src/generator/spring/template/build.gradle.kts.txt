@@ -99,10 +99,7 @@ dependencies {
     {%- for runtimeDependency in runtimeDependencies -%}
     runtimeOnly("{{ runtimeDependency.groupId }}:{{ runtimeDependency.artifactId }}{%- if runtimeDependency.version -%}:{{ runtimeDependency.version}}{%- endif -%}")
     {%- if runtimeDependency.id == 'wavefront' -%}
-        {%- if dependenciesIds contains "zipkin" -%}
-    runtimeOnly("io.micrometer:micrometer-registry-wavefront")
-        {%- endif -%}
-        {%- if dependenciesIds contains "distributed-tracing" -%}
+        {%- if dependenciesIds contains "zipkin" or dependenciesIds contains "distributed-tracing" -%}
     runtimeOnly("io.micrometer:micrometer-registry-wavefront")
         {%- endif -%}
     {%- endif -%}
