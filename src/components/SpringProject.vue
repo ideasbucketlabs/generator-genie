@@ -6,7 +6,6 @@ import { clone } from '@/util/Util'
 import { isValid } from '@/validators/SpringProjectValidator'
 import type { SpringProjectError } from '@/entity/SpringProjectError'
 import { Language } from '@/entity/Language'
-import InformationIcon from '@/icons/InformationIcon.vue'
 import BaseInput from '@/components/BaseInput.vue'
 
 const props = defineProps<{
@@ -29,6 +28,7 @@ const language = ref<Language.Java | Language.Kotlin>(information.language)
 const springBootVersion = ref<SpringBootVersion>(information.springBootVersion)
 const description = ref<string>(information.description)
 const javaVersion = ref<17 | 21>(information.javaVersion)
+const buildTool = ref<'gradle' | 'maven'>(information.buildTool)
 
 defineExpose({ validate })
 
@@ -49,7 +49,8 @@ const springProject = computed<SpringProject>(() => {
         artifact: artifact.value,
         packageName: packageName.value,
         description: description.value,
-        javaVersion: javaVersion.value
+        javaVersion: javaVersion.value,
+        buildTool: buildTool.value
     }
 })
 
@@ -108,23 +109,44 @@ function validate() {
 
 <template>
     <div class="space-y-4">
-        <div class="">
-            <div class="font-medium">Language Preference</div>
-            <div class="space-x-4 flex">
-                <BaseInput
-                    v-model="language"
-                    label="Java"
-                    name="languagePreference"
-                    type="radio"
-                    :value="Language.Java"
-                ></BaseInput>
-                <BaseInput
-                    v-model="language"
-                    label="Kotlin"
-                    name="languagePreference"
-                    type="radio"
-                    :value="Language.Kotlin"
-                ></BaseInput>
+        <div class="space-y-4 xl:space-y-0 xl:space-x-10 xl:flex">
+            <div class="">
+                <div class="font-medium">Language Preference</div>
+                <div class="space-x-4 flex">
+                    <BaseInput
+                        v-model="language"
+                        label="Java"
+                        name="languagePreference"
+                        type="radio"
+                        :value="Language.Java"
+                    ></BaseInput>
+                    <BaseInput
+                        v-model="language"
+                        label="Kotlin"
+                        name="languagePreference"
+                        type="radio"
+                        :value="Language.Kotlin"
+                    ></BaseInput>
+                </div>
+            </div>
+            <div class="">
+                <div class="font-medium">Build Tool</div>
+                <div class="space-x-4 flex">
+                    <BaseInput
+                        v-model="buildTool"
+                        label="Gradle - Kotlin"
+                        name="buildTool"
+                        type="radio"
+                        value="gradle"
+                    ></BaseInput>
+                    <BaseInput
+                        v-model="buildTool"
+                        label="Maven"
+                        name="buildTool"
+                        type="radio"
+                        value="maven"
+                    ></BaseInput>
+                </div>
             </div>
         </div>
         <div class="">
@@ -139,38 +161,27 @@ function validate() {
                 ></BaseInput>
                 <BaseInput
                     v-model="springBootVersion"
-                    :label="SpringBootVersion['3_1_6']"
+                    :label="SpringBootVersion['3_1_7']"
                     name="springBootVersion"
                     type="radio"
-                    :value="SpringBootVersion['3_1_6']"
+                    :value="SpringBootVersion['3_1_7']"
                 ></BaseInput>
             </div>
         </div>
-        <div class="font-medium">Project Metadata</div>
+        <div class="font-medium border-b border-dashed dark:border-gray-600">Project Metadata</div>
         <div class="space-y-4">
-            <div class="flex items-center rounded bg-primary-100 dark:bg-primary-500 shadow-lg p-4 space-x-4">
-                <div class="">
-                    <InformationIcon
-                        aria-label="Information"
-                        class="w-10 fill-current text-primary-500 dark:text-white"
-                    ></InformationIcon>
-                </div>
-                <div>Please note project will be generated based on Gradle.</div>
-            </div>
             <BaseInput
                 v-model="group"
                 label="Group:"
                 :has-error="haveError('group')"
                 :error="getError('group')"
             ></BaseInput>
-
             <BaseInput
                 v-model="artifact"
                 label="Artifact:"
                 :has-error="haveError('artifact')"
                 :error="getError('artifact')"
             ></BaseInput>
-
             <BaseInput
                 v-model="name"
                 label="Name:"

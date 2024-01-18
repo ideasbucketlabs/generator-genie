@@ -7,7 +7,7 @@ import type { SpringProject } from '@/entity/SpringProject'
 import type { File } from '@/entity/File'
 import type { Package } from '@/entity/Dependency'
 import { Language } from '../../../entity/Language'
-import spring3_1_6 from '../../../stores/spring-3_1_6'
+import spring3_1_6 from '../../../stores/spring-3_1_7'
 import spring3_2_1 from '../../../stores/spring-3_2_1'
 
 const spring3_1_6Packages: Package[] = spring3_1_6.flatMap((it) => {
@@ -31,7 +31,7 @@ function getOutput(fileName: string) {
 
 function getMetadata(
     language: Language.Kotlin | Language.Java = Language.Java,
-    springBootVersion: SpringBootVersion = SpringBootVersion['3_1_6'],
+    springBootVersion: SpringBootVersion = SpringBootVersion['3_1_7'],
     jdkVersion: 17 | 21 = 17
 ): SpringProject {
     return {
@@ -41,6 +41,7 @@ function getMetadata(
         artifact: 'demo',
         packageName: 'demo',
         name: 'demo',
+        buildTool: 'gradle',
         description: 'demo',
         javaVersion: jdkVersion
     }
@@ -49,7 +50,7 @@ function getMetadata(
 function getGradleContent(
     dependencies: Package[],
     language: Language.Kotlin | Language.Java = Language.Java,
-    springBootVersion: SpringBootVersion = SpringBootVersion['3_1_6'],
+    springBootVersion: SpringBootVersion = SpringBootVersion['3_1_7'],
     jdkVersion: 17 | 21 = 17
 ): string {
     return (
@@ -60,8 +61,8 @@ function getGradleContent(
     ).content!!
 }
 
-function getDependencies(input: string[], springBootVersion: SpringBootVersion = SpringBootVersion['3_1_6']) {
-    if (springBootVersion === SpringBootVersion['3_1_6']) {
+function getDependencies(input: string[], springBootVersion: SpringBootVersion = SpringBootVersion['3_1_7']) {
+    if (springBootVersion === SpringBootVersion['3_1_7']) {
         return spring3_1_6Packages.filter((it) => input.includes(it.id))
     }
 

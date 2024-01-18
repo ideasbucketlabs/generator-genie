@@ -20,7 +20,7 @@ test('visits the app root url and show dependency dialog', async ({ page }) => {
 
     // Make sure that items are displayed
     await expect(page.locator('div[role="dialog"]')).toHaveCount(1)
-    await expect(page.locator('div[data-package-item="true"]')).toHaveCount(72)
+    await expect(page.locator('div[data-package-item="true"]')).toHaveCount(75)
     await expect(page.locator('div[data-package-item-id="lombok"]')).toHaveCount(1)
 
     // Make sure package filter works

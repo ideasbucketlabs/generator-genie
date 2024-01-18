@@ -8,6 +8,7 @@ import 'prismjs/components/prism-css'
 import 'prismjs/components/prism-typescript'
 import 'prismjs/components/prism-javascript'
 import 'prismjs/components/prism-yaml'
+import 'prismjs/components/prism-xml-doc'
 
 export default async function highlight(content: string, language: Language): Promise<{ code: string; lines: number }> {
     // PrismJS does not have native VueJS highlight support so map to html.

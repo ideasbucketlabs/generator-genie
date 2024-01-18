@@ -9,5 +9,6 @@ export interface SpringProject {
     artifact: string
     packageName: string
     description: string
+    buildTool: 'maven' | 'gradle'
     javaVersion: 17 | 21
 }

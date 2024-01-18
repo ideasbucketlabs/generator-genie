@@ -5,7 +5,11 @@ plugins {
     id("org.springframework.boot") version "{{ metadata.springBootVersion }}"
     id("io.spring.dependency-management") version "1.1.4"
     {%- for plugin in plugins -%}
+    {%- if plugin.id == "jacoco" -%}
+    jacoco
+    {%- else -%}
     id("{{ plugin.groupId }}") version "{{ plugin.version }}"
+    {%- endif -%}
     {%- endfor -%}
     {%- if dependenciesIds contains "data-jpa" and dependenciesIds contains "native" -%}
     id("org.hibernate.orm") version {{ ormVersion }}
@@ -43,10 +47,10 @@ repositories {
 extra["springCloudVersion"] = "{{ springCloudVersion }}"
 {%- endif -%}
 {%- if haveSpringShellDependency -%}
-extra["springShellVersion"] = "3.1.3"
+extra["springShellVersion"] = "{{ springShellVersion }}"
 {%- endif -%}
 {%- if haveTimeFoldSolverDependency -%}
-extra["timefoldSolverVersion"] = "1.5.0"
+extra["timefoldSolverVersion"] = "1.6.0"
 {%- endif -%}
 {%- endif -%}
 
@@ -111,6 +115,8 @@ dependencies {
     runtimeOnly("io.r2dbc:r2dbc-mssql:1.0.0.RELEASE")
         {%- elsif runtimeDependency.id == "postgresql" -%}
     runtimeOnly("org.postgresql:r2dbc-postgresql")
+        {%- elsif runtimeDependency.id == "mysql" -%}
+    runtimeOnly("io.asyncer:r2dbc-mysql")
         {%- endif -%}
     {%- endif -%}
     {%- endfor -%}
@@ -195,7 +201,7 @@ spotless {
     java {
         palantirJavaFormat()
         target("src/*/java/**/*.java")
-        palantirJavaFormat('2.35.0').style("AOSP")
+        palantirJavaFormat('2.39.0').style("AOSP")
         removeUnusedImports()
         toggleOffOn("formatter:off", "formatter:on")
     }
@@ -223,5 +229,16 @@ tasks.generateJava {
     schemaPaths.add("${projectDir}/src/main/resources/graphql-client")
     packageName = "{{ metadata.packageName }}"
     generateClient = true
+}
+{%- endif-%}
+{%- if dependenciesIds contains "jacoco" -%}
+
+jacoco { toolVersion = "{%- for plugin in plugins -%}{%- if plugin.id == "jacoco" -%}{{ plugin.version }}{%- endif -%}{%- endfor -%}" }
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+    }
 }
 {%- endif-%}
