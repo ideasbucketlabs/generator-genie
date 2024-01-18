@@ -120,11 +120,12 @@
             <scope>runtime</scope>
         </dependency>
             {%- if runtimeDependency.id == 'wavefront' -%}
-                {%- if dependenciesIds contains "zipkin" -%}
-            runtimeOnly("io.micrometer:micrometer-registry-wavefront")
-                {%- endif -%}
-                {%- if dependenciesIds contains "distributed-tracing" -%}
-            runtimeOnly("io.micrometer:micrometer-registry-wavefront")
+                {%- if dependenciesIds contains "zipkin" or dependenciesIds contains "distributed-tracing" -%}
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-wavefront</artifactId>
+            <scope>runtime</scope>
+        </dependency>
                 {%- endif -%}
             {%- endif -%}
             {%- if dependenciesIds contains "data-r2dbc" -%}
