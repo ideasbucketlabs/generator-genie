@@ -8,7 +8,7 @@ import { getId } from '@/util/Util'
 import partition from 'lodash.partition'
 import content from '@/generator/spring/template/compiled/content'
 import { Language } from '@/entity/Language'
-import { javaGitIgnore } from '@/generator/common/gitignore'
+import { gradleGitIgnore, mavenGitIgnore } from '@/generator/common/gitignore'
 import { SpringBootVersion } from '@/entity/SpringBootVersion'
 
 const engine = new Liquid({
@@ -41,7 +41,7 @@ function compileTemplates() {
     }
 
     content.forEach((template: File) => {
-        if (template.name !== 'gradle-wrapper.properties') {
+        if (template.name !== 'gradle-wrapper.properties' && template.name !== 'maven-wrapper.properties') {
             parsedTemplates.set(template.name, engine.parse(template.content ?? ''))
         }
     })
@@ -265,11 +265,161 @@ function getMinimumJdkCompatibility(
         return selectedJavaVersion
     }
 
-    if (selectedSpringBootVersion === SpringBootVersion['3_1_6']) {
+    if (selectedSpringBootVersion === SpringBootVersion['3_1_7']) {
         return 17
     }
 
     return selectedJavaVersion
+}
+
+function generateMavenStub(
+    projectMetaData: { metadata: SpringProject; dependencies: Package[] },
+    payload: unknown
+): Array<File | Folder> {
+    return [
+        {
+            name: 'pom.xml',
+            lang: Language.Xml,
+            type: ContentType.File,
+            content: engine.renderSync(parsedTemplates.get('pom.xml')!!, payload as object) as unknown as string,
+            id: getId()
+        } as File,
+        {
+            name: '.gitignore',
+            lang: Language.Text,
+            type: ContentType.File,
+            content: mavenGitIgnore,
+            id: getId()
+        } as File,
+        {
+            name: 'README.md',
+            lang: Language.Markdown,
+            type: ContentType.File,
+            id: getId(),
+            content: engine.renderSync(parsedTemplates.get('readme.md')!!, payload as object) as unknown as string
+        },
+        {
+            name: 'mvnw',
+            lang: Language.Binary,
+            type: ContentType.File,
+            id: getId()
+        },
+        {
+            name: 'mvnw.cmd',
+            lang: Language.Binary,
+            type: ContentType.File,
+            id: getId()
+        },
+        {
+            name: '.mvn',
+            type: ContentType.Folder,
+            id: getId(),
+            children: [
+                {
+                    name: 'wrapper',
+                    type: ContentType.Folder,
+                    id: getId(),
+                    children: [
+                        {
+                            name: 'maven-wrapper.jar',
+                            type: ContentType.File,
+                            id: getId(),
+                            lang: Language.Binary
+                        } as File,
+                        {
+                            name: 'maven-wrapper.properties',
+                            lang: Language.Kotlin,
+                            type: ContentType.File,
+                            content: content.get('maven-wrapper.properties')?.content ?? '',
+                            id: getId()
+                        } as File
+                    ]
+                }
+            ]
+        }
+    ]
+}
+function generateGradleStub(
+    projectMetaData: { metadata: SpringProject; dependencies: Package[] },
+    payload: unknown
+): Array<File | Folder> {
+    return [
+        {
+            name: 'build.gradle.kts',
+            lang: Language.Kotlin,
+            type: ContentType.File,
+            content: engine.renderSync(
+                parsedTemplates.get('build.gradle.kts')!!,
+                payload as object
+            ) as unknown as string,
+            id: getId()
+        } as File,
+        {
+            name: 'gradle',
+            type: ContentType.Folder,
+            id: getId(),
+            children: [
+                {
+                    name: 'wrapper',
+                    type: ContentType.Folder,
+                    id: getId(),
+                    children: [
+                        {
+                            name: 'gradle-wrapper.jar',
+                            lang: Language.Binary,
+                            content: null,
+                            id: getId(),
+                            type: ContentType.File
+                        } as File,
+                        {
+                            name: 'gradle-wrapper.properties',
+                            lang: Language.Kotlin,
+                            type: ContentType.File,
+                            content: content.get('gradle-wrapper.properties')?.content ?? '',
+                            id: getId()
+                        } as File
+                    ]
+                }
+            ]
+        },
+        {
+            name: 'gradlew',
+            lang: Language.Binary,
+            type: ContentType.File,
+            content: null,
+            id: getId()
+        } as File,
+        {
+            name: 'gradlew.bat',
+            lang: Language.Binary,
+            type: ContentType.File,
+            content: null,
+            id: getId()
+        } as File,
+        {
+            name: 'settings.gradle.kts',
+            lang: Language.Kotlin,
+            type: ContentType.File,
+            content: engine.renderSync(parsedTemplates.get('settings.gradle.kts')!!, {
+                artifact: projectMetaData.metadata.artifact
+            }) as unknown as string,
+            id: getId()
+        } as File,
+        {
+            name: '.gitignore',
+            lang: Language.Text,
+            type: ContentType.File,
+            content: gradleGitIgnore,
+            id: getId()
+        } as File,
+        {
+            name: 'README.md',
+            lang: Language.Markdown,
+            type: ContentType.File,
+            id: getId(),
+            content: engine.renderSync(parsedTemplates.get('readme.md')!!, payload as object) as unknown as string
+        }
+    ]
 }
 
 export function getContent(projectMetaData: { metadata: SpringProject; dependencies: Package[] }): ContentTree {
@@ -352,100 +502,33 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         haveTimeFoldSolverDependency: dependenciesIds.has('timefold-solver'),
         haveSpringCloudDependency: haveCloudDependencies(dependenciesIds),
         annotationDependencies: annotationDependencies,
+        buildTool: projectMetaData.metadata.buildTool,
         kotlin: Language.Kotlin,
         java: Language.Java,
         ormVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_6']
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_7']
                 ? '"6.2.17.Final"'
                 : '"6.4.1.Final"',
         explicitDockerImageForGradleIsRequired:
-            SpringBootVersion['3_1_6'] === projectMetaData.metadata.springBootVersion,
+            SpringBootVersion['3_1_7'] === projectMetaData.metadata.springBootVersion,
         kotlinSelected: projectMetaData.metadata.language === Language.Kotlin,
         javaSelected: projectMetaData.metadata.language === Language.Java,
         springCloudVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_6'] ? '2022.0.4' : '2023.0.0',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_7'] ? '2022.0.4' : '2023.0.0',
+        springShellVersion:
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_7'] ? '3.1.7' : '3.2.0',
         jdkSourceCompatibility: getMinimumJdkCompatibility(
             projectMetaData.metadata.language,
             projectMetaData.metadata.javaVersion,
             projectMetaData.metadata.springBootVersion
         ),
-        kotlinPlugin: projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_6'] ? '1.8.22' : '1.9.21'
+        kotlinPlugin: projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_7'] ? '1.8.22' : '1.9.21'
     }
 
-    const contentTree: Array<File | Folder> = [
-        {
-            name: 'build.gradle.kts',
-            lang: Language.Kotlin,
-            type: ContentType.File,
-            content: engine.renderSync(parsedTemplates.get('build.gradle.kts')!!, payload) as unknown as string,
-            id: getId()
-        } as File,
-        {
-            name: 'gradle',
-            type: ContentType.Folder,
-            id: getId(),
-            children: [
-                {
-                    name: 'wrapper',
-                    type: ContentType.Folder,
-                    id: getId(),
-                    children: [
-                        {
-                            name: 'gradle-wrapper.jar',
-                            lang: Language.Binary,
-                            content: null,
-                            id: getId(),
-                            type: ContentType.File
-                        } as File,
-                        {
-                            name: 'gradle-wrapper.properties',
-                            lang: Language.Kotlin,
-                            type: ContentType.File,
-                            content: content.get('gradle-wrapper.properties')?.content ?? '',
-                            id: getId()
-                        } as File
-                    ]
-                }
-            ]
-        },
-        {
-            name: 'gradlew',
-            lang: Language.Binary,
-            type: ContentType.File,
-            content: null,
-            id: getId()
-        } as File,
-        {
-            name: 'gradlew.bat',
-            lang: Language.Binary,
-            type: ContentType.File,
-            content: null,
-            id: getId()
-        } as File,
-        {
-            name: 'settings.gradle.kts',
-            lang: Language.Kotlin,
-            type: ContentType.File,
-            content: engine.renderSync(parsedTemplates.get('settings.gradle.kts')!!, {
-                artifact: projectMetaData.metadata.artifact
-            }) as unknown as string,
-            id: getId()
-        } as File,
-        {
-            name: '.gitignore',
-            lang: Language.Text,
-            type: ContentType.File,
-            content: javaGitIgnore,
-            id: getId()
-        } as File,
-        {
-            name: 'README.md',
-            lang: Language.Markdown,
-            type: ContentType.File,
-            id: getId(),
-            content: engine.renderSync(parsedTemplates.get('readme.md')!!, payload) as unknown as string
-        }
-    ]
+    const contentTree: Array<File | Folder> =
+        projectMetaData.metadata.buildTool === 'gradle'
+            ? generateGradleStub(projectMetaData, payload)
+            : generateMavenStub(projectMetaData, payload)
 
     if (dependenciesIds.has('docker-compose-setup')) {
         contentTree.push(getDockerYaml(dependenciesIds))

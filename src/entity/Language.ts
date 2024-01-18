@@ -10,5 +10,6 @@ export enum Language {
     Json = 'json',
     Vue = 'vue',
     Html = 'html',
-    Css = 'css'
+    Css = 'css',
+    Xml = 'xml'
 }

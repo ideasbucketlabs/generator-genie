@@ -1,8 +1,4 @@
-const javaGitIgnore = `.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+const javaGitIgnore = `
 
 ### STS ###
 .apt_generated
@@ -60,6 +56,18 @@ Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
 `
+const gradleGitIgnore =
+    `.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/` + javaGitIgnore
+
+const mavenGitIgnore =
+    `target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/` + javaGitIgnore
 
 const jsGitIgnore = `### Logs ##
 logs
@@ -122,4 +130,4 @@ ehthumbs.db
 test-results/
 playwright-report/`
 
-export { javaGitIgnore, jsGitIgnore }
+export { gradleGitIgnore, mavenGitIgnore, jsGitIgnore }

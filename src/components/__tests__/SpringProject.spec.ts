@@ -14,11 +14,12 @@ describe('SpringProject works correctly', () => {
                     valid: false,
                     metaData: {
                         language: Language.Java,
-                        springBootVersion: SpringBootVersion['3_1_6'] as SpringBootVersion,
+                        springBootVersion: SpringBootVersion['3_1_7'] as SpringBootVersion,
                         group: 'test',
                         name: 'demo',
                         artifact: 'demo',
                         packageName: 'demo',
+                        buildTool: 'gradle',
                         description: 'This application needs some description to be filled out.',
                         javaVersion: 17
                     }
@@ -36,11 +37,12 @@ describe('SpringProject works correctly', () => {
                     valid: false,
                     metaData: {
                         language: Language.Java,
-                        springBootVersion: SpringBootVersion['3_1_6'] as SpringBootVersion,
+                        springBootVersion: SpringBootVersion['3_1_7'] as SpringBootVersion,
                         group: 'test',
                         name: 'demo',
                         artifact: 'demo',
                         packageName: 'demo',
+                        buildTool: 'gradle',
                         description: 'This application needs some description to be filled out.',
                         javaVersion: 17
                     }

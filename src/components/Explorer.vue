@@ -289,11 +289,16 @@ onMounted(async () => {
 //} */
 
 /* Theme */
-:deep(.code-display) .token.comment,
 :deep(.code-display) .token.prolog,
 :deep(.code-display) .token.doctype,
 :deep(.code-display) .token.cdata {
     color: theme('colors.gray.700');
+}
+
+:deep(.code-display) .token.comment {
+    color: theme('colors.gray.300');
+    font-style: italic;
+    text-shadow: theme('colors.gray.50') 0 1px;
 }
 
 :deep(.code-display) .token.selector,
@@ -308,7 +313,7 @@ onMounted(async () => {
 
 :deep(.code-display) .token.tag,
 :deep(.code-display) .token.boolean {
-    color: theme('colors.amber.500');
+    color: theme('colors.red.500');
 }
 
 :deep(.code-display) .token.atrule,
@@ -366,17 +371,22 @@ onMounted(async () => {
         color: theme('colors.white');
     }
 
-    :deep(.code-display) .token.comment,
     :deep(.code-display) .token.prolog,
     :deep(.code-display) .token.doctype,
     :deep(.code-display) .token.cdata {
-        color: theme('colors.gray.500');
+        color: theme('colors.gray.50');
+    }
+
+    :deep(.code-display) .token.comment {
+        color: theme('colors.gray.400');
+        text-shadow: theme('colors.gray.800') 0 1px;
+        font-style: italic;
     }
 
     :deep(.code-display) .token.selector,
     :deep(.code-display) .token.operator,
     :deep(.code-display) .token.punctuation {
-        color: theme('colors.error.600');
+        color: theme('colors.gray.500');
     }
 
     :deep(.code-display) .token.namespace {
@@ -385,7 +395,7 @@ onMounted(async () => {
 
     :deep(.code-display) .token.tag,
     :deep(.code-display) .token.boolean {
-        color: theme('colors.amber.300');
+        color: theme('colors.error.600');
     }
 
     :deep(.code-display) .token.atrule,

@@ -90,6 +90,7 @@ const springProject = ref<{ active: boolean; valid: boolean; metaData: SpringPro
         name: 'demo',
         artifact: 'demo',
         packageName: 'demo',
+        buildTool: 'gradle',
         description: 'This application needs some description to be filled out.',
         javaVersion: 17
     }
@@ -468,11 +469,11 @@ function onCloseShareDialog() {
             "
         ></DependenciesDialog>
         <div class="xl:flex">
-            <div class="overflow-auto xl:flex-1">
+            <div class="overflow-auto xl:flex-1 xl:h-min xl:sticky xl:top-0">
                 <div class="space-y-4 p-2 xl:flex xl:space-x-10 xl:space-y-0">
                     <div class="">
                         <div class="font-medium">Project Type</div>
-                        <div class="flex space-x-4">
+                        <div class="flex space-x-3.5">
                             <BaseInput
                                 v-model="projectType"
                                 label="Spring Boot"

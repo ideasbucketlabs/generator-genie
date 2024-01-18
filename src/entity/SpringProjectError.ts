@@ -7,4 +7,5 @@ export interface SpringProjectError {
     language?: string
     springBootVersion?: string
     javaVersion?: string
+    buildTool?: string
 }

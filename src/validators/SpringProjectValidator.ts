@@ -24,6 +24,12 @@ export function isValid(springProject: SpringProject): SpringProjectError {
         error.name = 'Name must be all alpha numeric and must begin with alpha character.'
     }
 
+    if (typeof (springProject.buildTool ?? '') !== 'string') {
+        error.buildTool = 'Invalid build tool selection.'
+    } else if (!/^(?:gradle|maven)$/.test(springProject.buildTool)) {
+        error.buildTool = error.buildTool = 'Invalid build tool selection.'
+    }
+
     if ((springProject.language ?? '') !== Language.Java && (springProject.language ?? '') !== Language.Kotlin) {
         error.language = 'Language should be either Kotlin or Java.'
     }
@@ -50,7 +56,7 @@ export function isValid(springProject: SpringProject): SpringProjectError {
     }
 
     if (
-        (springProject.springBootVersion ?? '') !== SpringBootVersion['3_1_6'] &&
+        (springProject.springBootVersion ?? '') !== SpringBootVersion['3_1_7'] &&
         (springProject.springBootVersion ?? '') !== SpringBootVersion['3_2_1']
     ) {
         error.springBootVersion = 'Spring Boot version is invalid.'

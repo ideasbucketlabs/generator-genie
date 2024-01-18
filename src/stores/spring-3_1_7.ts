@@ -540,6 +540,15 @@ const data: Dependency[] = [
                     'Supports built in (or custom) endpoints that let you monitor and manage your application - such as application health, metrics, sessions, etc.',
                 groupId: 'org.springframework.boot',
                 artifactId: 'spring-boot-starter-actuator'
+            },
+            {
+                name: 'SonarQube Scanner',
+                id: 'sonarqubescanner',
+                description:
+                    'SonarQube is a self-managed, automatic code review tool that systematically helps you deliver clean code.',
+                groupId: 'org.sonarqube',
+                version: '4.4.1.3373',
+                plugin: true
             }
         ]
     },
@@ -623,7 +632,22 @@ const data: Dependency[] = [
                     'Spotless is a general-purpose formatting plugin. It is completely à la carte, but also includes powerful "batteries-included" if you opt-in.',
                 parentName: 'Code Formatter',
                 groupId: 'com.diffplug.spotless',
-                version: '6.22.0',
+                version: '6.24.0',
+                plugin: true
+            }
+        ]
+    },
+    {
+        id: 'code-coverage',
+        group: 'Code Coverage',
+        packages: [
+            {
+                name: 'JaCoCo',
+                id: 'jacoco',
+                description: 'JaCoCo is a free Java code coverage library.',
+                parentName: 'Code Coverage',
+                groupId: 'jacoco',
+                version: '0.8.11',
                 plugin: true
             }
         ]

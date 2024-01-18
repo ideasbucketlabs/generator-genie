@@ -122,21 +122,33 @@ function validate() {
 
 <template>
     <div class="space-y-4">
-        <div class="">
-            <div class="font-medium">Node version</div>
-            <div class="flex space-x-4">
-                <BaseInput type="radio" v-model.number="nodeVersion" :value="18" label="18"></BaseInput>
-                <BaseInput type="radio" v-model.number="nodeVersion" :value="20" label="20"></BaseInput>
+        <div class="space-y-2 xl:flex xl:space-x-6 xl:space-y-0">
+            <div class="">
+                <div class="font-medium">Node version</div>
+                <div class="flex space-x-4">
+                    <BaseInput type="radio" v-model.number="nodeVersion" :value="18" label="18"></BaseInput>
+                    <BaseInput type="radio" v-model.number="nodeVersion" :value="20" label="20"></BaseInput>
+                </div>
+            </div>
+            <div class="">
+                <div class="font-medium">Language Preference</div>
+                <div class="flex space-x-4">
+                    <BaseInput
+                        type="radio"
+                        v-model="language"
+                        :value="Language.Typescript"
+                        label="Typescript"
+                    ></BaseInput>
+                    <BaseInput
+                        type="radio"
+                        v-model="language"
+                        :value="Language.Javascript"
+                        label="Javascript"
+                    ></BaseInput>
+                </div>
             </div>
         </div>
-        <div class="">
-            <div class="font-medium">Language Preference</div>
-            <div class="flex space-x-4">
-                <BaseInput type="radio" v-model="language" :value="Language.Typescript" label="Typescript"></BaseInput>
-                <BaseInput type="radio" v-model="language" :value="Language.Javascript" label="Javascript"></BaseInput>
-            </div>
-        </div>
-        <div class="font-medium">Project Metadata</div>
+        <div class="font-medium border-b border-dashed dark:border-gray-600">Project Metadata</div>
         <div class="space-y-4">
             <BaseInput v-model="name" label="Name:" :error="nameError" :has-error="haveError('name')"></BaseInput>
             <div class="">
@@ -243,62 +255,64 @@ function validate() {
                 </div>
             </div>
 
-            <div class="">
-                <div class="">Add Eslint?</div>
-                <div class="space-x-4 flex">
-                    <BaseInput
-                        name="includeEslint"
-                        type="radio"
-                        :value="true"
-                        v-model="includeEslint"
-                        label="Yes"
-                    ></BaseInput>
-                    <BaseInput
-                        name="includeUnitTest"
-                        type="radio"
-                        :value="false"
-                        v-model="includeEslint"
-                        label="No"
-                    ></BaseInput>
+            <div class="space-y-2 xl:flex xl:space-x-6 xl:space-y-0">
+                <div class="">
+                    <div class="">Add Eslint?</div>
+                    <div class="space-x-4 flex">
+                        <BaseInput
+                            name="includeEslint"
+                            type="radio"
+                            :value="true"
+                            v-model="includeEslint"
+                            label="Yes"
+                        ></BaseInput>
+                        <BaseInput
+                            name="includeUnitTest"
+                            type="radio"
+                            :value="false"
+                            v-model="includeEslint"
+                            label="No"
+                        ></BaseInput>
+                    </div>
                 </div>
-            </div>
-            <div class="" v-if="includeEslint">
-                <div class="">Add Prettier (for formatting)?</div>
-                <div class="space-x-4 flex">
-                    <BaseInput
-                        name="includePrettier"
-                        type="radio"
-                        :value="true"
-                        v-model="includePrettier"
-                        label="Yes"
-                    ></BaseInput>
-                    <BaseInput
-                        name="includePrettier"
-                        type="radio"
-                        :value="false"
-                        v-model="includePrettier"
-                        label="No"
-                    ></BaseInput>
+                <div class="" v-if="includeEslint">
+                    <div class="">Add Prettier (for formatting)?</div>
+                    <div class="space-x-4 flex">
+                        <BaseInput
+                            name="includePrettier"
+                            type="radio"
+                            :value="true"
+                            v-model="includePrettier"
+                            label="Yes"
+                        ></BaseInput>
+                        <BaseInput
+                            name="includePrettier"
+                            type="radio"
+                            :value="false"
+                            v-model="includePrettier"
+                            label="No"
+                        ></BaseInput>
+                    </div>
                 </div>
-            </div>
 
-            <div class="">
-                <div class="">Indent space size to use in codebase</div>
-                <div class="space-x-4 flex">
-                    <BaseInput
-                        name="indentSize"
-                        type="radio"
-                        :value="2"
-                        v-model.number="indentSize"
-                        label="2"
-                    ></BaseInput>
-                    <BaseInput
-                        name="indentSize"
-                        type="radio"
-                        :value="4"
-                        v-model.number="indentSize"
-                        label="4"
-                    ></BaseInput>
+                <div class="">
+                    <div class="">Indent space size to use in codebase</div>
+                    <div class="space-x-4 flex">
+                        <BaseInput
+                            name="indentSize"
+                            type="radio"
+                            :value="2"
+                            v-model.number="indentSize"
+                            label="2"
+                        ></BaseInput>
+                        <BaseInput
+                            name="indentSize"
+                            type="radio"
+                            :value="4"
+                            v-model.number="indentSize"
+                            label="4"
+                        ></BaseInput>
+                    </div>
                 </div>
             </div>
             <div>
