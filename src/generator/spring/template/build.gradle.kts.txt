@@ -189,24 +189,24 @@ spotless {
     }
     kotlinGradle {
         target("*.gradle.kts") // default target for kotlinGradle
+        ktlint("1.1.1").editorConfigOverride(mapOf("indent_size" to 4, "max_line_length" to 120))
         toggleOffOn("formatter:off", "formatter:on")
-        ktlint("0.50.1").editorConfigOverride(mapOf("indent_size" to 4, "max_line_length" to 120))
         indentWithSpaces(4)
+        endWithNewline()
         trimTrailingWhitespace()
     }
     {%- if javaSelected -%}
     java {
-        palantirJavaFormat()
         target("src/*/java/**/*.java")
-        palantirJavaFormat('2.39.0').style("AOSP")
+        palantirJavaFormat("2.39.0").style("AOSP")
         removeUnusedImports()
         toggleOffOn("formatter:off", "formatter:on")
     }
     {%- else -%}
     kotlin {
-        ktlint("0.47.1").editorConfigOverride(mapOf("indent_size" to 4, "max_line_length" to 120))
-        target("src/*/kotlin/**/*.kt")
+        ktlint("1.1.1").editorConfigOverride(mapOf("indent_size" to 4, "max_line_length" to 120))
         toggleOffOn("formatter:off", "formatter:on")
+        target("src/*/kotlin/**/*.kt")
         indentWithSpaces(4)
         endWithNewline()
         trimTrailingWhitespace()

@@ -27,20 +27,36 @@ You can learn more about the [plugin configuration options](https://netflix.gith
 ## Apply Code format
 ### In *nix based system
 ```sh
+{%- if buildTool == "gradle" -%}
 ./gradlew spotlessApply
+{%- else -%}
+mvn spotless:apply
+{%- endif -%}
 ```
 ### In Windows based system
 ```sh
+{%- if buildTool == "gradle" -%}
 gradlew.bat spotlessApply
+{%- else -%}
+mvn.bat spotless:apply
+{%- endif -%}
 ```
 ## Check for Code format violation
 ### In *nix based system
 ```sh
+{%- if buildTool == "gradle" -%}
 ./gradlew spotlessCheck
+{%- else -%}
+mvn spotless:check
+{%- endif -%}
 ```
 ### In Windows based system
 ```sh
+{%- if buildTool == "gradle" -%}
 gradlew.bat spotlessCheck
+{%- else -%}
+mvn.bat spotless:check
+{%- endif -%}
 ```
 {%- endif -%}
 
