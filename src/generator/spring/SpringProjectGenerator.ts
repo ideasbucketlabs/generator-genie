@@ -265,7 +265,7 @@ function getMinimumJdkCompatibility(
         return selectedJavaVersion
     }
 
-    if (selectedSpringBootVersion === SpringBootVersion['3_1_7']) {
+    if (selectedSpringBootVersion === SpringBootVersion['3_1_8']) {
         return 17
     }
 
@@ -506,23 +506,23 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         kotlin: Language.Kotlin,
         java: Language.Java,
         ormVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_7']
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_8']
                 ? '"6.2.17.Final"'
                 : '"6.4.1.Final"',
         explicitDockerImageForGradleIsRequired:
-            SpringBootVersion['3_1_7'] === projectMetaData.metadata.springBootVersion,
+            SpringBootVersion['3_1_8'] === projectMetaData.metadata.springBootVersion,
         kotlinSelected: projectMetaData.metadata.language === Language.Kotlin,
         javaSelected: projectMetaData.metadata.language === Language.Java,
         springCloudVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_7'] ? '2022.0.4' : '2023.0.0',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_8'] ? '2022.0.4' : '2023.0.0',
         springShellVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_7'] ? '3.1.7' : '3.2.0',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_8'] ? '3.1.7' : '3.2.0',
         jdkSourceCompatibility: getMinimumJdkCompatibility(
             projectMetaData.metadata.language,
             projectMetaData.metadata.javaVersion,
             projectMetaData.metadata.springBootVersion
         ),
-        kotlinPlugin: projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_7'] ? '1.8.22' : '1.9.21'
+        kotlinPlugin: projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_8'] ? '1.8.22' : '1.9.22'
     }
 
     const contentTree: Array<File | Folder> =
