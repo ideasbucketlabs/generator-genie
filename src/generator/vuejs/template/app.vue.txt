@@ -19,12 +19,12 @@ import HelloWorld from '@/components/HelloWorld.vue'
     {%- endif -%}
   {%- else -%}
     {%- if metadata.indentSize == 2 -%}
-  <div {%- if dependenciesIds contains "tailwind" -%} class="text-gray-500"{%- endif -%}>
+  <div{%- if dependenciesIds contains "tailwind" %} class="text-gray-500"{%- endif -%}>
     <div>Hello from App.vue!!!</div>
     <HelloWorld msg="Hello from HelloWorld Component"></HelloWorld>
   </div>
     {%- else -%}
-    <div {%- if dependenciesIds contains "tailwind" -%} class="text-gray-500"{%- endif -%}>
+    <div{%- if dependenciesIds contains "tailwind" %} class="text-gray-500"{%- endif -%}>
         <div>Hello from App.vue!!!</div>
         <HelloWorld msg="Hello from HelloWorld Component"></HelloWorld>
     </div>
