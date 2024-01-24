@@ -5,5 +5,5 @@ defineProps<{ content: string }>()
 </script>
 
 <template>
-    <article v-html="marked(content)"></article>
+    <article v-html="(marked(content) as string).replace(/<a /g, '<a target=\'_blank\' ')"></article>
 </template>
