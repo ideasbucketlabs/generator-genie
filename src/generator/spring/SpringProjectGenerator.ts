@@ -515,7 +515,7 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         kotlinSelected: projectMetaData.metadata.language === Language.Kotlin,
         javaSelected: projectMetaData.metadata.language === Language.Java,
         springCloudVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_8'] ? '2022.0.4' : '2023.0.0',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_8'] ? '2022.0.5' : '2023.0.0',
         springShellVersion:
             projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_8'] ? '3.1.7' : '3.2.0',
         jdkSourceCompatibility: getMinimumJdkCompatibility(
