@@ -23,6 +23,7 @@ const springCloudDependencies = [
     'cloud-task',
     'spring-cloud-routing',
     'cloud-gateway',
+    'reactive-cloud-gateway',
     'spring-cloud-circuit-breaker',
     'cloud-resilience4j',
     'spring-cloud-messaging',
