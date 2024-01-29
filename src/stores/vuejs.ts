@@ -10,7 +10,7 @@ const data: Dependency[] = [
                 name: 'Tailwind CSS support',
                 id: 'tailwind',
                 description:
-                    'A utility-first CSS framework packed with classes that can be composed to build any design, directly in your markup. Please not this will install PostCSS as well.',
+                    'A utility-first CSS framework packed with classes that can be composed to build any design, directly in your markup. Please note this will install PostCSS as well.',
                 groupId: 'tailwindcss',
                 version: '^3.4.0',
                 testPackages: [
