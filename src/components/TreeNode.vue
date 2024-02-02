@@ -51,13 +51,13 @@ function isCollapsed(id: string): boolean {
                     :class="[
                         ((c as File).content ?? null) === null
                             ? 'cursor-not-allowed text-gray-400'
-                            : 'hover:bg-primary-100 dark:hover:bg-gray-700 cursor-pointer transition duration-200 ease-linear',
+                            : 'cursor-pointer transition duration-200 ease-linear hover:bg-primary-100 dark:hover:bg-gray-700',
                         {
-                            'font-medium dark:text-blue-500 text-primary-500 bg-primary-100 dark:bg-primary-dark-700':
+                            'bg-primary-100 font-medium text-primary-500 dark:bg-primary-dark-700 dark:text-blue-500':
                                 ((c as File)?.id ?? 'NA') === selectedId
                         }
                     ]"
-                    class="flex flex-1 space-x-2 items-center py-1"
+                    class="flex flex-1 items-center space-x-2 py-1"
                 >
                     <span :style="{ width: level === 1 ? 0 : (level * 0.74).toString() + 'rem' }"></span>
                     <span class="w-4 flex-none">
@@ -67,16 +67,16 @@ function isCollapsed(id: string): boolean {
                 </span>
             </template>
             <template v-else>
-                <li class="flex flex-col flex-1">
+                <li class="flex flex-1 flex-col">
                     <span
                         v-if="((c as Folder).children ?? []).length !== 0"
-                        class="flex space-x-2 items-center hover:bg-primary-100 dark:hover:bg-gray-700 transition duration-200 ease-linear py-1 cursor-pointer"
+                        class="flex cursor-pointer items-center space-x-2 py-1 transition duration-200 ease-linear hover:bg-primary-100 dark:hover:bg-gray-700"
                         @click="collapseExpandFolder(c.id)"
                     >
                         <span :style="{ width: level === 1 ? 0 : (level * 0.7).toString() + 'rem' }"></span>
                         <span class="w-4"
                             ><ArrowRightIcon
-                                class="w-full transition ease-linear duration-200"
+                                class="w-full transition duration-200 ease-linear"
                                 :class="{ 'rotate-45': !isCollapsed(c.id) }"
                             ></ArrowRightIcon
                         ></span>
@@ -85,7 +85,7 @@ function isCollapsed(id: string): boolean {
                     </span>
                     <span
                         v-else
-                        class="flex space-x-2 items-center hover:bg-primary-100 dark:hover:bg-gray-700 transition duration-200 ease-linear py-1 cursor-default"
+                        class="flex cursor-default items-center space-x-2 py-1 transition duration-200 ease-linear hover:bg-primary-100 dark:hover:bg-gray-700"
                         title="Empty folder"
                     >
                         <span :style="{ width: level === 1 ? 0 : (level * 0.7).toString() + 'rem' }"></span>

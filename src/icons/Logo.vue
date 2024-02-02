@@ -99,14 +99,14 @@
             <animate attributeName="opacity" from="0" to="1" dur="300ms" begin="1400ms" fill="freeze" />
         </path>
         <path
-            class="opacity-0 heartbeat-animation"
+            class="heartbeat-animation opacity-0"
             style="stroke-width: 2; stroke-miterlimit: 10"
             d="M484.9 13.6c.2-.6 1-.6 1.2 0l1.1 3.4c.5 1.5 1.7 2.7 3.3 3.2l3.4 1.1c.6.2.6 1 0 1.2l-3.4 1.1c-1.5.5-2.7 1.7-3.2 3.3l-1.1 3.4c-.1.3-.5.5-.8.4-.2-.1-.3-.2-.4-.4l-1.1-3.4c-.5-1.5-1.7-2.7-3.2-3.2l-3.4-1.1c-.3-.1-.5-.5-.4-.8.1-.2.2-.3.4-.4l3.4-1.1c1.5-.5 2.7-1.7 3.2-3.2-.2-.1 1-3.5 1-3.5z"
         >
             <animate attributeName="opacity" from="0" to="1" dur="300ms" begin="1500ms" fill="freeze" />
         </path>
         <path
-            class="opacity-0 heartbeat-animation-half"
+            class="heartbeat-animation-half opacity-0"
             style="stroke-width: 2; stroke-miterlimit: 10"
             d="M478 4.5c.1-.2.3-.3.5-.2.1 0 .2.1.2.2l.7 2.1c.3.9 1 1.6 1.9 1.9l2.1.7c.2.1.3.3.2.5 0 .1-.1.2-.2.2l-2.1.7c-.9.3-1.6 1-1.9 1.9l-.7 2.1c-.1.2-.3.3-.5.2-.1 0-.2-.1-.2-.2l-.7-2.1c-.3-.9-1-1.6-1.9-1.9l-2.1-.7c-.2-.1-.3-.3-.2-.5 0-.1.1-.2.2-.2l2.1-.7c.9-.3 1.6-1 1.9-1.9l.7-2.1z"
         >

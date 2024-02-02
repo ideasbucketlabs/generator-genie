@@ -65,21 +65,21 @@ function closeDialog() {
             @close="emit('close')"
         >
             <div
-                class="flex flex-col bg-white dark:bg-primary-dark-800 dark:text-primary-dark-100 justify-between h-56"
+                class="flex h-56 flex-col justify-between bg-white dark:bg-primary-dark-800 dark:text-primary-dark-100"
             >
-                <div class="p-2 space-y-2">
+                <div class="space-y-2 p-2">
                     <div>Use this link to share the current configuration.</div>
                     <BaseInput v-model="information" :readOnly="true" label="" class="w-full"></BaseInput>
                 </div>
-                <div class="flex items-center justify-center relative footer z-0">
-                    <div class="bg-white dark:bg-primary-dark-700 w-full flex justify-center py-2 space-x-3">
+                <div class="footer relative z-0 flex items-center justify-center">
+                    <div class="flex w-full justify-center space-x-3 bg-white py-2 dark:bg-primary-dark-700">
                         <BaseButton :primary="true" @click="copyToClipboard(information)">
                             <span class="block">{{ copyText }}</span>
                         </BaseButton>
                         <BaseButton :primary="false" @click="closeDialog">
                             <span>Close</span>
                             <template #shortcut>
-                                <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Esc</span>
+                                <span v-if="!isMobile" class="ml-2 hidden font-extralight md:block">Esc</span>
                             </template>
                         </BaseButton>
                     </div>

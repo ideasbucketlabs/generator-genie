@@ -148,20 +148,20 @@ function validate() {
                 </div>
             </div>
         </div>
-        <div class="font-medium border-b border-dashed dark:border-gray-600">Project Metadata</div>
+        <div class="border-b border-dashed font-medium dark:border-gray-600">Project Metadata</div>
         <div class="space-y-4">
             <BaseInput v-model="name" label="Name:" :error="nameError" :has-error="haveError('name')"></BaseInput>
             <div class="">
                 <div class="block">Artifact (name of the zip file):</div>
                 <div
-                    class="w-full cursor-not-allowed bg-white hover:border-primary-500 border rounded border-gray-700 px-3 py-2 dark:bg-primary-dark-800 dark:border-gray-500"
+                    class="w-full cursor-not-allowed rounded border border-gray-700 bg-white px-3 py-2 hover:border-primary-500 dark:border-gray-500 dark:bg-primary-dark-800"
                 >
                     {{ artifact === '' ? '&nbsp;' : artifact + '.zip' }}
                 </div>
             </div>
             <div class="">
                 <div class="">Add Vue Router for Single Page Application development?</div>
-                <div class="space-x-4 flex">
+                <div class="flex space-x-4">
                     <BaseInput
                         name="includeRouter"
                         type="radio"
@@ -180,7 +180,7 @@ function validate() {
             </div>
             <div class="">
                 <div class="">Add Pinia for state management?</div>
-                <div class="space-x-4 flex">
+                <div class="flex space-x-4">
                     <BaseInput
                         name="includePinia"
                         type="radio"
@@ -199,7 +199,7 @@ function validate() {
             </div>
             <div class="">
                 <div class="">Add Vitest for Unit Testing?</div>
-                <div class="space-x-4 flex">
+                <div class="flex space-x-4">
                     <BaseInput
                         name="includeUnitTest"
                         type="radio"
@@ -218,7 +218,7 @@ function validate() {
             </div>
             <div class="">
                 <div class="">Add E2E test support?</div>
-                <div class="space-y-2 flex flex-col">
+                <div class="flex flex-col space-y-2">
                     <BaseInput
                         name="integrationTest"
                         type="radio"
@@ -258,7 +258,7 @@ function validate() {
             <div class="space-y-2 xl:flex xl:space-x-6 xl:space-y-0">
                 <div class="">
                     <div class="">Add Eslint?</div>
-                    <div class="space-x-4 flex">
+                    <div class="flex space-x-4">
                         <BaseInput
                             name="includeEslint"
                             type="radio"
@@ -277,7 +277,7 @@ function validate() {
                 </div>
                 <div class="" v-if="includeEslint">
                     <div class="">Add Prettier (for formatting)?</div>
-                    <div class="space-x-4 flex">
+                    <div class="flex space-x-4">
                         <BaseInput
                             name="includePrettier"
                             type="radio"
@@ -297,7 +297,7 @@ function validate() {
 
                 <div class="">
                     <div class="">Indent space size to use in codebase</div>
-                    <div class="space-x-4 flex">
+                    <div class="flex space-x-4">
                         <BaseInput
                             name="indentSize"
                             type="radio"
