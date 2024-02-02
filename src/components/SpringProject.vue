@@ -109,10 +109,10 @@ function validate() {
 
 <template>
     <div class="space-y-4">
-        <div class="space-y-4 xl:space-y-0 xl:space-x-10 xl:flex">
+        <div class="space-y-4 xl:flex xl:space-x-10 xl:space-y-0">
             <div class="">
                 <div class="font-medium">Language Preference</div>
-                <div class="space-x-4 flex">
+                <div class="flex space-x-4">
                     <BaseInput
                         v-model="language"
                         label="Java"
@@ -131,7 +131,7 @@ function validate() {
             </div>
             <div class="">
                 <div class="font-medium">Build Tool</div>
-                <div class="space-x-4 flex">
+                <div class="flex space-x-4">
                     <BaseInput
                         v-model="buildTool"
                         label="Gradle - Kotlin"
@@ -151,7 +151,7 @@ function validate() {
         </div>
         <div class="">
             <div class="font-medium">Spring boot version</div>
-            <div class="space-x-4 flex">
+            <div class="flex space-x-4">
                 <BaseInput
                     v-model="springBootVersion"
                     :label="SpringBootVersion['3_2_2']"
@@ -168,7 +168,7 @@ function validate() {
                 ></BaseInput>
             </div>
         </div>
-        <div class="font-medium border-b border-dashed dark:border-gray-600">Project Metadata</div>
+        <div class="border-b border-dashed font-medium dark:border-gray-600">Project Metadata</div>
         <div class="space-y-4">
             <BaseInput
                 v-model="group"
@@ -192,7 +192,7 @@ function validate() {
             <div class="">
                 <div class="block">Package Name:</div>
                 <div
-                    class="w-full cursor-not-allowed bg-white hover:border-primary-500 border rounded border-gray-700 px-3 py-2 dark:bg-primary-dark-800 dark:border-gray-500"
+                    class="w-full cursor-not-allowed rounded border border-gray-700 bg-white px-3 py-2 hover:border-primary-500 dark:border-gray-500 dark:bg-primary-dark-800"
                 >
                     {{ packageName }}
                 </div>

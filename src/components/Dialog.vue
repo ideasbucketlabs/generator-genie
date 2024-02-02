@@ -52,7 +52,7 @@ onBeforeUnmount(() => {
 
 <template>
     <div
-        class="absolute left-0 top-0 z-30 flex h-full w-full content-center items-end md:items-center justify-center overflow-hidden"
+        class="absolute left-0 top-0 z-30 flex h-full w-full content-center items-end justify-center overflow-hidden md:items-center"
         ref="root"
         role="dialog"
         aria-modal="true"

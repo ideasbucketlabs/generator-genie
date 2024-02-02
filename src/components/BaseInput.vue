@@ -84,7 +84,7 @@ onBeforeMount(() => {
         class="flex items-center"
         :class="[
             { 'text-error-500 dark:text-error-700': hasError },
-            [type === 'radio' ? '[&>label]:pl-2' : 'flex-col-reverse justify-start items-stretch']
+            [type === 'radio' ? '[&>label]:pl-2' : 'flex-col-reverse items-stretch justify-start']
         ]"
     >
         <div class="text-error-500 dark:text-error-700" v-if="hasError">
@@ -99,7 +99,7 @@ onBeforeMount(() => {
             :checked="value === modelValue"
             @change="emit('update:model-value', value)"
             :aria-label="label.replace(/(<([^>]+)>)/gi, '')"
-            class="cursor-pointer text-primary-500 dark:text-primary-400 hover:border hover:border-primary-500 focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-primary-500"
+            class="cursor-pointer text-primary-500 hover:border hover:border-primary-500 focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-primary-500 dark:text-primary-400"
         />
         <input
             v-else-if="type === 'text' || type === 'number'"
@@ -112,7 +112,7 @@ onBeforeMount(() => {
             class="w-full rounded transition duration-200 ease-linear focus:shadow-lg focus:outline-none focus:ring-1 focus:ring-offset-0 dark:bg-primary-dark-800"
             :class="[
                 hasError
-                    ? 'border-error-500 dark:border-error-700 have-error focus:border-error-500 focus:ring-error-500 dark:focus:ring-error-700'
+                    ? 'have-error border-error-500 focus:border-error-500 focus:ring-error-500 dark:border-error-700 dark:focus:ring-error-700'
                     : 'hover:border-primary-500 focus:border-primary-500 focus:ring-primary-500 dark:hover:border-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500'
             ]"
         />
@@ -126,14 +126,14 @@ onBeforeMount(() => {
             class="h-32 w-full rounded transition duration-200 ease-linear focus:shadow-lg focus:outline-none focus:ring-1 focus:ring-offset-0 dark:bg-primary-dark-800"
             :class="[
                 hasError
-                    ? 'border-error-500 dark:border-error-700 have-error focus:border-error-500 focus:ring-error-500 dark:focus:ring-error-700'
+                    ? 'have-error border-error-500 focus:border-error-500 focus:ring-error-500 dark:border-error-700 dark:focus:ring-error-700'
                     : 'hover:border-primary-500 focus:border-primary-500 focus:ring-primary-500'
             ]"
         ></textarea>
         <label class="flex cursor-pointer items-center" :for="id" :title="informationTooltip">
             <span v-if="!labelRaw" class="">{{ label }}</span>
             <span v-else class="" v-html="label"></span>
-            <span v-if="informationTooltip" class="w-4 fill-current text-blue-500 ml-1"
+            <span v-if="informationTooltip" class="ml-1 w-4 fill-current text-blue-500"
                 ><InformationIcon class="w-full"></InformationIcon
             ></span>
         </label>

@@ -38,17 +38,17 @@ const renderKey = ref<string>(getId())
 const DependenciesDialog = defineAsyncComponent({
     loader: () => import('@/components/DependenciesDialog.vue'),
     loadingComponent: AppComponentLoader,
-    delay: 100
+    delay: 50
 })
 const Explorer = defineAsyncComponent({
     loader: () => import('@/components/Explorer.vue'),
     loadingComponent: AppComponentLoader,
-    delay: 100
+    delay: 50
 })
 const ShareDialog = defineAsyncComponent({
     loader: () => import('@/components/ShareDialog.vue'),
     loadingComponent: AppComponentLoader,
-    delay: 100
+    delay: 50
 })
 
 const contentTree = ref<ContentTree | null>(null)
@@ -382,7 +382,7 @@ function onCloseShareDialog() {
 <template>
     <AppComponentLoader v-if="isLoading"></AppComponentLoader>
     <header
-        class="bg-primary-500 shadow-inner dark:bg-primary-dark-900 flex items-center justify-between transition ease-linear duration-200"
+        class="flex items-center justify-between bg-primary-500 shadow-inner transition duration-200 ease-linear dark:bg-primary-dark-900"
         :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
         role="banner"
     >
@@ -398,23 +398,23 @@ function onCloseShareDialog() {
         <input
             type="text"
             id="focus-trap-input-element-ui-1"
-            class="absolute top-0 left-0 w-px h-px bg-transparent p-0 m-0 border-0"
+            class="absolute left-0 top-0 m-0 h-px w-px border-0 bg-transparent p-0"
             aria-labelledby="focus-trap-label-element-ui-1"
             ref="focusTrapInputElement"
         />
-        <div class="flex space-y-3 flex-col items-center justify-center mr-2 md:flex-row md:space-y-0 md:space-x-4">
+        <div class="mr-2 flex flex-col items-center justify-center space-y-3 md:flex-row md:space-x-4 md:space-y-0">
             <a
                 href="https://github.com/ideasbucketlabs/generator-genie"
                 target="_blank"
                 aria-label="Go to Generator Genie Github page"
                 rel="noopener noreferrer"
                 tabindex="-1"
-                class="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 xl:w-9 xl:h-9 flex items-center justify-center"
+                class="flex h-5 w-5 items-center justify-center md:h-7 md:w-7 lg:h-8 lg:w-8 xl:h-9 xl:w-9"
                 title="Go to Generator Genie Github page"
             >
                 <span class="block h-full w-full"
                     ><GithubIcon
-                        class="text-white fill-current w-full h-full hover:scale-105 hover:drop-shadow-xl drop-shadow-lg"
+                        class="h-full w-full fill-current text-white drop-shadow-lg hover:scale-105 hover:drop-shadow-xl"
                         aria-label="Go to Generator Genie Github page"
                     ></GithubIcon
                 ></span>
@@ -424,13 +424,13 @@ function onCloseShareDialog() {
                 target="_blank"
                 tabindex="-1"
                 rel="noopener noreferrer"
-                class="w-5 h-5 md:w-7 md:h-7 lg:w-8 lg:h-8 xl:w-9 xl:h-9 flex items-center justify-center"
+                class="flex h-5 w-5 items-center justify-center md:h-7 md:w-7 lg:h-8 lg:w-8 xl:h-9 xl:w-9"
                 aria-label="Go to IdeasBucket Twitter(X) page"
                 title="Go to IdeasBucket Twitter(X) page"
             >
                 <span class="block h-full w-full"
                     ><XIcon
-                        class="text-white fill-current w-full h-full hover:scale-105 hover:drop-shadow-xl drop-shadow-lg"
+                        class="h-full w-full fill-current text-white drop-shadow-lg hover:scale-105 hover:drop-shadow-xl"
                         aria-label="Go to IdeasBucket Twitter(X) page"
                     ></XIcon
                 ></span>
@@ -438,7 +438,7 @@ function onCloseShareDialog() {
         </div>
     </header>
     <main
-        class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 dark:bg-primary-dark-800 dark:text-primary-dark-100 transition ease-linear duration-200"
+        class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 transition duration-200 ease-linear dark:bg-primary-dark-800 dark:text-primary-dark-100"
         :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
         role="main"
     >
@@ -469,7 +469,7 @@ function onCloseShareDialog() {
             "
         ></DependenciesDialog>
         <div class="xl:flex">
-            <div class="overflow-auto xl:flex-1 xl:h-min xl:sticky xl:top-0">
+            <div class="overflow-auto xl:sticky xl:top-0 xl:h-min xl:flex-1">
                 <div class="space-y-4 p-2 xl:flex xl:space-x-10 xl:space-y-0">
                     <div class="">
                         <div class="font-medium">Project Type</div>
@@ -500,13 +500,13 @@ function onCloseShareDialog() {
                     <VueJsProject v-else v-model="vueJsProject" ref="vueJsProjectComponent"></VueJsProject>
                 </div>
             </div>
-            <div class="flex-1 xl:flex xl:flex-col p-2">
+            <div class="flex-1 p-2 xl:flex xl:flex-col">
                 <div class="flex items-center justify-between">
                     <div class="font-medium">Dependencies</div>
                     <BaseButton :primary="false" ref="addDependencyButton" @click="displayDependencyDialog">
                         <template #shortcut>
                             <span v-if="!isMobile && isMac" class="ml-2 block font-extralight">⌘ + b</span>
-                            <span v-if="!isMobile && !isMac" class="font-mono ml-2 block font-extralight"
+                            <span v-if="!isMobile && !isMac" class="ml-2 block font-mono font-extralight"
                                 >Ctrl + b</span
                             >
                         </template>
@@ -515,7 +515,7 @@ function onCloseShareDialog() {
                 </div>
                 <hr class="my-2 dark:border-gray-500" />
                 <div class="mt-2 italic" v-if="selectedPackages.size === 0">No dependency selected</div>
-                <div v-else class="xl:flex xl:flex-col space-y-4 xl:overflow-y-auto">
+                <div v-else class="space-y-4 xl:flex xl:flex-col xl:overflow-y-auto">
                     <TransitionGroup
                         name="list"
                         tag="div"
@@ -528,7 +528,7 @@ function onCloseShareDialog() {
                             :key="'package-' + p.id"
                             data-selected-package-item="true"
                             :data-selected-package-item-id="p.id"
-                            class="flex items-center justify-between rounded p-2 shadow border border-gray-200 dark:border-gray-500"
+                            class="flex items-center justify-between rounded border border-gray-200 p-2 shadow dark:border-gray-500"
                             :class="[
                                 p.supported ? 'bg-white dark:bg-primary-dark-700' : 'bg-error-100 dark:bg-error-500'
                             ]"
@@ -568,24 +568,24 @@ function onCloseShareDialog() {
     </main>
     <footer
         role="contentinfo"
-        class="flex footer border-primary-50 z-0 relative items-center transition ease-linear duration-200"
+        class="footer relative z-0 flex items-center border-primary-50 transition duration-200 ease-linear"
         :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
     >
         <div
-            class="h-16 flex relative flex-1 z-0 bg-white items-center justify-center space-x-4 border-t dark:border-gray-900 dark:bg-primary-dark-700"
+            class="relative z-0 flex h-16 flex-1 items-center justify-center space-x-4 border-t bg-white dark:border-gray-900 dark:bg-primary-dark-700"
         >
             <BaseButton ref="generateButton" :primary="true" :enabled="haveValidProjectMetaData()" @click="onGenerate">
                 <span class="block">{{ generateButtonLabel }}</span>
                 <template #shortcut>
-                    <span class="ml-2 font-extralight hidden md:block" v-if="!isMobile && isMac">⌘ + ⏎</span>
-                    <span class="ml-2 hidden md:block font-extralight" v-if="!isMobile && !isMac">Ctrl + ⏎</span>
+                    <span class="ml-2 hidden font-extralight md:block" v-if="!isMobile && isMac">⌘ + ⏎</span>
+                    <span class="ml-2 hidden font-extralight md:block" v-if="!isMobile && !isMac">Ctrl + ⏎</span>
                 </template>
             </BaseButton>
 
             <BaseButton :enabled="haveValidProjectMetaData()" ref="exploreButton" @click="onExplore">
                 <span>Explore</span>
                 <template #shortcut>
-                    <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Ctrl + Space</span>
+                    <span v-if="!isMobile" class="ml-2 hidden font-extralight md:block">Ctrl + Space</span>
                 </template>
             </BaseButton>
 
@@ -596,7 +596,7 @@ function onCloseShareDialog() {
                 class="flex-row-reverse"
             >
                 <template #shortcut>
-                    <span class="w-4 h-4 hidden md:block mr-2"
+                    <span class="mr-2 hidden h-4 w-4 md:block"
                         ><ShareIcon class="fill-current text-primary-500 dark:text-primary-200"></ShareIcon
                     ></span>
                 </template>

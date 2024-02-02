@@ -32,9 +32,9 @@ function compileTemplates() {
     compilationComplete = true
 }
 
-function getPrettierConfig(indentSize: number): string {
-    return JSON.stringify(
-        {
+function getPrettierConfig(indentSize: number, includeTailwindPlugin: boolean): string {
+    const payload = {
+        ...{
             $schema: 'https://json.schemastore.org/prettierrc',
             semi: false,
             tabWidth: indentSize,
@@ -42,9 +42,14 @@ function getPrettierConfig(indentSize: number): string {
             printWidth: 100,
             trailingComma: 'none'
         },
-        null,
-        indentSize
-    )
+        ...(includeTailwindPlugin
+            ? {
+                  plugins: ['prettier-plugin-tailwindcss']
+              }
+            : {})
+    }
+
+    return JSON.stringify(payload, null, indentSize)
 }
 
 function getTsConfigAppJson(indentSize: number): string {
@@ -913,7 +918,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
             lang: Language.Json,
             id: getId(),
             type: ContentType.File,
-            content: getPrettierConfig(projectMetaData.metadata.indentSize)
+            content: getPrettierConfig(projectMetaData.metadata.indentSize, dependenciesIds.has('tailwind'))
         } as File)
     }
 

@@ -164,27 +164,27 @@ onMounted(async () => {
             @close="emit('close')"
         >
             <div style="height: calc(100dvh - 5dvw)" class="flex dark:text-primary-dark-100">
-                <div class="bg-primary-50 dark:bg-primary-dark-800 w-72 hidden xl:flex flex-col xl:pb-16">
+                <div class="hidden w-72 flex-col bg-primary-50 xl:flex xl:pb-16 dark:bg-primary-dark-800">
                     <div
-                        class="p-2 font-semibold text-primary-500 border-b border-primary-100 dark:border-gray-700 h-11 flex items-center"
+                        class="flex h-11 items-center border-b border-primary-100 p-2 font-semibold text-primary-500 dark:border-gray-700"
                     >
                         {{ artifact }}.zip
                     </div>
-                    <div class="flex-1 overflow-auto flex">
+                    <div class="flex flex-1 overflow-auto">
                         <TreeNode
                             v-if="content !== null"
                             :level="1"
                             :content="content.tree"
-                            class="max-w-[24rem] flex flex-col flex-1"
+                            class="flex max-w-[24rem] flex-1 flex-col"
                             :selected-id="selectedFileId"
                             @node-selected="selectFile($event.id, $event.content, $event.lang)"
                         ></TreeNode>
                     </div>
                 </div>
-                <div class="flex-1 flex flex-col overflow-auto">
-                    <div class="xl:hidden flex" v-if="content !== null">
+                <div class="flex flex-1 flex-col overflow-auto">
+                    <div class="flex xl:hidden" v-if="content !== null">
                         <select
-                            class="flex-1 dark:bg-primary-dark-900 text-primary-500 hover:border border-primary-100 dark:border-primary-500 hover:border-primary-200 focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border-primary-200 dark:focus:border-primary-500"
+                            class="flex-1 border-primary-100 text-primary-500 hover:border hover:border-primary-200 focus:border-primary-200 focus:outline-none focus:ring-0 focus:ring-offset-0 dark:border-primary-500 dark:bg-primary-dark-900 dark:focus:border-primary-500"
                             @change="nestedOptionChanged(($event.target as HTMLInputElement) ?? null)"
                         >
                             <NestedOption
@@ -195,17 +195,17 @@ onMounted(async () => {
                         </select>
                     </div>
                     <div
-                        class="flex-1 border-l border-b border-primary-100 dark:border-gray-700 flex flex-col rounded-bl bg-white dark:bg-primary-dark-900 overflow-auto"
+                        class="flex flex-1 flex-col overflow-auto rounded-bl border-b border-l border-primary-100 bg-white dark:border-gray-700 dark:bg-primary-dark-900"
                     >
                         <div
-                            class="border-b flex border-primary-100 items-center justify-center bg-primary-50 dark:bg-primary-dark-800 dark:border-gray-700 h-11"
+                            class="flex h-11 items-center justify-center border-b border-primary-100 bg-primary-50 dark:border-gray-700 dark:bg-primary-dark-800"
                             v-if="selectedFileLanguageType === Language.Markdown"
                         >
                             <button
                                 type="button"
                                 v-if="markedDownShowPreview"
                                 @click="markedDownShowPreview = !markedDownShowPreview"
-                                class="relative flex my-1 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-1 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
+                                class="relative my-1 flex items-center overflow-hidden rounded border border-primary-400 px-4 py-1 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:border-gray-950 dark:bg-primary-dark-600 dark:text-primary-dark-100 dark:hover:bg-gray-700"
                             >
                                 <Ripple></Ripple>
                                 View Source
@@ -214,7 +214,7 @@ onMounted(async () => {
                                 type="button"
                                 v-if="!markedDownShowPreview"
                                 @click="markedDownShowPreview = !markedDownShowPreview"
-                                class="relative flex my-1 dark:border-gray-950 border-primary-400 items-center overflow-hidden rounded border px-4 py-1 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:text-primary-dark-100 dark:bg-primary-dark-600 dark:hover:bg-gray-700"
+                                class="relative my-1 flex items-center overflow-hidden rounded border border-primary-400 px-4 py-1 transition duration-200 ease-linear hover:bg-gray-200 hover:shadow-lg dark:border-gray-950 dark:bg-primary-dark-600 dark:text-primary-dark-100 dark:hover:bg-gray-700"
                             >
                                 <Ripple></Ripple>
                                 Preview
@@ -222,10 +222,10 @@ onMounted(async () => {
                         </div>
                         <div
                             v-if="selectedFileLanguageType === Language.Markdown && markedDownShowPreview"
-                            class="overflow-auto relative h-10 flex flex-grow"
+                            class="relative flex h-10 flex-grow overflow-auto"
                         >
                             <MarkdownPreview
-                                class="absolute p-4 w-full prose prose-a:text-blue-500 dark:prose-invert prose-gray"
+                                class="prose prose-gray absolute w-full p-4 dark:prose-invert prose-a:text-blue-500"
                                 :content="rawCode"
                             ></MarkdownPreview>
                         </div>
@@ -233,21 +233,21 @@ onMounted(async () => {
                             <div class="flex flex-1">
                                 <div
                                     v-if="numberOfLinesInACode !== 0"
-                                    class="mr-2 w-10 text-right pr-1 dark:bg-primary-dark-800 bg-primary-50 text-primary-300 dark:text-primary-dark-500 border-r border-primary-100 dark:border-gray-700"
+                                    class="mr-2 w-10 border-r border-primary-100 bg-primary-50 pr-1 text-right text-primary-300 dark:border-gray-700 dark:bg-primary-dark-800 dark:text-primary-dark-500"
                                     v-html="lineHtml"
                                 ></div>
-                                <pre class="code-display flex-1 rounded-bl overflow-auto relative" v-html="code"></pre>
+                                <pre class="code-display relative flex-1 overflow-auto rounded-bl" v-html="code"></pre>
                             </div>
                         </template>
 
                         <!--                        <pre class="code-display flex-1 rounded-bl overflow-auto relative" v-html="code"></pre>-->
                     </div>
-                    <div class="flex justify-center space-x-4 bg-primary-50 dark:bg-primary-dark-800 py-2">
+                    <div class="flex justify-center space-x-4 bg-primary-50 py-2 dark:bg-primary-dark-800">
                         <BaseButton :primary="true" @click="emit('downloadClicked')" v-if="!isMobile">
                             <span class="block">Download</span>
                             <template #shortcut>
-                                <span class="ml-2 font-extralight hidden md:block" v-if="isMac">⌘ + ⏎</span>
-                                <span class="ml-2 font-extralight hidden md:block" v-else>Ctrl + ⏎</span>
+                                <span class="ml-2 hidden font-extralight md:block" v-if="isMac">⌘ + ⏎</span>
+                                <span class="ml-2 hidden font-extralight md:block" v-else>Ctrl + ⏎</span>
                             </template>
                         </BaseButton>
 
@@ -258,7 +258,7 @@ onMounted(async () => {
                         <BaseButton @click="closeDialog">
                             <span>Close</span>
                             <template #shortcut>
-                                <span v-if="!isMobile" class="ml-2 font-extralight hidden md:block">Esc</span>
+                                <span v-if="!isMobile" class="ml-2 hidden font-extralight md:block">Esc</span>
                             </template>
                         </BaseButton>
                     </div>
@@ -270,14 +270,14 @@ onMounted(async () => {
 
 <style scoped>
 .line-number {
-    @apply leading-6 whitespace-pre;
+    @apply whitespace-pre leading-6;
     word-spacing: normal;
     word-wrap: normal;
 }
 
 :deep(.code-display) code,
 .code-display {
-    @apply leading-6 whitespace-pre text-left bg-none border-0 text-black;
+    @apply whitespace-pre border-0 bg-none text-left leading-6 text-black;
     direction: ltr;
     word-spacing: normal;
     word-wrap: normal;
