@@ -184,7 +184,7 @@ const data: Dependency[] = [
                         name: 'Spring Security Test',
                         id: 'security-test',
                         description: '',
-                        groupId: 'org.springframework.boot',
+                        groupId: 'org.springframework.security',
                         artifactId: 'spring-security-test'
                     }
                 ]
