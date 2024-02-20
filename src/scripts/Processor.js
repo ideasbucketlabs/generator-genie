@@ -46,8 +46,8 @@ function determineFileLanguageType(filename) {
     return 'txt'
 }
 
-glob(path.join('src', 'generator', '**', '*.txt'), {
-    ignore: path.join('src', 'generator', '**', 'compiled', '**')
+glob('src/generator/**/*.txt', {
+    ignore: 'src/generator/**/compiled/**'
 }).then((files) => {
     files.forEach((file) => {
         const module = getModule(file)
@@ -62,7 +62,7 @@ glob(path.join('src', 'generator', '**', '*.txt'), {
         })
         templateMap.set(module, templates)
     })
-    glob(path.join('src', 'generator', '**', 'compiled', '*.ts')).then((files) => {
+    glob('src/generator/**/compiled/*.ts').then((files) => {
         files.forEach((file) => {
             fs.unlinkSync(file)
         })
