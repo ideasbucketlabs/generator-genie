@@ -58,14 +58,27 @@ onBeforeUnmount(() => {
         aria-modal="true"
         tabindex="-1"
     >
-        <transition name="fade" @after-enter="show" @after-leave="onClose">
+        <transition
+            enter-from-class="opacity-0"
+            enter-active-class="opacity-100 transition duration-500 ease-out"
+            leave-to-class="opacity-0"
+            leave-active-class="transition duration-500 ease-out"
+            @after-enter="show"
+            @after-leave="onClose"
+        >
             <div class="absolute left-0 top-0 h-full w-full" v-if="displayOverlay" @click="emit('overlayClicked')">
                 <div
                     class="absolute left-0 top-0 h-full w-full bg-primary-100 opacity-50 dark:bg-primary-dark-700"
                 ></div>
             </div>
         </transition>
-        <transition name="fade-bottom" @after-leave="displayOverlay = false">
+        <transition
+            enter-from-class="-translate-y-[8%] opacity-0"
+            enter-active-class="transition duration-500 ease-out"
+            leave-to-class="translate-y-[8%] opacity-0"
+            leave-active-class="transition duration-500 ease-out"
+            @after-leave="displayOverlay = false"
+        >
             <div :class="[dialogClass, width]" v-if="displayContent">
                 <div
                     v-if="title"
