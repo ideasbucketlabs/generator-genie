@@ -519,8 +519,10 @@ function onCloseShareDialog() {
                     <TransitionGroup
                         name="list"
                         tag="div"
-                        enter-active-class="animate__animated fadeIn"
-                        leave-active-class="animate__animated fadeOut"
+                        enter-from-class="-translate-x-full opacity-0"
+                        enter-active-class="transition duration-500 ease-out"
+                        leave-to-class="opacity-0"
+                        leave-active-class="transition duration-500 ease-out"
                         class="flex flex-col space-y-4"
                     >
                         <div
