@@ -581,13 +581,13 @@ const data: Dependency[] = [
                 artifactId: 'micrometer-registry-graphite'
             },
             {
-                name: 'Elastic APM',
-                id: 'elastic-apm',
+                name: 'Elastic APM Agent',
+                id: 'elastic-apm-agent',
                 description:
-                    'Elastic APM is an application performance monitoring system built on the Elastic Stack. It allows you to monitor software services and applications in real-time, by collecting detailed performance information on response time for incoming requests, database queries, calls to caches, external HTTP requests, and more. This makes it easy to pinpoint and fix performance problems quickly.',
+                    'Elastic APM Agent is an application performance monitoring system built on the Elastic Stack. It allows you to monitor software services and applications in real-time, by collecting detailed performance information on response time for incoming requests, database queries, calls to caches, external HTTP requests, and more. This makes it easy to pinpoint and fix performance problems quickly.',
                 groupId: 'co.elastic.apm',
-                artifactId: 'apm-agent-api',
-                version: '1.44.0'
+                artifactId: 'apm-agent-attach',
+                version: '1.47.1'
             },
             {
                 name: 'Distributed Tracing',
