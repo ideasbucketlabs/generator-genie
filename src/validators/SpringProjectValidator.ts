@@ -44,8 +44,10 @@ export function isValid(springProject: SpringProject): SpringProjectError {
         error.artifact = 'Artifact cannot be null or blank.'
     } else if ((springProject.artifact ?? '').trim().length === 0) {
         error.artifact = 'Artifact cannot be null or blank.'
-    } else if (!/^[a-zA-Z](?![a-zA-Z\d]*\d$)[a-zA-Z\d]*$/.test(springProject.artifact)) {
-        error.artifact = 'Artifact cannot begin and end with number or non alpha characters.'
+    } else if (!/^[a-zA-Z][a-zA-Z0-9\\-\\_]+[a-zA-Z]$/.test(springProject.artifact)) {
+        error.artifact =
+            // eslint-disable-next-line vue/max-len
+            'Artifact name cannot have non alpha numeric characters other than dash, underscore and cannot begin and end with number or non alpha characters.'
     }
 
     if (
