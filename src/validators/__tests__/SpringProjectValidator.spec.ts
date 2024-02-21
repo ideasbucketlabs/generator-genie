@@ -162,7 +162,7 @@ describe('Can validate Spring project', () => {
             '{"language":"kotlin","description":"test","artifact":".wefwef","name":"demoo","buildTool": "gradle","springBootVersion":"3.1.8","group":"com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             artifact:
-                'Artifact name cannot have non alpha numeric characters other than dash and cannot begin and end with number or non alpha characters.'
+                'Artifact name cannot have non alpha numeric characters other than dash, underscore and cannot begin and end with number or non alpha characters.'
         })
     })
 
