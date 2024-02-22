@@ -17,8 +17,8 @@ export function isValid(springProject: SpringProject): SpringProjectError {
     }
 
     if (typeof (springProject.name ?? '') !== 'string') {
-        error.name = 'Name cannot be null or blank and must be all lower case.'
-    } else if ((springProject.name ?? '').trim().length < 3) {
+        error.name = 'Name cannot be null or blank.'
+    } else if ((springProject.name ?? '').trim().length < 2) {
         error.name = 'Name cannot be null or blank and must be at least 2 characters.'
     } else if (!/^[a-zA-Z][a-zA-Z0-9]+$/.test(springProject.name)) {
         error.name = 'Name must be all alpha numeric and must begin with alpha character.'
@@ -44,10 +44,10 @@ export function isValid(springProject: SpringProject): SpringProjectError {
         error.artifact = 'Artifact cannot be null or blank.'
     } else if ((springProject.artifact ?? '').trim().length === 0) {
         error.artifact = 'Artifact cannot be null or blank.'
-    } else if (!/^[a-zA-Z][a-zA-Z0-9\\-\\_]+[a-zA-Z]$/.test(springProject.artifact)) {
-        error.artifact =
-            // eslint-disable-next-line vue/max-len
-            'Artifact name cannot have non alpha numeric characters other than dash, underscore and cannot begin and end with number or non alpha characters.'
+    } else if (!/^[a-zA-Z].*[a-zA-Z\d]$/.test(springProject.artifact)) {
+        error.artifact = 'Artifact must begin with a letter and end with a letter or number.'
+    } else if (!/^[a-zA-Z\d._-]+$/.test(springProject.artifact)) {
+        error.artifact = 'Artifact must only contain letters, numbers, periods, hyphens, and underscores.'
     }
 
     if (
