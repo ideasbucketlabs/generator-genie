@@ -602,7 +602,7 @@ const data: Dependency[] = [
                 description:
                     'Publish metrics and optionally distributed traces to Tanzu Observability by Wavefront, a SaaS-based metrics monitoring and analytics platform that lets you visualize, query, and alert over data from across your entire stack.',
                 groupId: 'io.micrometer',
-                artifactId: 'micrometer-tracing-reporter-wavefront'
+                artifactId: 'micrometer-registry-wavefront'
             },
             {
                 name: 'New Relic',

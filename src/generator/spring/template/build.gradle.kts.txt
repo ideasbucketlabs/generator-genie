@@ -50,7 +50,7 @@ extra["springCloudVersion"] = "{{ springCloudVersion }}"
 extra["springShellVersion"] = "{{ springShellVersion }}"
 {%- endif -%}
 {%- if haveTimeFoldSolverDependency -%}
-extra["timefoldSolverVersion"] = "1.6.0"
+extra["timefoldSolverVersion"] = "1.7.0"
 {%- endif -%}
 {%- endif -%}
 
@@ -76,9 +76,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     {%- endif -%}
     {%- endfor -%}
-    {%- if dependenciesIds.size == 1 and dependenciesIds contains "timefold-solver" -%}
-    implementation("org.springframework.boot:spring-boot-starter")
-    {%- endif -%}
     {%- if kotlinSelected -%}
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     {%- endif -%}
@@ -98,11 +95,6 @@ dependencies {
     {%- endunless -%}
     {%- for runtimeDependency in runtimeDependencies -%}
     runtimeOnly("{{ runtimeDependency.groupId }}:{{ runtimeDependency.artifactId }}{%- if runtimeDependency.version -%}:{{ runtimeDependency.version}}{%- endif -%}")
-    {%- if runtimeDependency.id == 'wavefront' -%}
-        {%- if dependenciesIds contains "zipkin" or dependenciesIds contains "distributed-tracing" -%}
-    runtimeOnly("io.micrometer:micrometer-registry-wavefront")
-        {%- endif -%}
-    {%- endif -%}
     {%- if dependenciesIds contains "data-r2dbc" -%}
         {%- if runtimeDependency.id == "h2" -%}
     runtimeOnly("io.r2dbc:r2dbc-h2")
@@ -117,6 +109,9 @@ dependencies {
         {%- endif -%}
     {%- endif -%}
     {%- endfor -%}
+    {%- if dependenciesIds contains "wavefront" and dependenciesIds contains "zipkin" or dependenciesIds contains "distributed-tracing" -%}
+    runtimeOnly("io.micrometer:micrometer-registry-wavefront")
+    {%- endif -%}
     {%- for developmentDependency in developmentDependencies -%}
     developmentOnly("{{ developmentDependency.groupId }}:{{ developmentDependency.artifactId }}{%- if developmentDependency.version -%}:{{ developmentDependency.version}}{%- endif -%}")
     {%- endfor -%}
