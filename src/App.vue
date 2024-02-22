@@ -137,7 +137,15 @@ const selectedPackageInformation = computed<Package[]>(() => {
     return Array.from(selectedPackages.value)
         .map((packageId: string) => {
             try {
-                const packageInformation = dependencyStore.packageInformationByProjectType(projectType.value, packageId)
+                const packageInformation =
+                    projectType.value === ProjectType.Spring
+                        ? dependencyStore.packageInformationByProjectTypeAndVersion(
+                              projectType.value,
+                              packageId,
+                              springProject.value.metaData.springBootVersion
+                          )
+                        : dependencyStore.packageInformationByProjectType(projectType.value, packageId)
+
                 if (projectType.value !== ProjectType.Spring) {
                     return packageInformation
                 }
@@ -382,7 +390,7 @@ function onCloseShareDialog() {
 <template>
     <AppComponentLoader v-if="isLoading"></AppComponentLoader>
     <header
-        class="flex items-center justify-between bg-primary-500 shadow-inner transition duration-200 ease-linear dark:bg-primary-dark-900"
+        class="flex items-center justify-between bg-primary-500 shadow-inner transition duration-200 ease-linear xl:px-4 dark:bg-primary-dark-900"
         :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
         role="banner"
     >
@@ -438,7 +446,7 @@ function onCloseShareDialog() {
         </div>
     </header>
     <main
-        class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 transition duration-200 ease-linear dark:bg-primary-dark-800 dark:text-primary-dark-100"
+        class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 transition duration-200 ease-linear xl:px-4 dark:bg-primary-dark-800 dark:text-primary-dark-100"
         :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
         role="main"
     >

@@ -57,7 +57,7 @@ describe('Can validate Spring project', () => {
         const input =
             '{"name":false,"language":"kotlin","description":"test", "buildTool": "gradle","springBootVersion":"3.1.8","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
-            name: 'Name cannot be null or blank and must be all lower case.'
+            name: 'Name cannot be null or blank.'
         })
     })
 
@@ -71,7 +71,7 @@ describe('Can validate Spring project', () => {
 
     it.concurrent('it can validate name for length for Spring Project #4', () => {
         const input =
-            '{"name":"tt","language":"kotlin","description":"test", "buildTool": "gradle","springBootVersion":"3.1.8","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
+            '{"name":"t","language":"kotlin","description":"test", "buildTool": "gradle","springBootVersion":"3.1.8","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
             name: 'Name cannot be null or blank and must be at least 2 characters.'
         })
@@ -161,8 +161,15 @@ describe('Can validate Spring project', () => {
         const input =
             '{"language":"kotlin","description":"test","artifact":".wefwef","name":"demoo","buildTool": "gradle","springBootVersion":"3.1.8","group":"com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
         expect(isValid(JSON.parse(input))).toStrictEqual({
-            artifact:
-                'Artifact name cannot have non alpha numeric characters other than dash, underscore and cannot begin and end with number or non alpha characters.'
+            artifact: 'Artifact must begin with a letter and end with a letter or number.'
+        })
+    })
+
+    it.concurrent('it can validate Artifact name for Spring Project #6', () => {
+        const input =
+            '{"language":"kotlin","description":"test","artifact":"we$$fwef","name":"demoo","buildTool": "gradle","springBootVersion":"3.1.8","group":"com.playpen","packageName":"com.playpen.demoo","javaVersion":21}'
+        expect(isValid(JSON.parse(input))).toStrictEqual({
+            artifact: 'Artifact must only contain letters, numbers, periods, hyphens, and underscores.'
         })
     })
 

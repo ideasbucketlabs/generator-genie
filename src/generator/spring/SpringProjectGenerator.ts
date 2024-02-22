@@ -32,7 +32,7 @@ const springCloudDependencies = [
 ]
 
 const supportedDatabases = new Set(['mariadb', 'sqlserver', 'mysql', 'postgresql', 'h2', 'hsql'])
-const runtimeEntries = new Set(['prometheus', 'influx', 'graphite', 'wavefront', 'newrelic'])
+const runtimeEntries = new Set(['prometheus', 'influx', 'graphite', 'newrelic'])
 
 let compilationComplete = false
 const parsedTemplates: Map<string, Template[]> = new Map()

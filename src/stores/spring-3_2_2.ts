@@ -593,8 +593,9 @@ const data: Dependency[] = [
                 id: 'wavefront',
                 description:
                     'Publish metrics and optionally distributed traces to Tanzu Observability by Wavefront, a SaaS-based metrics monitoring and analytics platform that lets you visualize, query, and alert over data from across your entire stack.',
-                groupId: 'io.micrometer',
-                artifactId: 'micrometer-tracing-reporter-wavefront'
+                groupId: 'com.wavefront',
+                artifactId: 'wavefront-spring-boot-starter',
+                version: '3.2.0'
             },
             {
                 name: 'New Relic',

@@ -56,8 +56,13 @@ export const dependencyStore = defineStore('dependency', () => {
 
     const packageInformation = new Map<string, Map<string, Package>>()
     packageInformation.set(
-        ProjectType.Spring,
-        new Map([...getPackageInformationMap(spring3_2_2), ...getPackageInformationMap(spring3_1_8)])
+        `${ProjectType.Spring}${SpringBootVersion['3_2_2']}`,
+        new Map([...getPackageInformationMap(spring3_2_2)])
+    )
+
+    packageInformation.set(
+        `${ProjectType.Spring}${SpringBootVersion['3_1_8']}`,
+        new Map([...getPackageInformationMap(spring3_1_8)])
     )
 
     packageInformation.set(ProjectType.VueJS, new Map([...getPackageInformationMap(vuejs)]))
@@ -68,6 +73,24 @@ export const dependencyStore = defineStore('dependency', () => {
         }
 
         return dependencies.get(projectType) ?? []
+    }
+
+    function packageInformationByProjectTypeAndVersion(
+        projectType: ProjectType,
+        packageId: string,
+        springBootVersion: SpringBootVersion
+    ) {
+        if (!packageInformation.has(`${projectType}${springBootVersion}`)) {
+            throw new Error('Unknown project type ' + projectType + ' and version ' + springBootVersion)
+        }
+
+        if (!packageInformation.get(`${projectType}${springBootVersion}`)!!.has(packageId)) {
+            throw new Error(
+                `Unknown project type ${projectType} and version ${springBootVersion} and package ${packageId}`
+            )
+        }
+
+        return packageInformation.get(`${projectType}${springBootVersion}`)!!.get(packageId)!!
     }
 
     function packageInformationByProjectType(projectType: ProjectType, packageId: string): Package {
@@ -105,6 +128,7 @@ export const dependencyStore = defineStore('dependency', () => {
         dependenciesByProjectType,
         dependenciesByProjectTypeForSpring,
         packageInformationByProjectType,
-        checkPackageSupportForSpring
+        checkPackageSupportForSpring,
+        packageInformationByProjectTypeAndVersion
     }
 })
