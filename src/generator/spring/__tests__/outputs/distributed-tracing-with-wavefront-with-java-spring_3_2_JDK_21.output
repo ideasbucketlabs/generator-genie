@@ -18,7 +18,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
-    runtimeOnly("io.micrometer:micrometer-tracing-reporter-wavefront")
+    implementation("io.micrometer:micrometer-registry-wavefront")
     runtimeOnly("io.micrometer:micrometer-registry-wavefront")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
