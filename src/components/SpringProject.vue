@@ -37,7 +37,9 @@ const packageName = computed<string>(() => {
         return group.value
     }
 
-    return group.value + '.' + artifact.value
+    const output = group.value + '.' + artifact.value
+
+    return output.replace(/-/g, '')
 })
 
 const springProject = computed<SpringProject>(() => {
