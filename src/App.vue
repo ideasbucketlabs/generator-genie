@@ -524,54 +524,42 @@ function onCloseShareDialog() {
                 <hr class="my-2 dark:border-gray-500" />
                 <div class="mt-2 italic" v-if="selectedPackages.size === 0">No dependency selected</div>
                 <div v-else class="space-y-4 xl:flex xl:flex-col xl:overflow-y-auto">
-                    <TransitionGroup
-                        name="list"
-                        tag="div"
-                        enter-from-class="-translate-x-full opacity-0"
-                        enter-active-class="transition duration-500 ease-out"
-                        leave-to-class="opacity-0"
-                        leave-active-class="transition duration-500 ease-out"
-                        class="flex flex-col space-y-4"
+                    <div
+                        v-for="p in selectedPackageInformation"
+                        :key="'package-' + p.id"
+                        data-selected-package-item="true"
+                        :data-selected-package-item-id="p.id"
+                        class="group flex items-center justify-between rounded border border-gray-200 p-2 shadow dark:border-gray-500"
+                        :class="[p.supported ? 'bg-white dark:bg-primary-dark-700' : 'bg-error-100 dark:bg-error-500']"
                     >
-                        <div
-                            v-for="p in selectedPackageInformation"
-                            :key="'package-' + p.id"
-                            data-selected-package-item="true"
-                            :data-selected-package-item-id="p.id"
-                            class="flex items-center justify-between rounded border border-gray-200 p-2 shadow dark:border-gray-500"
-                            :class="[
-                                p.supported ? 'bg-white dark:bg-primary-dark-700' : 'bg-error-100 dark:bg-error-500'
-                            ]"
-                        >
-                            <div>
-                                <div class="space-x-2 font-medium">
-                                    <div>
-                                        {{ p.name
-                                        }}<span
-                                            class="ml-2 truncate rounded bg-primary-500 px-2 py-1 text-sm uppercase text-white"
-                                            >{{ p.parentName }}</span
-                                        >
-                                    </div>
-                                </div>
-                                <div>{{ p.description }}</div>
-                                <div class="text-error-500 dark:text-error-900" v-if="!p.supported">
-                                    Not supported for selected Spring Boot version
+                        <div class="flex-1">
+                            <div class="space-x-2 font-medium">
+                                <div>
+                                    {{ p.name
+                                    }}<span
+                                        class="ml-2 truncate rounded bg-primary-500 px-2 py-1 text-sm uppercase text-white"
+                                        >{{ p.parentName }}</span
+                                    >
                                 </div>
                             </div>
-                            <div class="w-7 pl-1">
-                                <button
-                                    type="button"
-                                    class="flex w-6 items-center rounded-full bg-error-500 hover:shadow-lg dark:bg-error-700"
-                                    title="Remove this package"
-                                    @click="removePackage(p.id)"
-                                >
-                                    <span class="block"
-                                        ><CloseIcon class="w-full fill-current text-white"></CloseIcon
-                                    ></span>
-                                </button>
+                            <div>{{ p.description }}</div>
+                            <div class="text-error-500 dark:text-error-900" v-if="!p.supported">
+                                Not supported for selected Spring Boot version
                             </div>
                         </div>
-                    </TransitionGroup>
+                        <div class="w-7 pl-1">
+                            <button
+                                type="button"
+                                class="flex w-6 items-center rounded-full bg-error-500 hover:shadow-lg group-hover:flex 2xl:hidden dark:bg-error-700"
+                                title="Remove this package"
+                                @click="removePackage(p.id)"
+                            >
+                                <span class="block"
+                                    ><CloseIcon class="w-full fill-current text-white"></CloseIcon
+                                ></span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

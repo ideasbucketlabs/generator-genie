@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
     >
         <transition
             enter-from-class="opacity-0"
-            enter-active-class="opacity-100 transition duration-500 ease-out"
+            enter-active-class="opacity-100 transition duration-200 ease-out"
             leave-to-class="opacity-0"
             leave-active-class="transition duration-500 ease-out"
             @after-enter="show"
@@ -74,9 +74,9 @@ onBeforeUnmount(() => {
         </transition>
         <transition
             enter-from-class="-translate-y-[8%] opacity-0"
-            enter-active-class="transition duration-500 ease-out"
+            enter-active-class="transition duration-300 ease-out"
             leave-to-class="translate-y-[8%] opacity-0"
-            leave-active-class="transition duration-500 ease-out"
+            leave-active-class="transition duration-300 ease-out"
             @after-leave="displayOverlay = false"
         >
             <div :class="[dialogClass, width]" v-if="displayContent">
