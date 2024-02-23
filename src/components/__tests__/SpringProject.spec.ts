@@ -14,7 +14,7 @@ describe('SpringProject works correctly', () => {
                     valid: false,
                     metaData: {
                         language: Language.Java,
-                        springBootVersion: SpringBootVersion['3_1_8'] as SpringBootVersion,
+                        springBootVersion: SpringBootVersion['3_1_9'] as SpringBootVersion,
                         group: 'test',
                         name: 'demo',
                         artifact: 'demo',
@@ -37,7 +37,7 @@ describe('SpringProject works correctly', () => {
                     valid: false,
                     metaData: {
                         language: Language.Java,
-                        springBootVersion: SpringBootVersion['3_1_8'] as SpringBootVersion,
+                        springBootVersion: SpringBootVersion['3_1_9'] as SpringBootVersion,
                         group: 'test',
                         name: 'demo',
                         artifact: 'demo',
