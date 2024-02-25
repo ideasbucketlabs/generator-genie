@@ -625,7 +625,7 @@ const data: Dependency[] = [
                     'Spotless is a general-purpose formatting plugin. It is completely à la carte, but also includes powerful "batteries-included" if you opt-in.',
                 parentName: 'Code Formatter',
                 groupId: 'com.diffplug.spotless',
-                version: '6.24.0',
+                version: '6.25.0',
                 plugin: true
             }
         ]
