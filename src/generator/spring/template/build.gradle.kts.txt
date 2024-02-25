@@ -193,7 +193,7 @@ spotless {
     {%- if javaSelected -%}
     java {
         target("src/*/java/**/*.java")
-        palantirJavaFormat("2.39.0").style("AOSP")
+        palantirJavaFormat("2.40.0").style("PALANTIR") // Optional: choices are GOOGLE, AOSP, PALANTIR. default is GOOGLE
         removeUnusedImports()
         toggleOffOn("formatter:off", "formatter:on")
     }
