@@ -1,4 +1,10 @@
 services:
+    {%- if dependenciesIds contains "qdrant-vector-database-ai" -%}
+    qdrant:
+        image: 'qdrant/qdrant'
+        ports:
+            - '6333:6333'
+    {%- endif -%}
     {%- if dependenciesIds contains "data-elasticsearch" -%}
     elasticsearch:
         image: 'docker.elastic.co/elasticsearch/elasticsearch:7.17.10'
@@ -42,7 +48,7 @@ services:
         ports:
             - '5432'
     {%- endif -%}
-    {%- if dependenciesIds contains "data-redis" -%}
+    {%- if dependenciesIds contains "data-redis" or dependenciesIds contains "redis-search-and-query-vector-database-ai" -%}
     redis:
         image: 'redis:alpine'
         ports:

@@ -40,8 +40,11 @@ configurations {
 
 repositories {
     mavenCentral()
+{%- if haveAIDependencies -%}
+    maven { url = uri("https://repo.spring.io/milestone") }
+{%- endif -%}
 }
-{%- if haveSpringCloudDependency or haveSpringShellDependency or haveTimeFoldSolverDependency -%}
+{%- if haveSpringCloudDependency or haveSpringShellDependency or haveTimeFoldSolverDependency or haveAIDependencies -%}
 
 {%- if haveSpringCloudDependency -%}
 extra["springCloudVersion"] = "{{ springCloudVersion }}"
@@ -50,7 +53,10 @@ extra["springCloudVersion"] = "{{ springCloudVersion }}"
 extra["springShellVersion"] = "{{ springShellVersion }}"
 {%- endif -%}
 {%- if haveTimeFoldSolverDependency -%}
-extra["timefoldSolverVersion"] = "1.7.0"
+extra["timefoldSolverVersion"] = "{{ timefoldVersion }}"
+{%- endif -%}
+{%- if haveAIDependencies -%}
+extra["springAiVersion"] = "{{ springAIVersion }}"
 {%- endif -%}
 {%- endif -%}
 
@@ -141,6 +147,9 @@ dependencyManagement {
         {%- endif -%}
         {%- if haveTimeFoldSolverDependency -%}
         mavenBom("ai.timefold.solver:timefold-solver-bom:${property("timefoldSolverVersion")}")
+        {%- endif -%}
+        {%- if haveAIDependencies -%}
+        mavenBom("org.springframework.ai:spring-ai-bom:${property("springAIVersion")}")
         {%- endif -%}
     }
 }

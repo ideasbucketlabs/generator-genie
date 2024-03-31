@@ -25,7 +25,10 @@
     <spring-shell.version>{{ springShellVersion }}</spring-shell.version>
     {%- endif -%}
     {%- if haveTimeFoldSolverDependency -%}
-    <timefold-solver.version>1.7.0</timefold-solver.version>
+    <spring-ai.version>{{ springAIVersion }}</spring-ai.version>
+    {%- endif -%}
+    {%- if haveTimeFoldSolverDependency -%}
+    <timefold-solver.version>{{ timefoldVersion }}</timefold-solver.version>
     {%- endif -%}
   </properties>
   <dependencies>
@@ -207,6 +210,15 @@
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
         <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      {%- endif -%}
+      {%- if haveAIDependencies -%}
+      <dependency>
+        <groupId>org.springframework.ai</groupId>
+        <artifactId>spring-ai-bom</artifactId>
+        <version>${spring-ai.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -465,4 +477,17 @@
       {%- endfor -%}
     </plugins>
   </build>
+  {%- if haveAIDependencies -%}
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  {%- endif -%}
+
 </project>
