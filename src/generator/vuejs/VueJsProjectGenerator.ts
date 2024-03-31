@@ -202,11 +202,11 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
         scripts: scripts,
         dependencies: {
             ...{
-                vue: '^3.3.4'
+                vue: '^3.4.21'
             },
             ...(projectMetaData.includeRouter
                 ? {
-                      'vue-router': '^4.2.5'
+                      'vue-router': '^4.3.0'
                   }
                 : {}),
             ...(projectMetaData.includePinia
@@ -225,11 +225,11 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 ? {
                       [`@tsconfig/node${projectMetaData.nodeVersion}`]:
                           projectMetaData.nodeVersion === 18 ? '^18.2.2' : '^20.1.2',
-                      '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.11.10',
+                      '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.11.28',
                       '@vue/tsconfig': '^0.5.1',
-                      'npm-run-all2': '^6.1.1',
-                      'vue-tsc': '^1.8.27',
-                      typescript: '~5.3.0'
+                      'npm-run-all2': '^6.1.2',
+                      'vue-tsc': '^2.0.6',
+                      typescript: '~5.4.0'
                   }
                 : {}),
             ...(projectMetaData.includeEslint
@@ -253,8 +253,8 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
             ...(projectMetaData.includeUnitTest
                 ? {
                       jsdom: '^24.0.0',
-                      vitest: '^1.2.2',
-                      '@vue/test-utils': '^2.4.4'
+                      vitest: '^1.4.0',
+                      '@vue/test-utils': '^2.4.5'
                   }
                 : {}),
             ...(projectMetaData.includeUnitTest && typescriptSelected
@@ -264,21 +264,21 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 : {}),
             ...(projectMetaData.integrationTest === 'playwright'
                 ? {
-                      '@playwright/test': '^1.41.1'
+                      '@playwright/test': '^1.42.1'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'cypress'
                 ? {
-                      cypress: '^13.6.3',
+                      cypress: '^13.7.0',
                       'start-server-and-test': '^2.0.3'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'nightwatch'
                 ? {
                       '@nightwatch/vue': '^3.1.0',
-                      chromedriver: '^121.0.0',
-                      geckodriver: '^4.3.1',
-                      nightwatch: '^3.4.0',
+                      chromedriver: '^122.0.6',
+                      geckodriver: '^4.3.3',
+                      nightwatch: '^3.5.0',
                       'vite-plugin-nightwatch': '^0.4.6',
                       'ts-node': '^10.9.2'
                   }

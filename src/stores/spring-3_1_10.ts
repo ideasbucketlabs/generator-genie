@@ -513,11 +513,12 @@ const data: Dependency[] = [
                 artifactId: 'spring-shell-starter'
             },
             {
-                name: 'Timefold Solver',
-                id: 'timefold-solver',
-                description: 'AI solver to optimize operations and scheduling.',
-                groupId: 'ai.timefold.solver',
-                artifactId: 'timefold-solver-spring-boot-starter'
+                name: 'Picolli',
+                id: 'picolli',
+                description: 'Build command line applications with Picolli.',
+                groupId: 'info.picocli',
+                artifactId: 'picocli-spring-boot-starter',
+                version: '4.7.5'
             }
         ]
     },
@@ -593,9 +594,8 @@ const data: Dependency[] = [
                 id: 'wavefront',
                 description:
                     'Publish metrics and optionally distributed traces to Tanzu Observability by Wavefront, a SaaS-based metrics monitoring and analytics platform that lets you visualize, query, and alert over data from across your entire stack.',
-                groupId: 'com.wavefront',
-                artifactId: 'wavefront-spring-boot-starter',
-                version: '3.2.0'
+                groupId: 'io.micrometer',
+                artifactId: 'micrometer-registry-wavefront'
             },
             {
                 name: 'New Relic',
@@ -726,14 +726,6 @@ const data: Dependency[] = [
         group: 'Spring Cloud Routing',
         packages: [
             {
-                name: 'Gateway',
-                id: 'cloud-gateway',
-                description:
-                    'Provides a simple, yet effective way to route to APIs in Servlet-based applications. Provides cross-cutting concerns to those APIs such as security, monitoring/metrics, and resiliency.',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-gateway-mvc'
-            },
-            {
                 name: 'Reactive Gateway',
                 id: 'reactive-cloud-gateway',
                 description:
@@ -793,6 +785,168 @@ const data: Dependency[] = [
                         artifactId: 'spring-cloud-stream-test-binder'
                     }
                 ]
+            }
+        ]
+    },
+    {
+        id: 'spring-ai',
+        group: 'AI',
+        packages: [
+            {
+                name: 'Azure OpenAI',
+                id: 'azure-openai',
+                description:
+                    'Spring AI support for Azure’s OpenAI offering, powered by ChatGPT. It extends beyond traditional OpenAI capabilities, delivering AI-driven text generation with enhanced functionality.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-azure-openai-spring-boot-starter'
+            },
+            {
+                name: 'Azure AI Search AI',
+                id: 'azure-ai-search-ai',
+                description:
+                    'Spring AI vector database support for Azure AI Search. It is an AI-powered information retrieval platform and part of Microsoft’s larger AI platform. Among other features, it allows users to query information using vector-based storage and retrieval.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-azure-vector-store-spring-boot-starter'
+            },
+            {
+                name: 'Amazon Bedrock AI',
+                id: 'amazon-bedrock-ai',
+                description:
+                    'Spring AI support for Amazon Bedrock. It is a managed service that provides foundation models from various AI providers, available through a unified API.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-bedrock-ai-spring-boot-starter'
+            },
+            {
+                name: 'Chroma Vector Database AI',
+                id: 'chroma-vector-database-ai',
+                description:
+                    'Spring AI vector database support for Chroma. It is an open-source embedding database and gives you the tools to store document embeddings, content, and metadata. It also allows to search through those embeddings, including metadata filtering.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-chroma-store-spring-boot-starter'
+            },
+            {
+                name: 'Milvus Vector Database AI',
+                id: 'milvus-vector-database-ai',
+                description:
+                    'Spring AI vector database support for Milvus. It is an open-source vector database that has garnered significant attention in the fields of data science and machine learning. One of its standout features lies in its robust support for vector indexing and querying.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-milvus-store-spring-boot-starter'
+            },
+            {
+                name: 'Mistral AI AI',
+                id: 'mistral-ai-ai',
+                description:
+                    'Spring AI support for Mistral AI, the open and portable generative AI for devs and businesses.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-mistral-ai-spring-boot-starter'
+            },
+            {
+                name: 'Neo4J Vector Database AI',
+                id: 'neo-4-j-vector-database-ai',
+                description:
+                    "Spring AI vector database support for Neo4j's Vector Search. It allows users to query vector embeddings from large datasets.",
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-neo4j-store-spring-boot-starter'
+            },
+            {
+                name: 'Ollama AI',
+                id: 'ollama-ai',
+                description:
+                    'Spring AI support for Ollama. It allows you to run various Large Language Models (LLMs) locally and generate text from them.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-ollama-spring-boot-starter'
+            },
+            {
+                name: 'OpenAI AI',
+                id: 'open-ai-ai',
+                description:
+                    'Spring AI support for ChatGPT, the AI language model and DALL-E, the Image generation model from OpenAI.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-openai-spring-boot-starter'
+            },
+            {
+                name: 'PGvector Vector Database AI',
+                id: 'pgvector-vector-database-ai',
+                description:
+                    'Spring AI vector database support for PGvector. It is an open-source extension for PostgreSQL that enables storing and searching over machine learning-generated embeddings.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-pgvector-store-spring-boot-starter'
+            },
+            {
+                name: 'Pinecone Vector Database AI',
+                id: 'pinecone-vector-database-ai',
+                description:
+                    'Spring AI vector database support for Pinecone. It is a popular cloud-based vector database and allows you to store and search vectors efficiently.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-pinecone-store-spring-boot-starter'
+            },
+            {
+                name: 'PostgresML AI',
+                id: 'postgres-ml-ai',
+                description: 'Spring AI support for the PostgresML text embeddings models.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-postgresml-spring-boot-starter'
+            },
+            {
+                name: 'Redis Search and Query Vector Database AI',
+                id: 'redis-search-and-query-vector-database-ai',
+                description:
+                    'Spring AI vector database support for Redis Search and Query.It extends the core features of Redis OSS and allows you to use Redis as a vector database.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-redis-spring-boot-starter'
+            },
+            {
+                name: 'Stability AI',
+                id: 'stability-ai',
+                description: "Spring AI support for Stability AI's text to image generation model.",
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-stability-ai-spring-boot-starter'
+            },
+            {
+                name: 'Transformers (ONNX) Embeddings AI',
+                id: 'transformers-onnx-embeddings-ai',
+                description:
+                    'Spring AI support for pre-trained transformer models, serialized into the Open Neural Network Exchange (ONNX) format.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-transformers-spring-boot-starter'
+            },
+            {
+                name: 'Vertex AI PaLM2 AI',
+                id: 'vertex-ai-pa-lm-2-ai',
+                description: 'Spring AI support for Google Vertex PaLM2 chat and embedding models.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-vertex-ai-palm2-spring-boot-starter'
+            },
+            {
+                name: 'Vertex AI Gemini AI',
+                id: 'vertex-ai-gemini-ai',
+                description: 'Spring AI support for Google Vertex Gemini chat.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-vertex-ai-gemini-spring-boot-starter'
+            },
+            {
+                name: 'Qdrant Vector Database AI',
+                id: 'qdrant-vector-database-ai',
+                description:
+                    'Spring AI vector database support for Qdrant. It is an open-source, high-performance vector search engine/database.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-qdrant-store-spring-boot-starter'
+            },
+            {
+                name: 'Weaviate Vector Database AI',
+                id: 'weaviate-vector-database-ai',
+                description:
+                    'Spring AI vector database support for Weaviate, an open-source vector database. It allows you to store data objects and vector embeddings from your favorite ML-models and scale seamlessly into billions of data objects.',
+                groupId: 'org.springframework.ai',
+                artifactId: 'spring-ai-weaviate-store-spring-boot-starter'
+            },
+
+            {
+                name: 'Timefold Solver',
+                id: 'timefold-solver',
+                description: 'AI solver to optimize operations and scheduling.',
+                groupId: 'ai.timefold.solver',
+                artifactId: 'timefold-solver-spring-boot-starter'
             }
         ]
     }
