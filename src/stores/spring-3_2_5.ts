@@ -506,6 +506,13 @@ const data: Dependency[] = [
                 artifactId: 'spring-boot-starter-cache'
             },
             {
+                name: 'Quartz Scheduler',
+                id: 'quartz',
+                description: 'Schedule jobs using Quartz.',
+                groupId: 'org.springframework.boot',
+                artifactId: 'spring-boot-starter-quartz'
+            },
+            {
                 name: 'Spring Shell',
                 id: 'spring-shell',
                 description: 'Build command line applications with spring.',
