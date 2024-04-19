@@ -218,36 +218,36 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
         },
         devDependencies: {
             ...{
-                '@vitejs/plugin-vue': '^5.0.3',
-                vite: '^5.0.10'
+                '@vitejs/plugin-vue': '^5.0.4',
+                vite: '^5.2.8'
             },
             ...(typescriptSelected
                 ? {
                       [`@tsconfig/node${projectMetaData.nodeVersion}`]:
-                          projectMetaData.nodeVersion === 18 ? '^18.2.2' : '^20.1.2',
+                          projectMetaData.nodeVersion === 18 ? '^18.2.2' : '^20.1.4',
                       '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.11.28',
                       '@vue/tsconfig': '^0.5.1',
                       'npm-run-all2': '^6.1.2',
-                      'vue-tsc': '^2.0.6',
+                      'vue-tsc': '^2.0.11',
                       typescript: '~5.4.0'
                   }
                 : {}),
             ...(projectMetaData.includeEslint
                 ? {
-                      '@rushstack/eslint-patch': '^1.3.3',
-                      eslint: '^8.49.0',
-                      'eslint-plugin-vue': '^9.17.1'
+                      '@rushstack/eslint-patch': '^1.8.0',
+                      eslint: '^8.57.0',
+                      'eslint-plugin-vue': '^9.23.0'
                   }
                 : {}),
             ...(projectMetaData.includeEslint && typescriptSelected
                 ? {
-                      '@vue/eslint-config-typescript': '^12.0.0'
+                      '@vue/eslint-config-typescript': '^13.0.0'
                   }
                 : {}),
             ...(projectMetaData.includePrettier
                 ? {
-                      prettier: '^3.0.3',
-                      '@vue/eslint-config-prettier': '^8.0.0'
+                      prettier: '^3.2.5',
+                      '@vue/eslint-config-prettier': '^9.0.0'
                   }
                 : {}),
             ...(projectMetaData.includeUnitTest
@@ -264,21 +264,21 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 : {}),
             ...(projectMetaData.integrationTest === 'playwright'
                 ? {
-                      '@playwright/test': '^1.42.1'
+                      '@playwright/test': '^1.43.0'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'cypress'
                 ? {
-                      cypress: '^13.7.0',
+                      cypress: '^13.7.2',
                       'start-server-and-test': '^2.0.3'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'nightwatch'
                 ? {
                       '@nightwatch/vue': '^3.1.0',
-                      chromedriver: '^122.0.6',
+                      chromedriver: '^123.0.1',
                       geckodriver: '^4.3.3',
-                      nightwatch: '^3.5.0',
+                      nightwatch: '^3.6.0',
                       'vite-plugin-nightwatch': '^0.4.6',
                       'ts-node': '^10.9.2'
                   }
@@ -286,6 +286,11 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
             ...(projectMetaData.integrationTest === 'cypress' && projectMetaData.includeEslint
                 ? {
                       'eslint-plugin-cypress': '^2.15.1'
+                  }
+                : {}),
+            ...(projectMetaData.integrationTest === 'playwright' && projectMetaData.includeEslint
+                ? {
+                      'eslint-plugin-playwright': '^1.5.4'
                   }
                 : {}),
             ...userChosenExplicitDevDependency

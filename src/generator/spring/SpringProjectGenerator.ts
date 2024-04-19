@@ -266,7 +266,7 @@ function getMinimumJdkCompatibility(
         return selectedJavaVersion
     }
 
-    if (selectedSpringBootVersion === SpringBootVersion['3_1_10']) {
+    if (selectedSpringBootVersion === SpringBootVersion['3_1_11']) {
         return 17
     }
 
@@ -523,23 +523,23 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         springAIVersion: springAIVersion,
         java: Language.Java,
         ormVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_10']
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_11']
                 ? '"6.2.22.Final"'
                 : '"6.4.4.Final"',
         explicitDockerImageForGradleIsRequired:
-            SpringBootVersion['3_1_10'] === projectMetaData.metadata.springBootVersion,
+            SpringBootVersion['3_1_11'] === projectMetaData.metadata.springBootVersion,
         kotlinSelected: projectMetaData.metadata.language === Language.Kotlin,
         javaSelected: projectMetaData.metadata.language === Language.Java,
         springCloudVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_10'] ? '2022.0.5' : '2023.0.1',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_11'] ? '2022.0.5' : '2023.0.1',
         springShellVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_10'] ? '3.1.7' : '3.2.0',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_11'] ? '3.1.7' : '3.2.0',
         jdkSourceCompatibility: getMinimumJdkCompatibility(
             projectMetaData.metadata.language,
             projectMetaData.metadata.javaVersion,
             projectMetaData.metadata.springBootVersion
         ),
-        kotlinPlugin: projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_10'] ? '1.8.22' : '1.9.23'
+        kotlinPlugin: projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_11'] ? '1.8.22' : '1.9.23'
     }
 
     const contentTree: Array<File | Folder> =
