@@ -196,7 +196,7 @@ onBeforeUnmount(() => {
     <Teleport to="body">
         <Dialog
             ref="dialog"
-            width="w-full md:w-10/12 lg:w-7/12 xl:w-6/12"
+            width="w-full md:w-10/12 lg:w-7/12 xl:w-6/12 shadow-2xl"
             @overlay-clicked="closeDialog"
             @escaped="closeDialog"
             title=""

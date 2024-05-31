@@ -225,7 +225,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 ? {
                       [`@tsconfig/node${projectMetaData.nodeVersion}`]:
                           projectMetaData.nodeVersion === 18 ? '^18.2.2' : '^20.1.4',
-                      '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.11.28',
+                      '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.12.5',
                       '@vue/tsconfig': '^0.5.1',
                       'npm-run-all2': '^6.1.2',
                       'vue-tsc': '^2.0.11',

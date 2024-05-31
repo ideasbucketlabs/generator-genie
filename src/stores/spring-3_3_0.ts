@@ -143,6 +143,14 @@ const data: Dependency[] = [
                     'Facilitates contract-first SOAP development. Allows for the creation of flexible web services using one of the many ways to manipulate XML payloads.',
                 groupId: 'org.springframework.boot',
                 artifactId: 'spring-boot-starter-web-services'
+            },
+            {
+                name: 'Vaadin',
+                id: 'vaadin',
+                description:
+                    'A web framework that allows you to write UI in pure Java without getting bogged down in JS, HTML, and CSS.',
+                groupId: 'com.vaadin',
+                artifactId: 'vaadin-spring-boot-starter'
             }
         ]
     },

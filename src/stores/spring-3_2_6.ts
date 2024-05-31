@@ -143,6 +143,30 @@ const data: Dependency[] = [
                     'Facilitates contract-first SOAP development. Allows for the creation of flexible web services using one of the many ways to manipulate XML payloads.',
                 groupId: 'org.springframework.boot',
                 artifactId: 'spring-boot-starter-web-services'
+            },
+            {
+                name: 'Vaadin',
+                id: 'vaadin',
+                description:
+                    'A web framework that allows you to write UI in pure Java without getting bogged down in JS, HTML, and CSS.',
+                groupId: 'com.vaadin',
+                artifactId: 'vaadin-spring-boot-starter'
+            },
+            {
+                name: 'Hilla',
+                id: 'hilla',
+                description:
+                    'An open source framework that integrates a Spring Boot Java backend with a reactive TypeScript frontend.',
+                groupId: 'dev.hilla',
+                artifactId: 'hilla-react-spring-boot-starter'
+            },
+            {
+                name: 'Netflix DGS',
+                id: 'netflix-dgs',
+                description:
+                    'Build GraphQL applications with Netflix DGS (Domain Graph Service) and Spring for GraphQL.',
+                groupId: 'com.netflix.graphql.dgs',
+                artifactId: 'graphql-dgs-spring-graphql-starters'
             }
         ]
     },
@@ -518,14 +542,6 @@ const data: Dependency[] = [
                 description: 'Build command line applications with spring.',
                 groupId: 'org.springframework.shell',
                 artifactId: 'spring-shell-starter'
-            },
-            {
-                name: 'Picolli',
-                id: 'picolli',
-                description: 'Build command line applications with Picolli.',
-                groupId: 'info.picocli',
-                artifactId: 'picocli-spring-boot-starter',
-                version: '4.7.5'
             }
         ]
     },
@@ -601,8 +617,9 @@ const data: Dependency[] = [
                 id: 'wavefront',
                 description:
                     'Publish metrics and optionally distributed traces to Tanzu Observability by Wavefront, a SaaS-based metrics monitoring and analytics platform that lets you visualize, query, and alert over data from across your entire stack.',
-                groupId: 'io.micrometer',
-                artifactId: 'micrometer-registry-wavefront'
+                groupId: 'com.wavefront',
+                artifactId: 'wavefront-spring-boot-starter',
+                version: '3.2.0'
             },
             {
                 name: 'New Relic',
@@ -732,6 +749,14 @@ const data: Dependency[] = [
         id: 'spring-cloud-routing',
         group: 'Spring Cloud Routing',
         packages: [
+            {
+                name: 'Gateway',
+                id: 'cloud-gateway',
+                description:
+                    'Provides a simple, yet effective way to route to APIs in Servlet-based applications. Provides cross-cutting concerns to those APIs such as security, monitoring/metrics, and resiliency.',
+                groupId: 'org.springframework.cloud',
+                artifactId: 'spring-cloud-starter-gateway-mvc'
+            },
             {
                 name: 'Reactive Gateway',
                 id: 'reactive-cloud-gateway',

@@ -3,7 +3,7 @@ plugins {
     java
     {%- endif -%}
     id("org.springframework.boot") version "{{ metadata.springBootVersion }}"
-    id("io.spring.dependency-management") version "1.1.4"
+    id("io.spring.dependency-management") version "1.1.5"
     {%- for plugin in plugins -%}
     {%- if plugin.id == "jacoco" -%}
     jacoco
@@ -11,6 +11,12 @@ plugins {
     id("{{ plugin.groupId }}") version "{{ plugin.version }}"
     {%- endif -%}
     {%- endfor -%}
+    {%- if dependenciesIds contains "hilla" -%}
+    id("dev.hilla") version "{{ hillaVersion }}"
+    {%- endif -%}
+    {%- if dependenciesIds contains "vaadin" -%}
+    id("com.vaadin") version "{{ vaadinVersion }}"
+    {%- endif -%}
     {%- if dependenciesIds contains "data-jpa" and dependenciesIds contains "native" -%}
     id("org.hibernate.orm") version {{ ormVersion }}
     {%- endif -%}
@@ -44,7 +50,7 @@ repositories {
     maven { url = uri("https://repo.spring.io/milestone") }
 {%- endif -%}
 }
-{%- if haveSpringCloudDependency or haveSpringShellDependency or haveTimeFoldSolverDependency or haveAIDependencies -%}
+{%- if haveSpringCloudDependency or haveSpringShellDependency or haveTimeFoldSolverDependency or haveAIDependencies or dependenciesIds contains "hilla" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
 
 {%- if haveSpringCloudDependency -%}
 extra["springCloudVersion"] = "{{ springCloudVersion }}"
@@ -57,6 +63,15 @@ extra["timefoldSolverVersion"] = "{{ timefoldVersion }}"
 {%- endif -%}
 {%- if haveAIDependencies -%}
 extra["springAiVersion"] = "{{ springAIVersion }}"
+{%- endif -%}
+{%- if dependenciesIds contains "hilla" -%}
+extra["hillaVersion"] = "{{ hillaVersion }}"
+{%- endif -%}
+{%- if dependenciesIds contains "netflix-dgs" -%}
+extra["netflixDgsVersion"] = "{{ netflixDgsVersion }}"
+{%- endif -%}
+{%- if dependenciesIds contains "vaadin" -%}
+extra["vaadinVersion"] = "{{ vaadinVersion }}"
 {%- endif -%}
 {%- endif -%}
 
@@ -134,8 +149,9 @@ dependencies {
     testImplementation("{{ testDependency.groupId }}:{{ testDependency.artifactId }}{%- if testDependency.version -%}:{{ testDependency.version}}{%- endif -%}")
     {%- endfor -%}
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
-{%- if haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency -%}
+{%- if haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency or dependenciesIds contains "hilla" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
 
 dependencyManagement {
     imports {
@@ -149,7 +165,16 @@ dependencyManagement {
         mavenBom("ai.timefold.solver:timefold-solver-bom:${property("timefoldSolverVersion")}")
         {%- endif -%}
         {%- if haveAIDependencies -%}
-        mavenBom("org.springframework.ai:spring-ai-bom:${property("springAIVersion")}")
+        mavenBom("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}")
+        {%- endif -%}
+        {%- if dependenciesIds contains "hilla" -%}
+        mavenBom("dev.hilla:hilla-bom:${property("hillaVersion")}")
+        {%- endif -%}
+        {%- if dependenciesIds contains "netflix-dgs" -%}
+        mavenBom("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:${property("netflixDgsVersion")}")
+        {%- endif -%}
+        {%- if dependenciesIds contains "vaadin" -%}
+        mavenBom("com.vaadin:vaadin-bom:${property("vaadinVersion")}")
         {%- endif -%}
     }
 }
@@ -216,12 +241,6 @@ spotless {
         trimTrailingWhitespace()
     }
     {%- endif -%}
-}
-{%- endif-%}
-{%- if explicitDockerImageForGradleIsRequired -%}
-
-tasks.bootBuildImage {
-    builder.set("paketobuildpacks/builder-jammy-base:latest")
 }
 {%- endif-%}
 {%- if dependenciesIds contains "graphql-code-generation" -%}

@@ -156,17 +156,17 @@ function validate() {
             <div class="flex space-x-4">
                 <BaseInput
                     v-model="springBootVersion"
-                    :label="SpringBootVersion['3_2_5']"
+                    :label="SpringBootVersion['3_3_0']"
                     name="springBootVersion"
                     type="radio"
-                    :value="SpringBootVersion['3_2_5']"
+                    :value="SpringBootVersion['3_3_0']"
                 ></BaseInput>
                 <BaseInput
                     v-model="springBootVersion"
-                    :label="SpringBootVersion['3_1_11']"
+                    :label="SpringBootVersion['3_2_6']"
                     name="springBootVersion"
                     type="radio"
-                    :value="SpringBootVersion['3_1_11']"
+                    :value="SpringBootVersion['3_2_6']"
                 ></BaseInput>
             </div>
         </div>

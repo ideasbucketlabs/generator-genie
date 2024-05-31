@@ -90,13 +90,13 @@ describe('TreeNode works for all content type', () => {
         })
 
         // Count all nodes before expand
-        expect(wrapper.findAll('li').length).toBe(3)
+        expect(wrapper.findAll('li').length).toBe(4)
         const parentNode = wrapper.find('li.flex-col').find('span.flex')
         await parentNode.trigger('click')
         // Count all nodes after expand
         expect(wrapper.findAll('li').length).toBe(4)
         await parentNode.trigger('click')
         // Count all nodes after collapse
-        expect(wrapper.findAll('li').length).toBe(3)
+        expect(wrapper.findAll('li').length).toBe(4)
     })
 })

@@ -85,7 +85,7 @@ const springProject = ref<{ active: boolean; valid: boolean; metaData: SpringPro
     valid: true,
     metaData: {
         language: Language.Java,
-        springBootVersion: SpringBootVersion['3_2_5'] as SpringBootVersion,
+        springBootVersion: SpringBootVersion['3_3_0'] as SpringBootVersion,
         group: defaultGroup,
         name: 'demo',
         artifact: 'demo',
@@ -149,6 +149,7 @@ const selectedPackageInformation = computed<Package[]>(() => {
                 if (projectType.value !== ProjectType.Spring) {
                     return packageInformation
                 }
+
                 return {
                     name: packageInformation.name,
                     id: packageInformation.id,
@@ -391,7 +392,6 @@ function onCloseShareDialog() {
     <AppComponentLoader v-if="isLoading"></AppComponentLoader>
     <header
         class="flex items-center justify-between bg-primary-500 shadow-inner transition duration-200 ease-linear xl:px-4 dark:bg-primary-dark-900"
-        :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
         role="banner"
     >
         <a href="/" class="mx-2 my-3 h-[39px]" aria-label="Generator Genie" tabindex="0" title="Generator Genie">
@@ -447,7 +447,6 @@ function onCloseShareDialog() {
     </header>
     <main
         class="h-10 flex-grow overflow-auto bg-gray-50 text-gray-800 transition duration-200 ease-linear xl:px-4 dark:bg-primary-dark-800 dark:text-primary-dark-100"
-        :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
         role="main"
     >
         <Explorer
@@ -566,8 +565,7 @@ function onCloseShareDialog() {
     </main>
     <footer
         role="contentinfo"
-        class="footer relative z-0 flex items-center border-primary-50 transition duration-200 ease-linear"
-        :class="{ 'motion-safe:blur-sm': isAnyDialogShown }"
+        class="footer relative z-0 flex items-center border-primary-50 transition duration-100 ease-linear"
     >
         <div
             class="relative z-0 flex h-16 flex-1 items-center justify-center space-x-4 border-t bg-white dark:border-gray-900 dark:bg-primary-dark-700"

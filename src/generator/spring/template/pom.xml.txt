@@ -30,6 +30,15 @@
     {%- if haveTimeFoldSolverDependency -%}
     <timefold-solver.version>{{ timefoldVersion }}</timefold-solver.version>
     {%- endif -%}
+    {%- if dependenciesIds contains "hilla" -%}
+    <hilla.version>2.5.5</hilla.version>
+    {%- endif -%}
+    {%- if dependenciesIds contains "netflix-dgs" -%}
+    <netflix-dgs.version>8.6.1</netflix-dgs.version>
+    {%- endif -%}
+    {%- if dependenciesIds contains "vaadin" -%}
+    <vaadin.version>24.3.12</vaadin.version>
+    {%- endif -%}
   </properties>
   <dependencies>
     {%- if includeActuatorExplicitly -%}
@@ -183,7 +192,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  {%- if haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency -%}
+  {%- if haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency or dependenciesIds contains "hilla" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
 
   <dependencyManagement>
     <dependencies>
@@ -223,6 +232,33 @@
         <scope>import</scope>
       </dependency>
       {%- endif -%}
+      {%- if dependenciesIds contains "vaadin" -%}
+      <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-bom</artifactId>
+        <version>${vaadin.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      {%- endif -%}
+      {%- if dependenciesIds contains "hilla" -%}
+      <dependency>
+        <groupId>dev.hilla</groupId>
+        <artifactId>hilla-bom</artifactId>
+        <version>${hilla.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      {%- endif -%}
+      {%- if dependenciesIds contains "netflix-dgs" -%}
+      <dependency>
+        <groupId>com.netflix.graphql.dgs</groupId>
+        <artifactId>graphql-dgs-platform-dependencies</artifactId>
+        <version>${netflix-dgs.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      {%- endif -%}
     </dependencies>
   </dependencyManagement>
 
@@ -233,6 +269,21 @@
     <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
     {%- endif -%}
     <plugins>
+      {%- if dependenciesIds contains "hilla" -%}
+      <plugin>
+        <groupId>dev.hilla</groupId>
+        <artifactId>hilla-maven-plugin</artifactId>
+        <version>${hilla.version}</version>
+        <executions>
+          <execution>
+            <id>frontend</id>
+            <goals>
+              <goal>prepare-frontend</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      {%- endif -%}
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
@@ -489,5 +540,52 @@
     </repository>
   </repositories>
   {%- endif -%}
+  {%- if dependenciesIds contains "vaadin" or dependenciesIds contains "hilla" -%}
 
+  <profiles>
+    <profile>
+      <id>production</id>
+      <build>
+        <plugins>
+          {%- if dependenciesIds contains "hilla" -%}
+          <plugin>
+            <groupId>dev.hilla</groupId>
+            <artifactId>hilla-maven-plugin</artifactId>
+            <version>${hilla.version}</version>
+            <executions>
+              <execution>
+                <id>frontend</id>
+                <phase>compile</phase>
+                <goals>
+                  <goal>build-frontend</goal>
+                </goals>
+                <configuration>
+                  <productionMode>true</productionMode>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          {%- endif -%}
+          {%- if dependenciesIds contains "vaadin" -%}
+          <plugin>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-maven-plugin</artifactId>
+            <version>${vaadin.version}</version>
+            <executions>
+              <execution>
+                <id>frontend</id>
+                <phase>compile</phase>
+                <goals>
+                  <goal>prepare-frontend</goal>
+                  <goal>build-frontend</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          {%- endif -%}
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  {%- endif -%}
 </project>

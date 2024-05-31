@@ -11,5 +11,6 @@ export enum Language {
     Vue = 'vue',
     Html = 'html',
     Css = 'css',
-    Xml = 'xml'
+    Xml = 'xml',
+    Properties = 'properties'
 }
