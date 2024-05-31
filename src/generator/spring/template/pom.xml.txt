@@ -31,13 +31,13 @@
     <timefold-solver.version>{{ timefoldVersion }}</timefold-solver.version>
     {%- endif -%}
     {%- if dependenciesIds contains "hilla" -%}
-    <hilla.version>2.5.5</hilla.version>
+    <hilla.version>{{ hillaVersion }}</hilla.version>
     {%- endif -%}
     {%- if dependenciesIds contains "netflix-dgs" -%}
-    <netflix-dgs.version>8.6.1</netflix-dgs.version>
+    <netflix-dgs.version>{{ netflixDgsVersion }}</netflix-dgs.version>
     {%- endif -%}
     {%- if dependenciesIds contains "vaadin" -%}
-    <vaadin.version>24.3.12</vaadin.version>
+    <vaadin.version>{{ vaadinVersion }}</vaadin.version>
     {%- endif -%}
   </properties>
   <dependencies>
