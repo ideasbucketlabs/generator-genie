@@ -93,7 +93,7 @@ function isCollapsed(id: string): boolean {
                         <span>{{ c.name }}</span>
                     </span>
                     <TreeNode
-                        v-if="((c as Folder).children ?? []).length !== 0 && !isCollapsed(c.id)"
+                        v-show="((c as Folder).children ?? []).length !== 0 && !isCollapsed(c.id)"
                         :content="(c as Folder)?.children ?? []"
                         :level="level + 1"
                         :selected-id="selectedId"

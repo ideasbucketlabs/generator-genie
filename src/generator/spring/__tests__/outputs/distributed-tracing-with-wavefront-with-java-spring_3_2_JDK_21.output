@@ -1,7 +1,7 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
+    id("org.springframework.boot") version "3.2.6"
+    id("io.spring.dependency-management") version "1.1.5"
 }
 
 group = "com.test"
@@ -18,9 +18,10 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-tracing-bridge-brave")
-    implementation("io.micrometer:micrometer-registry-wavefront")
+    implementation("com.wavefront:wavefront-spring-boot-starter:3.2.0")
     runtimeOnly("io.micrometer:micrometer-registry-wavefront")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<Test> {

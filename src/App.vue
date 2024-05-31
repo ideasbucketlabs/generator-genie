@@ -85,7 +85,7 @@ const springProject = ref<{ active: boolean; valid: boolean; metaData: SpringPro
     valid: true,
     metaData: {
         language: Language.Java,
-        springBootVersion: SpringBootVersion['3_2_5'] as SpringBootVersion,
+        springBootVersion: SpringBootVersion['3_3_0'] as SpringBootVersion,
         group: defaultGroup,
         name: 'demo',
         artifact: 'demo',
@@ -149,6 +149,7 @@ const selectedPackageInformation = computed<Package[]>(() => {
                 if (projectType.value !== ProjectType.Spring) {
                     return packageInformation
                 }
+
                 return {
                     name: packageInformation.name,
                     id: packageInformation.id,

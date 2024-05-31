@@ -266,7 +266,7 @@ function getMinimumJdkCompatibility(
         return selectedJavaVersion
     }
 
-    if (selectedSpringBootVersion === SpringBootVersion['3_1_11']) {
+    if (selectedSpringBootVersion === SpringBootVersion['3_3_0']) {
         return 17
     }
 
@@ -440,8 +440,12 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
             break
         }
     }
-    const springAIVersion = '0.8.1'
-    const timefoldVersion = '1.8.0'
+
+    const springAIVersion = '1.0.0-M1'
+    const timefoldVersion = '1.10.0'
+    const vaadinVersion: string = '24.3.12'
+    const netflixDgsVersion: string = '8.6.1'
+    const hillaVersion: string = '2.5.5'
 
     const [plugins, d] = partition(enabledDependencies, (pointer: Package) => {
         return pointer.plugin ?? false
@@ -515,6 +519,9 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         haveSpringShellDependency: dependenciesIds.has('spring-shell'),
         haveTimeFoldSolverDependency: dependenciesIds.has('timefold-solver'),
         timefoldVersion: timefoldVersion,
+        vaadinVersion: vaadinVersion,
+        netflixDgsVersion: netflixDgsVersion,
+        hillaVersion: hillaVersion,
         haveSpringCloudDependency: haveCloudDependencies(dependenciesIds),
         annotationDependencies: annotationDependencies,
         buildTool: projectMetaData.metadata.buildTool,
@@ -523,23 +530,21 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         springAIVersion: springAIVersion,
         java: Language.Java,
         ormVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_11']
-                ? '"6.2.22.Final"'
-                : '"6.4.4.Final"',
-        explicitDockerImageForGradleIsRequired:
-            SpringBootVersion['3_1_11'] === projectMetaData.metadata.springBootVersion,
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_0']
+                ? '"6.5.2.Final"'
+                : '"6.4.8.Final"',
         kotlinSelected: projectMetaData.metadata.language === Language.Kotlin,
         javaSelected: projectMetaData.metadata.language === Language.Java,
         springCloudVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_11'] ? '2022.0.5' : '2023.0.1',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_0'] ? '2022.0.5' : '2023.0.1',
         springShellVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_11'] ? '3.1.7' : '3.2.0',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_0'] ? '3.1.7' : '3.2.0',
         jdkSourceCompatibility: getMinimumJdkCompatibility(
             projectMetaData.metadata.language,
             projectMetaData.metadata.javaVersion,
             projectMetaData.metadata.springBootVersion
         ),
-        kotlinPlugin: projectMetaData.metadata.springBootVersion === SpringBootVersion['3_1_11'] ? '1.8.22' : '1.9.23'
+        kotlinPlugin: '1.9.24'
     }
 
     const contentTree: Array<File | Folder> =

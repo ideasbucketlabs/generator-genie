@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { Dependency, Package } from '@/entity/Dependency'
-import spring3_1_11 from '@/stores/spring-3_1_11'
-import spring3_2_5 from '@/stores/spring-3_2_5'
+import spring3_3_0 from '@/stores/spring-3_3_0'
+import spring3_2_6 from '@/stores/spring-3_2_6'
 import vuejs from '@/stores/vuejs'
 import { ProjectType } from '@/entity/ProjectType'
 import { SpringBootVersion } from '@/entity/SpringBootVersion'
@@ -45,24 +45,24 @@ function getPackageInformationMap(dependencies: Dependency[]): Map<string, Packa
 
 export const dependencyStore = defineStore('dependency', () => {
     const dependencies = new Map<string, Dependency[]>()
-    dependencies.set(`${ProjectType.Spring}${SpringBootVersion['3_2_5']}`, spring3_2_5)
-    dependencies.set(`${ProjectType.Spring}${SpringBootVersion['3_1_11']}`, spring3_1_11)
+    dependencies.set(`${ProjectType.Spring}${SpringBootVersion['3_2_6']}`, spring3_2_6)
+    dependencies.set(`${ProjectType.Spring}${SpringBootVersion['3_3_0']}`, spring3_3_0)
     dependencies.set(`${ProjectType.VueJS}`, vuejs)
 
     const packagesName = new Map<string, Set<string>>()
-    packagesName.set(`${ProjectType.Spring}${SpringBootVersion['3_2_5']}`, getPackageNamesMap(spring3_2_5))
-    packagesName.set(`${ProjectType.Spring}${SpringBootVersion['3_1_11']}`, getPackageNamesMap(spring3_1_11))
+    packagesName.set(`${ProjectType.Spring}${SpringBootVersion['3_2_6']}`, getPackageNamesMap(spring3_2_6))
+    packagesName.set(`${ProjectType.Spring}${SpringBootVersion['3_3_0']}`, getPackageNamesMap(spring3_3_0))
     packagesName.set(ProjectType.VueJS, getPackageNamesMap(vuejs))
 
     const packageInformation = new Map<string, Map<string, Package>>()
     packageInformation.set(
-        `${ProjectType.Spring}${SpringBootVersion['3_2_5']}`,
-        new Map([...getPackageInformationMap(spring3_2_5)])
+        `${ProjectType.Spring}${SpringBootVersion['3_2_6']}`,
+        new Map([...getPackageInformationMap(spring3_2_6)])
     )
 
     packageInformation.set(
-        `${ProjectType.Spring}${SpringBootVersion['3_1_11']}`,
-        new Map([...getPackageInformationMap(spring3_1_11)])
+        `${ProjectType.Spring}${SpringBootVersion['3_3_0']}`,
+        new Map([...getPackageInformationMap(spring3_3_0)])
     )
 
     packageInformation.set(ProjectType.VueJS, new Map([...getPackageInformationMap(vuejs)]))
@@ -81,13 +81,21 @@ export const dependencyStore = defineStore('dependency', () => {
         springBootVersion: SpringBootVersion
     ) {
         if (!packageInformation.has(`${projectType}${springBootVersion}`)) {
-            throw new Error('Unknown project type ' + projectType + ' and version ' + springBootVersion)
+            throw new Error(`Unknown project type ${projectType} and version ${springBootVersion}`)
         }
 
         if (!packageInformation.get(`${projectType}${springBootVersion}`)!!.has(packageId)) {
-            throw new Error(
-                `Unknown project type ${projectType} and version ${springBootVersion} and package ${packageId}`
-            )
+            const version = springBootVersion === SpringBootVersion['3_2_6'] ? '3.3.0' : '3.2.6'
+            if (!packageInformation.get(`${projectType}${version}`)!!.has(packageId)) {
+                throw new Error(
+                    `Unknown project type ${projectType} and version ${springBootVersion} and package ${packageId}`
+                )
+            }
+
+            return {
+                ...packageInformation.get(`${projectType}${version}`)!!.get(packageId)!!,
+                supported: false
+            }
         }
 
         return packageInformation.get(`${projectType}${springBootVersion}`)!!.get(packageId)!!
@@ -107,7 +115,7 @@ export const dependencyStore = defineStore('dependency', () => {
 
     function dependenciesByProjectTypeForSpring(
         projectType: ProjectType,
-        springBootVersion = SpringBootVersion['3_1_11']
+        springBootVersion = SpringBootVersion['3_3_0']
     ): Dependency[] {
         if (!dependencies.has(projectType + springBootVersion)) {
             throw new Error('Unknown project type ' + projectType)
@@ -116,7 +124,7 @@ export const dependencyStore = defineStore('dependency', () => {
         return dependencies.get(projectType + springBootVersion) ?? []
     }
 
-    function checkPackageSupportForSpring(springBootVersion = SpringBootVersion['3_1_11'], packageId: string): boolean {
+    function checkPackageSupportForSpring(springBootVersion = SpringBootVersion['3_3_0'], packageId: string): boolean {
         if (!packagesName.has(`${ProjectType.Spring}${springBootVersion}`)) {
             throw new Error('Unknown or unsupported Spring Boot version ' + springBootVersion)
         }
