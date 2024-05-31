@@ -434,7 +434,6 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
             break
         }
     }
-
     const springAIVersion = '1.0.0-M1'
     const timefoldVersion = '1.10.0'
     const vaadinVersion: string = '24.3.12'

@@ -24,7 +24,7 @@
     {%- if haveSpringShellDependency -%}
     <spring-shell.version>{{ springShellVersion }}</spring-shell.version>
     {%- endif -%}
-    {%- if haveTimeFoldSolverDependency -%}
+    {%- if haveAIDependencies -%}
     <spring-ai.version>{{ springAIVersion }}</spring-ai.version>
     {%- endif -%}
     {%- if haveTimeFoldSolverDependency -%}
@@ -192,7 +192,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  {%- if haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency or dependenciesIds contains "hilla" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
+  {%- if haveAIDependencies or haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency or dependenciesIds contains "hilla" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
 
   <dependencyManagement>
     <dependencies>

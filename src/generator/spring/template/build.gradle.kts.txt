@@ -151,7 +151,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
-{%- if haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency or dependenciesIds contains "hilla" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
+{%- if haveAIDependencies or haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency or dependenciesIds contains "hilla" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
 
 dependencyManagement {
     imports {
