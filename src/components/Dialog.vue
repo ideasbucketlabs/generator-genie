@@ -76,7 +76,7 @@ onBeforeUnmount(() => {
             enter-from-class="-translate-y-[8%] opacity-0"
             enter-active-class="transition duration-300 ease-out"
             leave-to-class="translate-y-[8%] opacity-0"
-            leave-active-class="transition duration-300 ease-out"
+            leave-active-class="transition duration-200 ease-out"
             @after-leave="displayOverlay = false"
         >
             <div :class="[dialogClass, width]" v-if="displayContent">

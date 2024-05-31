@@ -159,7 +159,7 @@ function getPropertiesFolderContent(packages: Set<string>): Array<File | Folder>
             //     dependenciesIds: Array.from(packages)
             // }) as unknown as string,
             content: '',
-            lang: Language.Text
+            lang: Language.Properties
         },
         {
             name: 'application-prod.properties',
@@ -169,7 +169,7 @@ function getPropertiesFolderContent(packages: Set<string>): Array<File | Folder>
             //     dependenciesIds: Array.from(packages)
             // }) as unknown as string,
             content: '',
-            lang: Language.Text
+            lang: Language.Properties
         }
     ]
 
@@ -322,14 +322,8 @@ function generateMavenStub(
                     id: getId(),
                     children: [
                         {
-                            name: 'maven-wrapper.jar',
-                            type: ContentType.File,
-                            id: getId(),
-                            lang: Language.Binary
-                        } as File,
-                        {
                             name: 'maven-wrapper.properties',
-                            lang: Language.Kotlin,
+                            lang: Language.Properties,
                             type: ContentType.File,
                             content: content.get('maven-wrapper.properties')?.content ?? '',
                             id: getId()
@@ -374,7 +368,7 @@ function generateGradleStub(
                         } as File,
                         {
                             name: 'gradle-wrapper.properties',
-                            lang: Language.Kotlin,
+                            lang: Language.Properties,
                             type: ContentType.File,
                             content: content.get('gradle-wrapper.properties')?.content ?? '',
                             id: getId()
