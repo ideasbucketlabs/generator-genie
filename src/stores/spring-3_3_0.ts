@@ -225,15 +225,6 @@ const data: Dependency[] = [
                     'Makes it easier to build Spring based applications that use the Lightweight Directory Access Protocol.',
                 groupId: 'org.springframework.boot',
                 artifactId: 'spring-boot-starter-data-ldap'
-            },
-            {
-                name: 'Okta',
-                id: 'okta',
-                description:
-                    'Okta specific configuration for Spring Security/Spring Boot OAuth2 features. Enable your Spring Boot application to work with Okta via OAuth 2.0/OIDC.',
-                groupId: 'com.okta.spring',
-                artifactId: 'okta-spring-boot-starter',
-                version: '3.0.6'
             }
         ]
     },
@@ -673,29 +664,6 @@ const data: Dependency[] = [
                         artifactId: 'junit-jupiter'
                     }
                 ]
-            },
-            {
-                name: 'Contract Verifier',
-                id: 'cloud-contract-verifier',
-                description:
-                    'Moves TDD to the level of software architecture by enabling Consumer Driven Contract (CDC) development.',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-contract-verifier'
-            },
-            {
-                name: 'Contract Stub Runner',
-                id: 'cloud-contract-stub-runner',
-                description:
-                    'Stub Runner for HTTP/Messaging based communication. Allows creating WireMock stubs from RestDocs tests.',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-contract-stub-runner'
-            },
-            {
-                name: 'Embedded LDAP Server',
-                id: 'embedded-ldap',
-                description: 'Provides a platform neutral way for running a LDAP server in unit tests.',
-                groupId: 'com.unboundid',
-                artifactId: 'unboundid-ldapsdk'
             }
         ]
     },
@@ -710,97 +678,6 @@ const data: Dependency[] = [
                     'Non-specific Spring Cloud features, unrelated to external libraries or integrations (e.g. Bootstrap context and @RefreshScope).',
                 groupId: 'org.springframework.cloud',
                 artifactId: 'spring-cloud-starter'
-            },
-            {
-                name: 'Function',
-                id: 'cloud-function',
-                description:
-                    'Promotes the implementation of business logic via functions and supports a uniform programming model across serverless providers, as well as the ability to run standalone (locally or in a PaaS).',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-function-context'
-            },
-            {
-                name: 'Task',
-                id: 'cloud-task',
-                description:
-                    'Allows a user to develop and run short lived microservices using Spring Cloud. Run them locally, in the cloud, and on Spring Cloud Data Flow.',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-task'
-            }
-        ]
-    },
-    {
-        id: 'spring-cloud-routing',
-        group: 'Spring Cloud Routing',
-        packages: [
-            {
-                name: 'Gateway',
-                id: 'cloud-gateway',
-                description:
-                    'Provides a simple, yet effective way to route to APIs in Servlet-based applications. Provides cross-cutting concerns to those APIs such as security, monitoring/metrics, and resiliency.',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-gateway-mvc'
-            },
-            {
-                name: 'Reactive Gateway',
-                id: 'reactive-cloud-gateway',
-                description:
-                    'Provides a simple, yet effective way to route to APIs in reactive applications. Provides cross-cutting concerns to those APIs such as security, monitoring/metrics, and resiliency.',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-gateway',
-                testPackages: [
-                    {
-                        name: 'Reactor Test',
-                        id: 'reactor-test',
-                        description: '',
-                        groupId: 'io.projectreactor',
-                        artifactId: 'reactor-test'
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        id: 'spring-cloud-circuit-breaker',
-        group: 'Spring Cloud Circuit Breaker',
-        packages: [
-            {
-                name: 'Resilience4J',
-                id: 'cloud-resilience4j',
-                description: 'Spring Cloud Circuit breaker with Resilience4j as the underlying implementation.',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-circuitbreaker-resilience4j'
-            }
-        ]
-    },
-    {
-        id: 'spring-cloud-messaging',
-        group: 'Spring Cloud Messaging',
-        packages: [
-            {
-                name: 'Cloud Bus',
-                id: 'cloud-bus',
-                description:
-                    'Links nodes of a distributed system with a lightweight message broker which can used to broadcast state changes or other management instructions (requires a binder, e.g. Apache Kafka or RabbitMQ).',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-bus'
-            },
-            {
-                name: 'Cloud Stream',
-                id: 'cloud-stream',
-                description:
-                    'Framework for building highly scalable event-driven microservices connected with shared messaging systems (requires a binder, e.g. Apache Kafka, Apache Pulsar, RabbitMQ, or Solace PubSub+).',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-stream',
-                testPackages: [
-                    {
-                        name: 'Cloud Stream Test',
-                        id: 'cloud-stream-test',
-                        description: '',
-                        groupId: 'org.springframework.cloud',
-                        artifactId: 'spring-cloud-stream-test-binder'
-                    }
-                ]
             }
         ]
     },
