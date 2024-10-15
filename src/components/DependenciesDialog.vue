@@ -121,7 +121,7 @@ function handleKeyArrowEvent(direction: 'UP' | 'DOWN') {
             // Fix for text cursor shifting to start during keyboard up and down navigation.
             if (inputElement.value !== null) {
                 setTimeout(() => {
-                    inputElement.value!!.selectionStart = inputElement.value!!.selectionEnd = 10000
+                    inputElement.value!.selectionStart = inputElement.value!.selectionEnd = 10000
                 }, 10)
             }
             nextTick().then(() => {

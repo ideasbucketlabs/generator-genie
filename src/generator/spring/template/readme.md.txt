@@ -85,6 +85,11 @@ For further reference, please consider the following sections:
 {%- if dependenciesIds contains "security" -%}
 * [Spring Security](https://spring.io/projects/spring-security)
 {%- endif -%}
+{%- if dependenciesIds contains "okta" -%}
+* [Okta-Hosted Login Page Example](https://github.com/okta/samples-java-spring/tree/master/okta-hosted-login)
+* [Custom Login Page Example](https://github.com/okta/samples-java-spring/tree/master/custom-login)
+* [Okta Spring Security Resource Server Example](https://github.com/okta/samples-java-spring/tree/master/resource-server)
+{%- endif -%}
 {%- if dependenciesIds contains "native" -%}
 * [GraalVM Native Image Support](https://docs.spring.io/spring-boot/docs/3.2.1/reference/html/native-image.html#native-image)
 {%- endif -%}
@@ -109,6 +114,18 @@ For further reference, please consider the following sections:
 {%- if dependenciesIds contains "thymeleaf" -%}
 * [Thymeleaf](https://docs.spring.io/spring-boot/docs/3.2.1/reference/htmlsingle/index.html#web.servlet.spring-mvc.template-engines)
 {%- endif -%}
+{%- if dependenciesIds contains "jte" -%}
+* [JTE](https://jte.gg/)
+{%- endif -%}
+{%- if dependenciesIds contains "htmx" -%}
+* [htmx](https://www.youtube.com/watch?v=j-rfPoXe5aE)
+{%- endif -%}
+{%- if dependenciesIds contains "vaadin" -%}
+* [Vaadin](https://vaadin.com/docs)
+{%- endif -%}
+{%- if dependenciesIds contains "spring-modulith" -%}
+* [Spring Modulith](https://docs.spring.io/spring-modulith/reference/)
+{%- endif -%}
 {%- if dependenciesIds contains "pebble" -%}
 * [Pebble Documentation](https://pebbletemplates.io/)
 {%- endif -%}
@@ -125,7 +142,18 @@ For further reference, please consider the following sections:
 * [Spring Shell](https://spring.io/projects/spring-shell)
 {%- endif -%}
 * [Handling Form Submission](https://spring.io/guides/gs/handling-form-submission/)
+{%- if dependenciesIds contains "vaadin" or dependenciesIds contains "htmx" -%}
 
+### Guides
+The following guides illustrate how to use some features concretely:
+{%- if dependenciesIds contains "vaadin" -%}
+* [Creating CRUD UI with Vaadin](https://spring.io/guides/gs/crud-with-vaadin/)
+{%- endif -%}
+{%- if dependenciesIds contains "htmx" -%}
+* [htmx](https://www.youtube.com/watch?v=j-rfPoXe5aE)
+{%- endif -%}
+
+{%- endif -%}
 ### Additional Links
 These additional references should also help you:
 {%- if buildTool == "gradle" -%}
@@ -234,4 +262,54 @@ To run your existing tests in a native image, run the following goal:
 $ ./mvnw test -PnativeTest
 ```
     {%- endif -%}
+{%- endif -%}
+
+{%- if dependenciesIds contains "okta" -%}
+
+## OAuth 2.0 and OIDC with Okta
+
+If you don't have a free Okta developer account, you can create one with [the Okta CLI](https://cli.okta.com):
+
+```bash
+$ okta register
+```
+
+Then, register your Spring Boot app on Okta using:
+
+```bash
+$ okta apps create
+```
+
+Select **Web** > **Okta Spring Boot Starter** and accept the default redirect URIs.
+{%- endif -%}
+{%- if dependenciesIds contains "jte" -%}
+## JTE
+
+This project has been configured to use [JTE precompiled templates](https://jte.gg/pre-compiling/).
+
+However, to ease development, those are not enabled out of the box.
+For production deployments, you should remove
+
+```properties
+gg.jte.development-mode=true
+```
+
+from the `application.properties` file and set
+
+```properties
+gg.jte.use-precompiled-templates=true
+```
+instead.
+For more details, please take a look at [the official documentation](https://jte.gg/spring-boot-starter-3/).
+{%- endif -%}
+
+{%- if dependenciesIds contains "docker-compose-setup" -%}
+### Docker Compose support
+This project contains a Docker Compose file named `compose.yaml`.
+In this file, the following services have been defined:
+{%- if dependenciesIds contains "data-neo4j" -%}
+* neo4j: [`neo4j:latest`](https://hub.docker.com/_/neo4j)
+{%- endif -%}
+
+Please review the tags of the used images and set them to the same as you're running in production.
 {%- endif -%}

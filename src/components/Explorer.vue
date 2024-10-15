@@ -132,21 +132,21 @@ onMounted(async () => {
         const firstFile = findFirstFile(props.content)
 
         if (firstFile !== null) {
-            rawCode.value = firstFile.content!!
+            rawCode.value = firstFile.content!
 
-            const highlightedCode = await highlight(firstFile.content!!, firstFile.lang)
+            const highlightedCode = await highlight(firstFile.content!, firstFile.lang)
             code.value = highlightedCode.code
             numberOfLinesInACode.value = highlightedCode.lines
-            selectedFileId.value = firstFile.id!!
+            selectedFileId.value = firstFile.id!
         } else {
             code.value =
-                // eslint-disable-next-line vue/max-len
+                 
                 '<div class="flex w-full h-full flex-1 items-center justify-center"><div>Please select a file to see the content.</div></div>'
             rawCode.value = ''
         }
     } else {
         code.value =
-            // eslint-disable-next-line vue/max-len
+             
             '<div class="flex w-full h-full flex-1 items-center justify-center"><div>Please select a file to see the content.</div></div>'
         rawCode.value = ''
     }

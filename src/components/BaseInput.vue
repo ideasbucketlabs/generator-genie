@@ -55,6 +55,7 @@ const props = defineProps({
     value: {
         default: null,
         required: false,
+        // eslint-disable-next-line  @typescript-eslint/no-explicit-any
         type: null as unknown as PropType<any>
     },
     readOnly: {

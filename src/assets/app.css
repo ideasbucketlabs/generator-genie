@@ -32,7 +32,7 @@ input[type='number'] {
 
 .footer::before {
     width: 98%;
-    height: 100%;
+    height: 99%;
     top: 2px;
     position: absolute;
     border-radius: 35px;

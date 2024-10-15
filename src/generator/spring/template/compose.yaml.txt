@@ -55,9 +55,21 @@ services:
         ports:
             - '5432'
     {%- endif -%}
-    {%- if dependenciesIds contains "data-redis" or dependenciesIds contains "redis-search-and-query-vector-database-ai" -%}
+    {%- if dependenciesIds contains "data-neo4j" or dependenciesIds contains "neo-4-j-vector-database-ai" -%}
+    neo4j:
+        image: 'neo4j:latest'
+        environment:
+            - 'NEO4J_AUTH=neo4j/notverysecret'
+        ports:
+            - '7687'
+    {%- endif -%}
+    {%- if dependenciesIds contains "data-redis" or dependenciesIds contains "redis-search-and-query-vector-database-ai" or dependenciesIds contains "data-redis-reactive" -%}
     redis:
-        image: 'redis:alpine'
+        image: '{%- if dependenciesIds contains "redis-search-and-query-vector-database-ai" -%}redis/redis-stack:latest{%- else -%}redis:latest{%- endif -%}'
+        {%- if dependenciesIds contains "redis-search-and-query-vector-database-ai" -%}
+        labels:
+            - "org.springframework.boot.service-connection=redis"
+        {%- endif -%}
         ports:
             - '6379'
     {%- endif -%}
@@ -79,7 +91,7 @@ services:
     {%- endif -%}
     {%- if dependenciesIds contains "kafka" -%}
     kafka-broker:
-        image: confluentinc/cp-kafka:7.4.1
+        image: confluentinc/cp-kafka:7.5.0
         hostname: kafka-broker
         container_name: kafka-broker
         ports:
@@ -106,7 +118,7 @@ services:
             CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
 
     kafka-schema-registry:
-        image: confluentinc/cp-schema-registry:7.4.1
+        image: confluentinc/cp-schema-registry:7.5.0
         hostname: kafka-schema-registry
         container_name: kafka-schema-registry
         depends_on:
@@ -132,4 +144,12 @@ services:
             TANSEN.KAFKA-CLUSTERS.0.NAME: 'local'
             TANSEN.KAFKA-CLUSTERS.0.LABEL: 'Local'
             TANSEN.KAFKA-CLUSTERS.0.SCHEMA_REGISTRY_URL: "http://kafka-schema-registry:8081"
+    {%- endif -%}
+    {%- if dependenciesIds contains "spring-pulsar" or dependenciesIds contains "spring-pulsar-reactive"-%}
+    pulsar:
+        image: 'apachepulsar/pulsar:latest'
+        ports:
+          - '6650'
+          - '8080'
+        command: 'bin/pulsar standalone'
     {%- endif -%}

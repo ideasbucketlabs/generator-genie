@@ -28,6 +28,7 @@ function tryParseJSONObject(jsonString: string): boolean | unknown {
                 packages: string[]
             }
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
         return false
     }
@@ -53,7 +54,7 @@ async function zipFolder(files: Array<File | Folder>, zipFile: JsZip) {
                 zipFile.file(value.name, blob)
             }
         } else {
-            await zipFolder((value as Folder).children ?? [], zipFile.folder(value.name)!!)
+            await zipFolder((value as Folder).children ?? [], zipFile.folder(value.name)!)
         }
     }
 }
@@ -167,7 +168,7 @@ export function extractDataFromParameters(
         }
         return []
     })(parameters?.packages ?? [])
-
+    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
     const final: Record<string, any> = {}
     if (parameters.projectType === ProjectType.VueJS) {
         parameters.metaData.description = 'This application needs some description to be filled out.'

@@ -3,7 +3,7 @@ plugins {
     java
     {%- endif -%}
     id("org.springframework.boot") version "{{ metadata.springBootVersion }}"
-    id("io.spring.dependency-management") version "1.1.5"
+    id("io.spring.dependency-management") version "1.1.6"
     {%- for plugin in plugins -%}
     {%- if plugin.id == "jacoco" -%}
     jacoco
@@ -13,6 +13,9 @@ plugins {
     {%- endfor -%}
     {%- if dependenciesIds contains "hilla" -%}
     id("dev.hilla") version "{{ hillaVersion }}"
+    {%- endif -%}
+    {%- if dependenciesIds contains "jte" -%}
+    id("gg.jte.gradle") version "{{ jteVersion }}"
     {%- endif -%}
     {%- if dependenciesIds contains "vaadin" -%}
     id("com.vaadin") version "{{ vaadinVersion }}"
@@ -33,7 +36,9 @@ group = "{{ metadata.group }}"
 version = "0.0.1-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_{{ jdkSourceCompatibility }}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of({{ jdkSourceCompatibility }})
+    }
 }
 {%- if annotationDependencies.size != 0 -%}
 
@@ -50,7 +55,7 @@ repositories {
     maven { url = uri("https://repo.spring.io/milestone") }
 {%- endif -%}
 }
-{%- if haveSpringCloudDependency or haveSpringShellDependency or haveTimeFoldSolverDependency or haveAIDependencies or dependenciesIds contains "hilla" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
+{%- if haveSpringCloudDependency or haveSpringShellDependency or haveTimeFoldSolverDependency or haveAIDependencies or dependenciesIds contains "spring-modulith" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
 
 {%- if haveSpringCloudDependency -%}
 extra["springCloudVersion"] = "{{ springCloudVersion }}"
@@ -67,6 +72,9 @@ extra["springAiVersion"] = "{{ springAIVersion }}"
 {%- if dependenciesIds contains "hilla" -%}
 extra["hillaVersion"] = "{{ hillaVersion }}"
 {%- endif -%}
+{%- if dependenciesIds contains "spring-modulith" -%}
+extra["springModulithVersion"] = "{{ springModulithVersion }}"
+{%- endif -%}
 {%- if dependenciesIds contains "netflix-dgs" -%}
 extra["netflixDgsVersion"] = "{{ netflixDgsVersion }}"
 {%- endif -%}
@@ -81,6 +89,12 @@ dependencies {
     {%- endif -%}
     {%- for dependency in dependencies -%}
     implementation("{{ dependency.groupId }}:{{ dependency.artifactId }}{%- if dependency.version -%}:{{ dependency.version}}{%- endif -%}")
+    {%- if dependency.id == "jte" -%}
+    implementation("{{ dependency.groupId }}:jte-spring-boot-starter{%- if dependency.version -%}:{{ dependency.version}}{%- endif -%}")
+        {%- if dependencies.size == 1 and includeActuatorExplicitly == false -%}
+    implementation("org.springframework.boot:spring-boot-starter")
+        {%- endif -%}
+    {%- endif -%}
     {%- if dependency.id == "flyway" -%}
         {%- if dependenciesIds contains "mysql" -%}
     implementation("org.flywaydb:flyway-mysql")
@@ -149,9 +163,12 @@ dependencies {
     testImplementation("{{ testDependency.groupId }}:{{ testDependency.artifactId }}{%- if testDependency.version -%}:{{ testDependency.version}}{%- endif -%}")
     {%- endfor -%}
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    {%- if kotlinSelected -%}
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    {%- endif -%}
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
-{%- if haveAIDependencies or haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency or dependenciesIds contains "hilla" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
+{%- if haveAIDependencies or haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency or dependenciesIds contains "spring-modulith" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
 
 dependencyManagement {
     imports {
@@ -176,22 +193,17 @@ dependencyManagement {
         {%- if dependenciesIds contains "vaadin" -%}
         mavenBom("com.vaadin:vaadin-bom:${property("vaadinVersion")}")
         {%- endif -%}
+        {%- if dependenciesIds contains "spring-modulith" -%}
+        mavenBom("org.springframework.modulith:spring-modulith-bom:${property("springModulithVersion")}")
+        {%- endif -%}
     }
 }
 {%- endif -%}
 
 {%- if kotlinSelected -%}
-tasks.compileKotlin {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "{{ jdkSourceCompatibility }}"
-    }
-}
-
-tasks.compileTestKotlin {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "{{ jdkSourceCompatibility }}"
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict")
     }
 }
 
@@ -203,8 +215,15 @@ tasks.withType<Test> {
 
 hibernate {
     enhancement {
-        enableAssociationManagement.set(true)
+        enableAssociationManagement = true
     }
+}
+{%- endif -%}
+{%- if dependenciesIds contains "jte" -%}
+
+jte {
+    generate()
+    binaryStaticContent = true
 }
 {%- endif -%}
 {%- if dependenciesIds contains "spotless" -%}

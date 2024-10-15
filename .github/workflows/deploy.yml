@@ -1,27 +1,14 @@
 name: Deploy site
 on:
-    workflow_dispatch:
-        inputs:
-            deploymentPassword:
-                description: 'Password for the deployment'
-                required: true
-                type: string
+    release:
+        types: [published]
 
 env:
     DEPLOYMENT_CODE: ${{ secrets.DEPLOYMENT_CODE }}
 
 jobs:
-    credentialCheck:
-        name: Credential Check
-        runs-on: ubuntu-latest
-        steps:
-            -   name: Check credentials
-                if: ${{ env.DEPLOYMENT_CODE != inputs.deploymentPassword }}
-                run: exit 1
-
     publish:
         runs-on: ubuntu-latest
-        needs: [ credentialCheck ]
         permissions:
             contents: read
             deployments: write

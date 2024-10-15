@@ -5,6 +5,7 @@ import * as timers from 'timers'
 // See here how to get started:
 // https://playwright.dev/docs/intro
 test('visits the app root url and show dependency dialog', async ({ page }) => {
+    // eslint-disable-next-line playwright/no-conditional-in-test
     const metaKey = os.platform() === 'darwin' ? 'Meta' : 'Control'
     // expect(getUA).toBe('taco')
     // console.log(isMac)
@@ -16,11 +17,11 @@ test('visits the app root url and show dependency dialog', async ({ page }) => {
 
     // Make sure dependencies button is shown and clickable
     await expect(page.getByRole('button', { name: 'Add Dependencies' })).toHaveCount(1)
-    await page.getByRole('button', { name: 'Add Dependencies' }).click({ force: true })
+    await page.getByRole('button', { name: 'Add Dependencies' }).click()
 
     // Make sure that items are displayed
     await expect(page.locator('div[role="dialog"]')).toHaveCount(1)
-    await expect(page.locator('div[data-package-item="true"]')).toHaveCount(85)
+    await expect(page.locator('div[data-package-item="true"]')).toHaveCount(97)
     await expect(page.locator('div[data-package-item-id="lombok"]')).toHaveCount(1)
 
     // Make sure package filter works
@@ -40,7 +41,7 @@ test('visits the app root url and show dependency dialog', async ({ page }) => {
 
     // Make sure that multiple works
     await expect(page.getByRole('button', { name: 'Add Dependencies' })).toHaveCount(1)
-    await page.getByRole('button', { name: 'Add Dependencies' }).click({ force: true })
+    await page.getByRole('button', { name: 'Add Dependencies' }).click()
 
     timers.setTimeout(async () => {
         await expect(page.locator('div[data-package-item-id="web"]')).toHaveCount(1)

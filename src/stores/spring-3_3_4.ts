@@ -53,6 +53,22 @@ const data: Dependency[] = [
                 description: 'Provides docker compose support for enhanced development experience.',
                 groupId: 'org.springframework.boot',
                 artifactId: 'spring-boot-docker-compose'
+            },
+            {
+                name: 'Spring Modulith',
+                id: 'spring-modulith',
+                description: 'Support for building modular monolithic applications.',
+                groupId: 'org.springframework.modulith',
+                artifactId: 'spring-modulith-starter-core',
+                testPackages: [
+                    {
+                        name: 'Spring Modulith Test',
+                        id: 'spring-modulith-test',
+                        description: '',
+                        groupId: 'org.springframework.modulith',
+                        artifactId: 'spring-modulith-starter-test'
+                    }
+                ]
             }
         ]
     },
@@ -153,20 +169,20 @@ const data: Dependency[] = [
                 artifactId: 'vaadin-spring-boot-starter'
             },
             {
-                name: 'Hilla',
-                id: 'hilla',
-                description:
-                    'An open source framework that integrates a Spring Boot Java backend with a reactive TypeScript frontend.',
-                groupId: 'dev.hilla',
-                artifactId: 'hilla-react-spring-boot-starter'
-            },
-            {
                 name: 'Netflix DGS',
                 id: 'netflix-dgs',
                 description:
                     'Build GraphQL applications with Netflix DGS (Domain Graph Service) and Spring for GraphQL.',
                 groupId: 'com.netflix.graphql.dgs',
                 artifactId: 'graphql-dgs-spring-graphql-starters'
+            },
+            {
+                name: 'htmx',
+                id: 'htmx',
+                description: 'Build modern user interfaces with the simplicity and power of hypertext.',
+                groupId: 'io.github.wimdeblauwe',
+                artifactId: 'htmx-spring-boot',
+                version: '3.5.0'
             }
         ]
     },
@@ -187,9 +203,17 @@ const data: Dependency[] = [
                 id: 'pebble',
                 groupId: 'io.pebbletemplates',
                 artifactId: 'pebble-spring-boot-starter',
-                version: '3.2.1',
+                version: '3.2.2',
                 description:
                     'Pebble is a Java templating engine inspired by Twig and similar to the Python Jinja Template Engine syntax. It features templates inheritance and easy-to-read syntax, ships with built-in autoescaping for security, and includes integrated support for internationalization.'
+            },
+            {
+                name: 'JTE',
+                id: 'jte',
+                groupId: 'gg.jte',
+                artifactId: 'jte',
+                version: '3.1.12',
+                description: 'Secure and lightweight template engine for Java and Kotlin'
             }
         ]
     },
@@ -249,7 +273,7 @@ const data: Dependency[] = [
                     'Okta specific configuration for Spring Security/Spring Boot OAuth2 features. Enable your Spring Boot application to work with Okta via OAuth 2.0/OIDC.',
                 groupId: 'com.okta.spring',
                 artifactId: 'okta-spring-boot-starter',
-                version: '3.0.6'
+                version: '3.0.7'
             }
         ]
     },
@@ -463,6 +487,15 @@ const data: Dependency[] = [
                 artifactId: 'kafka-streams'
             },
             {
+                name: 'Apache Camel',
+                id: 'apache-camel',
+                description:
+                    'Apache Camel is an open source integration framework that empowers you to quickly and easily integrate various systems consuming or producing data.',
+                groupId: 'org.apache.camel.springboot',
+                artifactId: 'camel-spring-boot-starter',
+                version: '4.8.0'
+            },
+            {
                 name: 'WebSocket',
                 id: 'websocket',
                 description: 'Build Servlet-based WebSocket applications with SockJS and STOMP.',
@@ -475,6 +508,29 @@ const data: Dependency[] = [
                 description: 'RSocket.io applications with Spring Messaging and Netty.',
                 groupId: 'org.springframework.boot',
                 artifactId: 'spring-boot-starter-rsocket',
+                testPackages: [
+                    {
+                        name: 'Reactor Test',
+                        id: 'reactor-test',
+                        description: '',
+                        groupId: 'io.projectreactor',
+                        artifactId: 'reactor-test'
+                    }
+                ]
+            },
+            {
+                name: 'Spring for Apache Pulsar',
+                id: 'spring-pulsar',
+                description: 'Build messaging applications with Apache Pulsar',
+                groupId: 'org.springframework.boot',
+                artifactId: 'spring-boot-starter-pulsar'
+            },
+            {
+                name: 'Spring for Apache Pulsar (Reactive)',
+                id: 'spring-pulsar-reactive',
+                description: 'Build reactive messaging applications with Apache Pulsar',
+                groupId: 'org.springframework.boot',
+                artifactId: 'spring-boot-starter-pulsar-reactive',
                 testPackages: [
                     {
                         name: 'Reactor Test',
@@ -541,7 +597,16 @@ const data: Dependency[] = [
                 id: 'spring-shell',
                 description: 'Build command line applications with spring.',
                 groupId: 'org.springframework.shell',
-                artifactId: 'spring-shell-starter'
+                artifactId: 'spring-shell-starter',
+                testPackages: [
+                    {
+                        name: 'Spring Shell Test',
+                        id: 'spring-shell-test',
+                        description: '',
+                        groupId: 'org.springframework.shell',
+                        artifactId: 'spring-shell-starter-test'
+                    }
+                ]
             }
         ]
     },
@@ -689,29 +754,6 @@ const data: Dependency[] = [
                         artifactId: 'junit-jupiter'
                     }
                 ]
-            },
-            {
-                name: 'Contract Verifier',
-                id: 'cloud-contract-verifier',
-                description:
-                    'Moves TDD to the level of software architecture by enabling Consumer Driven Contract (CDC) development.',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-contract-verifier'
-            },
-            {
-                name: 'Contract Stub Runner',
-                id: 'cloud-contract-stub-runner',
-                description:
-                    'Stub Runner for HTTP/Messaging based communication. Allows creating WireMock stubs from RestDocs tests.',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-contract-stub-runner'
-            },
-            {
-                name: 'Embedded LDAP Server',
-                id: 'embedded-ldap',
-                description: 'Provides a platform neutral way for running a LDAP server in unit tests.',
-                groupId: 'com.unboundid',
-                artifactId: 'unboundid-ldapsdk'
             }
         ]
     },
@@ -726,22 +768,6 @@ const data: Dependency[] = [
                     'Non-specific Spring Cloud features, unrelated to external libraries or integrations (e.g. Bootstrap context and @RefreshScope).',
                 groupId: 'org.springframework.cloud',
                 artifactId: 'spring-cloud-starter'
-            },
-            {
-                name: 'Function',
-                id: 'cloud-function',
-                description:
-                    'Promotes the implementation of business logic via functions and supports a uniform programming model across serverless providers, as well as the ability to run standalone (locally or in a PaaS).',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-function-context'
-            },
-            {
-                name: 'Task',
-                id: 'cloud-task',
-                description:
-                    'Allows a user to develop and run short lived microservices using Spring Cloud. Run them locally, in the cloud, and on Spring Cloud Data Flow.',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-starter-task'
             }
         ]
     },
@@ -773,6 +799,13 @@ const data: Dependency[] = [
                         artifactId: 'reactor-test'
                     }
                 ]
+            },
+            {
+                id: 'cloud-load-balancer',
+                name: 'Cloud Load Balancer',
+                description: 'Client-side load balancing with Spring Cloud LoadBalancer.',
+                groupId: 'org.springframework.cloud',
+                artifactId: 'spring-cloud-starter-loadbalancer'
             }
         ]
     },
@@ -782,41 +815,10 @@ const data: Dependency[] = [
         packages: [
             {
                 name: 'Resilience4J',
-                id: 'cloud-resilience4j',
+                id: 'resilience-4j',
                 description: 'Spring Cloud Circuit breaker with Resilience4j as the underlying implementation.',
                 groupId: 'org.springframework.cloud',
                 artifactId: 'spring-cloud-starter-circuitbreaker-resilience4j'
-            }
-        ]
-    },
-    {
-        id: 'spring-cloud-messaging',
-        group: 'Spring Cloud Messaging',
-        packages: [
-            {
-                name: 'Cloud Bus',
-                id: 'cloud-bus',
-                description:
-                    'Links nodes of a distributed system with a lightweight message broker which can used to broadcast state changes or other management instructions (requires a binder, e.g. Apache Kafka or RabbitMQ).',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-bus'
-            },
-            {
-                name: 'Cloud Stream',
-                id: 'cloud-stream',
-                description:
-                    'Framework for building highly scalable event-driven microservices connected with shared messaging systems (requires a binder, e.g. Apache Kafka, Apache Pulsar, RabbitMQ, or Solace PubSub+).',
-                groupId: 'org.springframework.cloud',
-                artifactId: 'spring-cloud-stream',
-                testPackages: [
-                    {
-                        name: 'Cloud Stream Test',
-                        id: 'cloud-stream-test',
-                        description: '',
-                        groupId: 'org.springframework.cloud',
-                        artifactId: 'spring-cloud-stream-test-binder'
-                    }
-                ]
             }
         ]
     },

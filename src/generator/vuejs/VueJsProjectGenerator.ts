@@ -39,8 +39,8 @@ function getPrettierConfig(indentSize: number, includeTailwindPlugin: boolean): 
             semi: false,
             tabWidth: indentSize,
             singleQuote: true,
-            printWidth: 100,
-            trailingComma: 'none'
+            printWidth: 120,
+            arrowParens: 'avoid'
         },
         ...(includeTailwindPlugin
             ? {
@@ -60,6 +60,7 @@ function getTsConfigAppJson(indentSize: number): string {
             exclude: ['src/**/__tests__/*'],
             compilerOptions: {
                 composite: true,
+                tsBuildInfoFile: './node_modules/.tmp/tsconfig.app.tsbuildinfo',
                 baseUrl: '.',
                 paths: {
                     '@/*': ['./src/*']
@@ -139,9 +140,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
         },
         ...(typescriptSelected
             ? {
-                  'type-check': projectMetaData.includeUnitTest
-                      ? 'vue-tsc --noEmit -p tsconfig.vitest.json --composite false'
-                      : 'vue-tsc --noEmit -p tsconfig.app.json --composite false',
+                  'type-check': 'vue-tsc --build --force',
                   build: 'run-p type-check "build-only {@}" --',
                   'build-only': 'vite build'
               }
@@ -155,9 +154,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
             : {}),
         ...(projectMetaData.includeEslint
             ? {
-                  lint: `eslint . --ext .vue,.js,.jsx,.mjs,.cjs${
-                      typescriptSelected ? ',.ts,.tsx,.cts,.mts' : ''
-                  } --fix --ignore-path .gitignore`
+                  lint: `eslint . --fix`
               }
             : {}),
         ...(projectMetaData.includePrettier
@@ -179,7 +176,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
             : {}),
         ...(projectMetaData.integrationTest === 'nightwatch'
             ? {
-                  'test:e2e': 'nightwatch tests/e2e'
+                  'test:e2e': 'nightwatch tests/e2e/*'
               }
             : {})
     }
@@ -202,95 +199,99 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
         scripts: scripts,
         dependencies: {
             ...{
-                vue: '^3.4.21'
+                vue: '^3.5.12'
             },
             ...(projectMetaData.includeRouter
                 ? {
-                      'vue-router': '^4.3.0'
+                      'vue-router': '^4.4.5'
                   }
                 : {}),
             ...(projectMetaData.includePinia
                 ? {
-                      pinia: '^2.1.7'
+                      pinia: '^2.2.4'
                   }
                 : {}),
             ...userChosenExplicitDependency
         },
         devDependencies: {
             ...{
-                '@vitejs/plugin-vue': '^5.0.4',
-                vite: '^5.2.8'
+                '@vitejs/plugin-vue': '^5.1.4',
+                vite: '^5.4.8'
             },
             ...(typescriptSelected
                 ? {
                       [`@tsconfig/node${projectMetaData.nodeVersion}`]:
                           projectMetaData.nodeVersion === 18 ? '^18.2.2' : '^20.1.4',
-                      '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.12.5',
+                      '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.16.11',
                       '@vue/tsconfig': '^0.5.1',
-                      'npm-run-all2': '^6.1.2',
-                      'vue-tsc': '^2.0.11',
-                      typescript: '~5.4.0'
+                      'npm-run-all2': '^6.2.3',
+                      'vue-tsc': '^2.1.6',
+                      typescript: '~5.5.4'
                   }
                 : {}),
             ...(projectMetaData.includeEslint
                 ? {
-                      '@rushstack/eslint-patch': '^1.8.0',
-                      eslint: '^8.57.0',
-                      'eslint-plugin-vue': '^9.23.0'
+                      eslint: '^9.12.0',
+                      'eslint-plugin-vue': '^9.28.0'
                   }
                 : {}),
             ...(projectMetaData.includeEslint && typescriptSelected
                 ? {
-                      '@vue/eslint-config-typescript': '^13.0.0'
+                      '@vue/eslint-config-typescript': '^14.0.0'
                   }
                 : {}),
             ...(projectMetaData.includePrettier
                 ? {
-                      prettier: '^3.2.5',
-                      '@vue/eslint-config-prettier': '^9.0.0'
+                      prettier: '^3.3.3',
+                      '@vue/eslint-config-prettier': '^10.0.0'
                   }
                 : {}),
             ...(projectMetaData.includeUnitTest
                 ? {
-                      jsdom: '^24.0.0',
-                      vitest: '^1.4.0',
-                      '@vue/test-utils': '^2.4.5'
+                      jsdom: '^25.0.1',
+                      vitest: '^2.1.2',
+                      '@vue/test-utils': '^2.4.6'
+                  }
+                : {}),
+            ...(projectMetaData.includeUnitTest && projectMetaData.includeEslint
+                ? {
+                      '@vitest/eslint-plugin': '1.1.7'
                   }
                 : {}),
             ...(projectMetaData.includeUnitTest && typescriptSelected
                 ? {
-                      '@types/jsdom': '^21.1.6'
+                      '@types/jsdom': '^21.1.7'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'playwright'
                 ? {
-                      '@playwright/test': '^1.43.0'
+                      '@playwright/test': '^1.48.0'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'cypress'
                 ? {
-                      cypress: '^13.7.2',
-                      'start-server-and-test': '^2.0.3'
+                      cypress: '^13.15.0',
+                      'start-server-and-test': '^2.0.8'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'nightwatch'
                 ? {
-                      '@nightwatch/vue': '^3.1.0',
-                      chromedriver: '^123.0.1',
-                      geckodriver: '^4.3.3',
-                      nightwatch: '^3.6.0',
+                      '@nightwatch/vue': '^3.1.2',
+                      chromedriver: '^129.0.4',
+                      geckodriver: '^4.5.1',
+                      nightwatch: '^3.8.0',
                       'vite-plugin-nightwatch': '^0.4.6',
                       'ts-node': '^10.9.2'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'cypress' && projectMetaData.includeEslint
                 ? {
-                      'eslint-plugin-cypress': '^2.15.1'
+                      'eslint-plugin-cypress': '^3.5.0'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'playwright' && projectMetaData.includeEslint
                 ? {
-                      'eslint-plugin-playwright': '^1.5.4'
+                      'eslint-plugin-playwright': '^1.6.2'
                   }
                 : {}),
             ...userChosenExplicitDevDependency
@@ -313,6 +314,8 @@ function getTsConfigNodeJson(metadata: VueJsProject): string {
             ],
             compilerOptions: {
                 composite: true,
+                noEmit: true,
+                tsBuildInfoFile: './node_modules/.tmp/tsconfig.node.tsbuildinfo',
                 module: 'ESNext',
                 moduleResolution: 'Bundler',
                 types: ['node']
@@ -365,7 +368,7 @@ function getSrcContent(
                 type: ContentType.File,
                 id: getId(),
                 lang: Language.Vue,
-                content: engine.renderSync(parsedTemplates.get('helloworld.vue')!!, payload) as unknown as string
+                content: engine.renderSync(parsedTemplates.get('helloworld.vue')!, payload) as unknown as string
             },
             {
                 name: '__tests__',
@@ -379,7 +382,7 @@ function getSrcContent(
                               id: getId(),
                               lang: projectMetaData.language,
                               content: engine.renderSync(
-                                  parsedTemplates.get('helloworld.spec.ts')!!,
+                                  parsedTemplates.get('helloworld.spec.ts')!,
                                   payload
                               ) as unknown as string
                           }
@@ -409,7 +412,7 @@ function getSrcContent(
                     type: ContentType.File,
                     id: getId(),
                     lang: projectMetaData.language,
-                    content: engine.renderSync(parsedTemplates.get('store.ts')!!, payload) as unknown as string
+                    content: engine.renderSync(parsedTemplates.get('store.ts')!, payload) as unknown as string
                 }
             ]
         })
@@ -427,7 +430,7 @@ function getSrcContent(
                         type: ContentType.File,
                         id: getId(),
                         lang: Language.Vue,
-                        content: engine.renderSync(parsedTemplates.get('home.vue')!!, payload) as unknown as string
+                        content: engine.renderSync(parsedTemplates.get('home.vue')!, payload) as unknown as string
                     }
                 ]
             },
@@ -441,7 +444,7 @@ function getSrcContent(
                         type: ContentType.File,
                         id: getId(),
                         lang: Language.Vue,
-                        content: engine.renderSync(parsedTemplates.get('layout.vue')!!, payload) as unknown as string
+                        content: engine.renderSync(parsedTemplates.get('layout.vue')!, payload) as unknown as string
                     }
                 ]
             },
@@ -455,7 +458,7 @@ function getSrcContent(
                         type: ContentType.File,
                         id: getId(),
                         lang: projectMetaData.language,
-                        content: engine.renderSync(parsedTemplates.get('router.ts')!!, payload) as unknown as string
+                        content: engine.renderSync(parsedTemplates.get('router.ts')!, payload) as unknown as string
                     }
                 ]
             }
@@ -468,14 +471,14 @@ function getSrcContent(
             type: ContentType.File,
             id: getId(),
             lang: projectMetaData.language,
-            content: engine.renderSync(parsedTemplates.get('main.ts')!!, payload) as unknown as string
+            content: engine.renderSync(parsedTemplates.get('main.ts')!, payload) as unknown as string
         },
         {
             name: 'App.vue',
             type: ContentType.File,
             id: getId(),
             lang: Language.Vue,
-            content: engine.renderSync(parsedTemplates.get('app.vue')!!, payload) as unknown as string
+            content: engine.renderSync(parsedTemplates.get('app.vue')!, payload) as unknown as string
         }
     )
 
@@ -544,7 +547,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
             name: 'index.html',
             lang: Language.Html,
             type: ContentType.File,
-            content: engine.renderSync(parsedTemplates.get('index.html')!!, payload) as unknown as string,
+            content: engine.renderSync(parsedTemplates.get('index.html')!, payload) as unknown as string,
             id: getId()
         } as File,
         getSrcContent(projectMetaData.metadata, typescriptSelected, javascriptSelected, dependenciesIds),
@@ -566,7 +569,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
             type: ContentType.File,
             lang: Language.Markdown,
             id: getId(),
-            content: engine.renderSync(parsedTemplates.get('readme.md')!!, payload) as unknown as string
+            content: engine.renderSync(parsedTemplates.get('readme.md')!, payload) as unknown as string
         }
     ]
 
@@ -577,14 +580,14 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                 lang: projectMetaData.metadata.language,
                 id: getId(),
                 type: ContentType.File,
-                content: engine.renderSync(parsedTemplates.get('tailwind.config.ts')!!, payload) as unknown as string
+                content: engine.renderSync(parsedTemplates.get('tailwind.config.ts')!, payload) as unknown as string
             } as File,
             {
                 name: 'postcss.config.cjs',
                 lang: Language.Javascript,
                 id: getId(),
                 type: ContentType.File,
-                content: engine.renderSync(parsedTemplates.get('postcss.config.cjs')!!, payload) as unknown as string
+                content: engine.renderSync(parsedTemplates.get('postcss.config.cjs')!, payload) as unknown as string
             } as File
         )
     }
@@ -632,7 +635,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
             lang: projectMetaData.metadata.language,
             id: getId(),
             type: ContentType.File,
-            content: engine.renderSync(parsedTemplates.get('vitest.config.js')!!, payload) as unknown as string
+            content: engine.renderSync(parsedTemplates.get('vitest.config.js')!, payload) as unknown as string
         } as File)
 
         if (typescriptSelected) {
@@ -647,6 +650,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                         exclude: [],
                         compilerOptions: {
                             composite: true,
+                            tsBuildInfoFile: './node_modules/.tmp/tsconfig.vitest.tsbuildinfo',
                             lib: [],
                             types: ['node', 'jsdom']
                         }
@@ -665,7 +669,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                 lang: projectMetaData.metadata.language,
                 id: getId(),
                 type: ContentType.File,
-                content: engine.renderSync(parsedTemplates.get('playwright.config.js')!!, payload) as unknown as string
+                content: engine.renderSync(parsedTemplates.get('playwright.config.js')!, payload) as unknown as string
             } as File,
             {
                 name: 'e2e',
@@ -679,7 +683,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                             id: getId(),
                             type: ContentType.File,
                             content: engine.renderSync(
-                                parsedTemplates.get('playwright.e2e.js')!!,
+                                parsedTemplates.get('playwright.e2e.js')!,
                                 payload
                             ) as unknown as string
                         } as File
@@ -693,7 +697,6 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                                   type: ContentType.File,
                                   content: JSON.stringify(
                                       {
-                                          // eslint-disable-next-line vue/max-len
                                           extends: `@tsconfig/node${projectMetaData.metadata.nodeVersion}/tsconfig.json`,
                                           include: ['./**/*']
                                       },
@@ -715,7 +718,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                 lang: projectMetaData.metadata.language,
                 id: getId(),
                 type: ContentType.File,
-                content: engine.renderSync(parsedTemplates.get('cypress.config.js')!!, payload) as unknown as string
+                content: engine.renderSync(parsedTemplates.get('cypress.config.js')!, payload) as unknown as string
             } as File,
             {
                 name: 'cypress',
@@ -734,7 +737,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                                     type: ContentType.File,
                                     id: getId(),
                                     content: engine.renderSync(
-                                        parsedTemplates.get('example.cy.ts')!!,
+                                        parsedTemplates.get('example.cy.ts')!,
                                         payload
                                     ) as unknown as string
                                 }
@@ -817,7 +820,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                                 type: ContentType.File,
                                 lang: projectMetaData.metadata.language,
                                 content: engine.renderSync(
-                                    parsedTemplates.get('cypresse2e.js')!!,
+                                    parsedTemplates.get('cypresse2e.js')!,
                                     payload
                                 ) as unknown as string
                             },
@@ -827,7 +830,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                                 type: ContentType.File,
                                 lang: projectMetaData.metadata.language,
                                 content: engine.renderSync(
-                                    parsedTemplates.get('cypress.command.js')!!,
+                                    parsedTemplates.get('cypress.command.js')!,
                                     payload
                                 ) as unknown as string
                             }
@@ -845,7 +848,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                 lang: Language.Javascript,
                 id: getId(),
                 type: ContentType.File,
-                content: engine.renderSync(parsedTemplates.get('nightwatch.conf.js')!!, payload) as unknown as string
+                content: engine.renderSync(parsedTemplates.get('nightwatch.conf.js')!, payload) as unknown as string
             } as File,
             {
                 name: 'tests',
@@ -863,7 +866,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                                 lang: projectMetaData.metadata.language,
                                 id: getId(),
                                 content: engine.renderSync(
-                                    parsedTemplates.get('nightwatch.example.ts')!!,
+                                    parsedTemplates.get('nightwatch.example.ts')!,
                                     payload
                                 ) as unknown as string
                             }
@@ -885,7 +888,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                                   type: ContentType.File,
                                   id: getId(),
                                   content: engine.renderSync(
-                                      parsedTemplates.get('nightwatch.d.ts')!!,
+                                      parsedTemplates.get('nightwatch.d.ts')!,
                                       payload
                                   ) as unknown as string
                               },
@@ -908,11 +911,11 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
 
     if (projectMetaData.metadata.includeEslint) {
         contentTree.push({
-            name: '.eslintrc.cjs',
+            name: 'eslint.config.mjs',
             lang: Language.Javascript,
             id: getId(),
             type: ContentType.File,
-            content: engine.renderSync(parsedTemplates.get('eslintrc.cjs')!!, payload) as unknown as string
+            content: engine.renderSync(parsedTemplates.get('eslint.config.mjs')!, payload) as unknown as string
         } as File)
     }
 
@@ -931,7 +934,7 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
         lang: projectMetaData.metadata.language,
         id: getId(),
         type: ContentType.File,
-        content: engine.renderSync(parsedTemplates.get('vite.config.ts')!!, payload) as unknown as string
+        content: engine.renderSync(parsedTemplates.get('vite.config.ts')!, payload) as unknown as string
     } as File)
 
     return {
