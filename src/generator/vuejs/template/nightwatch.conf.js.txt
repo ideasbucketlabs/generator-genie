@@ -33,7 +33,8 @@ module.exports = {
   globals_path: '',
 
   vite_dev_server: {
-    start_vite: false
+    start_vite: false,
+    port: process.env.CI ? 4173 : 5173
   },
 
   webdriver: {},
@@ -172,7 +173,8 @@ module.exports = {
     globals_path: '',
 
     vite_dev_server: {
-        start_vite: false
+        start_vite: false,
+        port: process.env.CI ? 4173 : 5173
     },
 
     webdriver: {},

@@ -1,10 +1,10 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import NestedOption from '../NestedOption.vue'
-import { ContentType } from '../../entity/ContentType'
-import { Language } from '../../entity/Language'
-import { type Folder } from '../../entity/ContentTree'
-import { type File } from '../../entity/File'
+import { ContentType } from '@/entity/ContentType'
+import { Language } from '@/entity/Language'
+import { type Folder } from '@/entity/ContentTree'
+import { type File } from '@/entity/File'
 
 describe('NestedOption works correctly', () => {
     it('renders options based on content', () => {
@@ -81,6 +81,7 @@ describe('NestedOption works correctly', () => {
         })
 
         // Check if the path separator is calculated correctly
+        /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
         const pathSeparator = (wrapper.vm as any).pathSeperator
         expect(pathSeparator).toBe('../../')
     })

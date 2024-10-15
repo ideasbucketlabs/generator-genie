@@ -28,7 +28,9 @@ const springCloudDependencies = [
     'cloud-resilience4j',
     'spring-cloud-messaging',
     'cloud-bus',
-    'cloud-stream'
+    'resilience-4j',
+    'cloud-stream',
+    'cloud-load-balancer'
 ]
 
 const supportedDatabases = new Set(['mariadb', 'sqlserver', 'mysql', 'postgresql', 'h2', 'hsql'])
@@ -67,7 +69,7 @@ function getDockerYaml(packages: Set<string>): File {
         name: 'compose.yaml',
         lang: Language.Yaml,
         type: ContentType.File,
-        content: engine.renderSync(parsedTemplates.get('compose.yaml')!!, {
+        content: engine.renderSync(parsedTemplates.get('compose.yaml')!, {
             dependenciesIds: Array.from(packages)
         }) as unknown as string,
         id: getId()
@@ -76,14 +78,14 @@ function getDockerYaml(packages: Set<string>): File {
 
 function getApplicationCode(metadata: SpringProject): string {
     return engine.renderSync(
-        parsedTemplates.get(`application.${metadata.language === Language.Kotlin ? 'kt' : 'java'}`)!!,
+        parsedTemplates.get(`application.${metadata.language === Language.Kotlin ? 'kt' : 'java'}`)!,
         metadata
     ) as unknown as string
 }
 
 function getTestApplicationCode(metadata: SpringProject): string {
     return engine.renderSync(
-        parsedTemplates.get(`application-test.${metadata.language === Language.Kotlin ? 'kt' : 'java'}`)!!,
+        parsedTemplates.get(`application-test.${metadata.language === Language.Kotlin ? 'kt' : 'java'}`)!,
         metadata
     ) as unknown as string
 }
@@ -121,7 +123,7 @@ function getProjectFolders(metadata: SpringProject, context: 'main' | 'test', de
                                           `test-container-application.${
                                               metadata.language === Language.Kotlin ? 'kt' : 'java'
                                           }`
-                                      )!!,
+                                      )!,
                                       metadata
                                   ) as unknown as string,
                                   type: ContentType.File,
@@ -145,7 +147,7 @@ function getProjectFolders(metadata: SpringProject, context: 'main' | 'test', de
         name: metadata.language === Language.Kotlin ? 'kotlin' : 'java',
         id: getId(),
         type: ContentType.Folder,
-        children: [folder!!]
+        children: [folder!]
     }
 }
 
@@ -155,7 +157,7 @@ function getPropertiesFolderContent(packages: Set<string>): Array<File | Folder>
             name: 'application.properties',
             type: ContentType.File,
             id: getId(),
-            // content: engine.renderSync(parsedTemplates.get('application.properties')!!, {
+            // content: engine.renderSync(parsedTemplates.get('application.properties')!, {
             //     dependenciesIds: Array.from(packages)
             // }) as unknown as string,
             content: '',
@@ -165,7 +167,7 @@ function getPropertiesFolderContent(packages: Set<string>): Array<File | Folder>
             name: 'application-prod.properties',
             type: ContentType.File,
             id: getId(),
-            // content: engine.renderSync(parsedTemplates.get('application-prod.properties')!!, {
+            // content: engine.renderSync(parsedTemplates.get('application-prod.properties')!, {
             //     dependenciesIds: Array.from(packages)
             // }) as unknown as string,
             content: '',
@@ -257,22 +259,6 @@ function getSrcFolder(metadata: SpringProject, packages: Set<string>): Folder | 
     }
 }
 
-function getMinimumJdkCompatibility(
-    language: Language.Java | Language.Kotlin,
-    selectedJavaVersion: number,
-    selectedSpringBootVersion: SpringBootVersion
-): number {
-    if (language === Language.Java) {
-        return selectedJavaVersion
-    }
-
-    if (selectedSpringBootVersion === SpringBootVersion['3_3_0']) {
-        return 17
-    }
-
-    return selectedJavaVersion
-}
-
 function generateMavenStub(
     projectMetaData: { metadata: SpringProject; dependencies: Package[] },
     payload: unknown
@@ -282,7 +268,7 @@ function generateMavenStub(
             name: 'pom.xml',
             lang: Language.Xml,
             type: ContentType.File,
-            content: engine.renderSync(parsedTemplates.get('pom.xml')!!, payload as object) as unknown as string,
+            content: engine.renderSync(parsedTemplates.get('pom.xml')!, payload as object) as unknown as string,
             id: getId()
         } as File,
         {
@@ -297,7 +283,7 @@ function generateMavenStub(
             lang: Language.Markdown,
             type: ContentType.File,
             id: getId(),
-            content: engine.renderSync(parsedTemplates.get('readme.md')!!, payload as object) as unknown as string
+            content: engine.renderSync(parsedTemplates.get('readme.md')!, payload as object) as unknown as string
         },
         {
             name: 'mvnw',
@@ -344,7 +330,7 @@ function generateGradleStub(
             lang: Language.Kotlin,
             type: ContentType.File,
             content: engine.renderSync(
-                parsedTemplates.get('build.gradle.kts')!!,
+                parsedTemplates.get('build.gradle.kts')!,
                 payload as object
             ) as unknown as string,
             id: getId()
@@ -395,7 +381,7 @@ function generateGradleStub(
             name: 'settings.gradle.kts',
             lang: Language.Kotlin,
             type: ContentType.File,
-            content: engine.renderSync(parsedTemplates.get('settings.gradle.kts')!!, {
+            content: engine.renderSync(parsedTemplates.get('settings.gradle.kts')!, {
                 artifact: projectMetaData.metadata.artifact
             }) as unknown as string,
             id: getId()
@@ -412,7 +398,7 @@ function generateGradleStub(
             lang: Language.Markdown,
             type: ContentType.File,
             id: getId(),
-            content: engine.renderSync(parsedTemplates.get('readme.md')!!, payload as object) as unknown as string
+            content: engine.renderSync(parsedTemplates.get('readme.md')!, payload as object) as unknown as string
         }
     ]
 }
@@ -434,11 +420,13 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
             break
         }
     }
-    const springAIVersion = '1.0.0-M1'
-    const timefoldVersion = '1.10.0'
-    const vaadinVersion: string = '24.3.12'
-    const netflixDgsVersion: string = '8.6.1'
+    const springAIVersion = '1.0.0-M3'
+    const timefoldVersion = '1.15.0'
+    const vaadinVersion: string = '24.4.13'
+    const netflixDgsVersion: string =
+        projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_4'] ? '9.1.2' : '8.7.1'
     const hillaVersion: string = '2.5.5'
+    const springModulithVersion: string = '1.2.4'
 
     const [plugins, d] = partition(enabledDependencies, (pointer: Package) => {
         return pointer.plugin ?? false
@@ -498,6 +486,7 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
             dependenciesIds.has('distributed-tracing') ||
             dependenciesIds.has('wavefront'))
 
+    const jteVersion = dependencies.find((it) => it.id === 'jte')?.version ?? null
     const payload = {
         metadata: projectMetaData.metadata,
         plugins: plugins,
@@ -512,6 +501,7 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         haveSpringShellDependency: dependenciesIds.has('spring-shell'),
         haveTimeFoldSolverDependency: dependenciesIds.has('timefold-solver'),
         timefoldVersion: timefoldVersion,
+        springModulithVersion,
         vaadinVersion: vaadinVersion,
         netflixDgsVersion: netflixDgsVersion,
         hillaVersion: hillaVersion,
@@ -521,23 +511,20 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         kotlin: Language.Kotlin,
         haveAIDependencies: haveAIDependencies,
         springAIVersion: springAIVersion,
+        jteVersion,
         java: Language.Java,
         ormVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_0']
-                ? '"6.5.2.Final"'
-                : '"6.4.8.Final"',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_4']
+                ? '"6.5.3.Final"'
+                : '"6.4.10.Final"',
         kotlinSelected: projectMetaData.metadata.language === Language.Kotlin,
         javaSelected: projectMetaData.metadata.language === Language.Java,
         springCloudVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_0'] ? '2022.0.5' : '2023.0.1',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_4'] ? '2023.0.3' : '2023.0.3',
         springShellVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_0'] ? '3.1.7' : '3.2.0',
-        jdkSourceCompatibility: getMinimumJdkCompatibility(
-            projectMetaData.metadata.language,
-            projectMetaData.metadata.javaVersion,
-            projectMetaData.metadata.springBootVersion
-        ),
-        kotlinPlugin: '1.9.24'
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_4'] ? '3.3.3' : '3.2.8',
+        jdkSourceCompatibility: projectMetaData.metadata.javaVersion,
+        kotlinPlugin: '1.9.25'
     }
 
     const contentTree: Array<File | Folder> =

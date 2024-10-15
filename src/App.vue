@@ -85,7 +85,7 @@ const springProject = ref<{ active: boolean; valid: boolean; metaData: SpringPro
     valid: true,
     metaData: {
         language: Language.Java,
-        springBootVersion: SpringBootVersion['3_3_0'] as SpringBootVersion,
+        springBootVersion: SpringBootVersion['3_3_4'] as SpringBootVersion,
         group: defaultGroup,
         name: 'demo',
         artifact: 'demo',
@@ -166,6 +166,7 @@ const selectedPackageInformation = computed<Package[]>(() => {
                     parentName: packageInformation.parentName,
                     testPackages: packageInformation.testPackages
                 }
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
                 return null
             }
@@ -254,13 +255,13 @@ async function getProjectContent() {
     if (projectType.value === ProjectType.Spring) {
         const { getContent } = await import('@/generator/spring/SpringProjectGenerator')
         contentTree.value = getContent({
-            metadata: projectMetadata.value.get(projectType.value)?.metaData!! as SpringProjectType,
+            metadata: projectMetadata.value.get(projectType.value)?.metaData as SpringProjectType,
             dependencies: selectedPackageInformation.value
         })
     } else {
         const { getContent } = await import('@/generator/vuejs/VueJsProjectGenerator')
         contentTree.value = getContent({
-            metadata: projectMetadata.value.get(projectType.value)?.metaData!! as VueJsProjectType,
+            metadata: projectMetadata.value.get(projectType.value)?.metaData as VueJsProjectType,
             dependencies: selectedPackageInformation.value
         })
     }
@@ -471,7 +472,7 @@ function onCloseShareDialog() {
             v-model="selectedPackages"
             :springVersion="
                 projectType === ProjectType.Spring
-                    ? (projectMetadata.get(projectType)?.metaData as SpringProjectType)?.springBootVersion ?? ''
+                    ? ((projectMetadata.get(projectType)?.metaData as SpringProjectType)?.springBootVersion ?? '')
                     : ''
             "
         ></DependenciesDialog>
@@ -522,13 +523,13 @@ function onCloseShareDialog() {
                 </div>
                 <hr class="my-2 dark:border-gray-500" />
                 <div class="mt-2 italic" v-if="selectedPackages.size === 0">No dependency selected</div>
-                <div v-else class="space-y-4 xl:flex xl:flex-col xl:overflow-y-auto">
+                <div v-else class="group space-y-4 pb-2 xl:flex xl:flex-col xl:overflow-y-auto">
                     <div
                         v-for="p in selectedPackageInformation"
                         :key="'package-' + p.id"
                         data-selected-package-item="true"
                         :data-selected-package-item-id="p.id"
-                        class="group flex items-center justify-between rounded border border-gray-200 p-2 shadow dark:border-gray-500"
+                        class="flex items-center justify-between rounded border border-gray-200 p-2 shadow dark:border-gray-500"
                         :class="[p.supported ? 'bg-white dark:bg-primary-dark-700' : 'bg-error-100 dark:bg-error-500']"
                     >
                         <div class="flex-1">
@@ -549,7 +550,7 @@ function onCloseShareDialog() {
                         <div class="w-7 pl-1">
                             <button
                                 type="button"
-                                class="flex w-6 items-center rounded-full bg-error-500 hover:shadow-lg group-hover:flex 2xl:hidden dark:bg-error-700"
+                                class="flex w-6 items-center rounded-full bg-error-500 transition duration-200 hover:shadow-lg group-hover:flex group-hover:opacity-100 2xl:opacity-0 dark:bg-error-700"
                                 title="Remove this package"
                                 @click="removePackage(p.id)"
                             >

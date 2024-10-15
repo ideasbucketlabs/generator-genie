@@ -13,6 +13,19 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>{{ metadata.name }}</name>
   <description>{{ metadata.description | strip | strip_html | truncate: 512 }}</description>
+  <url/>
+  <licenses>
+    <license/>
+  </licenses>
+  <developers>
+    <developer/>
+  </developers>
+  <scm>
+    <connection/>
+    <developerConnection/>
+    <tag/>
+    <url/>
+  </scm>
   <properties>
     <java.version>{{ jdkSourceCompatibility }}</java.version>
     {%- if kotlinSelected -%}
@@ -30,14 +43,14 @@
     {%- if haveTimeFoldSolverDependency -%}
     <timefold-solver.version>{{ timefoldVersion }}</timefold-solver.version>
     {%- endif -%}
-    {%- if dependenciesIds contains "hilla" -%}
-    <hilla.version>{{ hillaVersion }}</hilla.version>
-    {%- endif -%}
     {%- if dependenciesIds contains "netflix-dgs" -%}
     <netflix-dgs.version>{{ netflixDgsVersion }}</netflix-dgs.version>
     {%- endif -%}
     {%- if dependenciesIds contains "vaadin" -%}
     <vaadin.version>{{ vaadinVersion }}</vaadin.version>
+    {%- endif -%}
+    {%- if dependenciesIds contains "spring-modulith" -%}
+    <spring-modulith.version>{{ springModulithVersion }}</spring-modulith.version>
     {%- endif -%}
   </properties>
   <dependencies>
@@ -81,6 +94,19 @@
       <version>{{ dependency.version }}</version>
       {%- endif -%}
     </dependency>
+    {%- if dependency.id == "jte" -%}
+    <dependency>
+      <groupId>gg.jte</groupId>
+      <artifactId>jte-spring-boot-starter-3</artifactId>
+      <version>{{ dependency.version }}</version>
+    </dependency>
+        {%- if dependencies.size == 1 and includeActuatorExplicitly == false -%}
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+        {%- endif -%}
+    {%- endif -%}
     {%- if dependency.id == "security" and dependenciesIds contains "thymeleaf" -%}
     <dependency>
       <groupId>org.thymeleaf.extras</groupId>
@@ -191,8 +217,15 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    {%- if kotlinSelected -%}
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    {%- endif -%}
   </dependencies>
-  {%- if haveAIDependencies or haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency or dependenciesIds contains "hilla" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
+  {%- if haveAIDependencies or haveSpringShellDependency or haveSpringCloudDependency or haveTimeFoldSolverDependency or dependenciesIds contains "spring-modulith" or dependenciesIds contains "netflix-dgs" or dependenciesIds contains "vaadin" -%}
 
   <dependencyManagement>
     <dependencies>
@@ -241,11 +274,11 @@
         <scope>import</scope>
       </dependency>
       {%- endif -%}
-      {%- if dependenciesIds contains "hilla" -%}
+      {%- if dependenciesIds contains "spring-modulith" -%}
       <dependency>
-        <groupId>dev.hilla</groupId>
-        <artifactId>hilla-bom</artifactId>
-        <version>${hilla.version}</version>
+        <groupId>org.springframework.modulith</groupId>
+        <artifactId>spring-modulith-bom</artifactId>
+        <version>${spring-modulith.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -269,21 +302,6 @@
     <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
     {%- endif -%}
     <plugins>
-      {%- if dependenciesIds contains "hilla" -%}
-      <plugin>
-        <groupId>dev.hilla</groupId>
-        <artifactId>hilla-maven-plugin</artifactId>
-        <version>${hilla.version}</version>
-        <executions>
-          <execution>
-            <id>frontend</id>
-            <goals>
-              <goal>prepare-frontend</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      {%- endif -%}
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
@@ -540,33 +558,46 @@
     </repository>
   </repositories>
   {%- endif -%}
-  {%- if dependenciesIds contains "vaadin" or dependenciesIds contains "hilla" -%}
-
+  {%- if dependenciesIds contains "jte" -%}
+  <plugin>
+    <groupId>gg.jte</groupId>
+    <artifactId>jte-maven-plugin</artifactId>
+    <version>{{ jteVersion }}</version>
+    <executions>
+      <execution>
+        <id>jte-generate</id>
+        <phase>generate-sources</phase>
+        <goals>
+          <goal>generate</goal>
+        </goals>
+        <configuration>
+          <sourceDirectory>${project.basedir}/src/main/jte</sourceDirectory>
+          <contentType>Html</contentType>
+          <binaryStaticContent>true</binaryStaticContent>
+          <targetResourceDirectory>${project.build.outputDirectory}</targetResourceDirectory>
+        </configuration>
+      </execution>
+    </executions>
+  </plugin>
+  {%- endif -%}
+  {%- if dependenciesIds contains "vaadin" -%}
   <profiles>
     <profile>
       <id>production</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.vaadin</groupId>
+          <artifactId>vaadin-core</artifactId>
+          <exclusions>
+            <exclusion>
+              <groupId>com.vaadin</groupId>
+              <artifactId>vaadin-dev</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
-          {%- if dependenciesIds contains "hilla" -%}
-          <plugin>
-            <groupId>dev.hilla</groupId>
-            <artifactId>hilla-maven-plugin</artifactId>
-            <version>${hilla.version}</version>
-            <executions>
-              <execution>
-                <id>frontend</id>
-                <phase>compile</phase>
-                <goals>
-                  <goal>build-frontend</goal>
-                </goals>
-                <configuration>
-                  <productionMode>true</productionMode>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          {%- endif -%}
-          {%- if dependenciesIds contains "vaadin" -%}
           <plugin>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-maven-plugin</artifactId>
@@ -582,7 +613,6 @@
               </execution>
             </executions>
           </plugin>
-          {%- endif -%}
         </plugins>
       </build>
     </profile>

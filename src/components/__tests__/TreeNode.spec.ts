@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import type { File } from '@/entity/File'
 import TreeNode from '../TreeNode.vue'
-import { Language } from '../../entity/Language'
-import { type Folder } from '../../entity/ContentTree'
-import { ContentType } from '../../entity/ContentType'
+import { Language } from '@/entity/Language'
+import { type Folder } from '@/entity/ContentTree'
+import { ContentType } from '@/entity/ContentType'
 
 describe('TreeNode works for all content type', () => {
     it('binary content cannot be selected', async () => {
@@ -28,8 +28,8 @@ describe('TreeNode works for all content type', () => {
 
         // Check if the component renders correctly
         expect(wrapper.exists()).toBe(true)
-        expect(wrapper.find('span.cursor-not-allowed').exists()).toBe(true)
-        expect(wrapper.find('span.cursor-pointer').exists()).toBe(false)
+        expect(wrapper.find('div.cursor-not-allowed').exists()).toBe(true)
+        expect(wrapper.find('div.cursor-pointer').exists()).toBe(false)
     })
 
     it('renders empty folder properly', async () => {
@@ -53,7 +53,7 @@ describe('TreeNode works for all content type', () => {
 
         // Check if the component renders correctly
         expect(wrapper.exists()).toBe(true)
-        expect(wrapper.find('span[title="Empty folder"]').exists()).toBe(true)
+        expect(wrapper.find('div[title="Folder 1 (Empty folder)"]').exists()).toBe(true)
     })
 
     it('can expand and collapse tree properly', async () => {
@@ -91,7 +91,7 @@ describe('TreeNode works for all content type', () => {
 
         // Count all nodes before expand
         expect(wrapper.findAll('li').length).toBe(4)
-        const parentNode = wrapper.find('li.flex-col').find('span.flex')
+        const parentNode = wrapper.find('li.flex-col').find('div.flex')
         await parentNode.trigger('click')
         // Count all nodes after expand
         expect(wrapper.findAll('li').length).toBe(4)

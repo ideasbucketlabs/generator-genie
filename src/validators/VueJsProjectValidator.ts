@@ -27,33 +27,33 @@ export function isValid(vueJsProject: VueJsProject): VueJsProjectError {
         error.description = 'Description cannot be null or blank.'
     }
 
-    if ((typeof vueJsProject.includeUnitTest ?? false) !== 'boolean') {
+    if (typeof (vueJsProject.includeUnitTest ?? false) !== 'boolean') {
         error.includeUnitTest = 'Include Unit test value must be boolean.'
     }
 
-    if ((typeof vueJsProject.integrationTest ?? '') !== 'string') {
+    if (typeof (vueJsProject.integrationTest ?? '') !== 'string') {
         error.integrationTest = 'Include Integration test value must be string.'
     } else if (!['playwright', 'nightwatch', 'cypress', 'none'].includes(vueJsProject.integrationTest ?? '')) {
         error.integrationTest = 'Include Integration test value must be valid.'
     }
 
-    if ((typeof vueJsProject.includeRouter ?? false) !== 'boolean') {
+    if (typeof (vueJsProject.includeRouter ?? false) !== 'boolean') {
         error.includeUnitTest = 'Include Router test value must be boolean.'
     }
 
-    if ((typeof vueJsProject.includePinia ?? false) !== 'boolean') {
+    if (typeof (vueJsProject.includePinia ?? false) !== 'boolean') {
         error.includePinia = 'Include Pinia value must be boolean.'
     }
 
-    if ((typeof vueJsProject.includeEslint ?? false) !== 'boolean') {
+    if (typeof (vueJsProject.includeEslint ?? false) !== 'boolean') {
         error.includeEslint = 'Include ESLint value must be boolean.'
     }
 
-    if ((typeof vueJsProject.includePrettier ?? false) !== 'boolean') {
+    if (typeof (vueJsProject.includePrettier ?? false) !== 'boolean') {
         error.includePrettier = 'Include Prettier value must be boolean.'
     }
 
-    if ((typeof vueJsProject.indentSize ?? 0) !== 'number') {
+    if (typeof (vueJsProject.indentSize ?? 0) !== 'number') {
         error.indentSize = 'Include size must be an integer.'
         return error
     }

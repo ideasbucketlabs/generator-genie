@@ -5,7 +5,7 @@ withDefaults(defineProps<{ title?: string | null; width?: string; dialogClass?: 
     title: null,
     width: 'w-full md:w-8/12 lg:w-5/12 xl:w-4/12',
     dialogClass:
-        // eslint-disable-next-line vue/max-len
+         
         'absolute flex flex-col overflow-hidden rounded border border-primary-300 bg-transparent shadow-lg dark:border-gray-800 dark:shadow-gray-900'
 })
 

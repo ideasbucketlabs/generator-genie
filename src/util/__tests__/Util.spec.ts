@@ -8,7 +8,7 @@ import { ProjectType } from '../../entity/ProjectType'
 
 const defaultSpringProject = {
     language: Language.Java,
-    springBootVersion: SpringBootVersion['3_3_0'] as SpringBootVersion,
+    springBootVersion: SpringBootVersion['3_3_4'] as SpringBootVersion,
     group: 'com.example',
     name: 'demo',
     artifact: 'demo',
@@ -45,9 +45,9 @@ describe('Functions in util works correctly', () => {
         expect(decode(encode('a Ā 𐀀 文 🦄'))).toBe('a Ā 𐀀 文 🦄')
     })
 
-    it.concurrent('it can decode parameters correctly', () => {
+    it.concurrent('can decode parameters correctly', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"kotlin","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21},"packages":["native","devtools","lombok","configuration-processor","pebble"]}'
         )
         expect(extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)?.projectType).toBe(
@@ -55,22 +55,22 @@ describe('Functions in util works correctly', () => {
         )
     })
 
-    it.concurrent('it can validate parameters if bad JSON is given', () => {
+    it.concurrent('can validate parameters if bad JSON is given', () => {
         const input = encode('Bad Data, true')
         expect(extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)).toBe(null)
     })
 
-    it.concurrent('it can validate project type in parameters correctly for Spring Project', () => {
+    it.concurrent('can validate project type in parameters correctly for Spring Project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":false,"metaData":{"language":"kotlin","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21},"packages":["native","devtools","lombok","configuration-processor","pebble"]}'
         )
         expect(extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)).toBe(null)
     })
 
-    it.concurrent('it can validate language and packages in parameters correctly for Spring Project', () => {
+    it.concurrent('can validate language and packages in parameters correctly for Spring Project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"potlin","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21},"packages":["bogus"]}'
         )
         expect(extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)?.metaData.language).toBe(
@@ -78,20 +78,20 @@ describe('Functions in util works correctly', () => {
         )
     })
 
-    it.concurrent('it can validate Spring Boot version in parameters correctly for Spring Project', () => {
+    it.concurrent('can validate Spring Boot version in parameters correctly for Spring Project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"potlin","name":"demoo","springBootVersion":"4.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21},"packages":["native","devtools","lombok","configuration-processor","pebble"]}'
         )
         expect(
             (extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)?.metaData as SpringProject)
                 .springBootVersion
-        ).toBe(SpringBootVersion['3_3_0'])
+        ).toBe(SpringBootVersion['3_3_4'])
     })
 
-    it.concurrent('it can validate JDK version in parameters correctly for Spring Project', () => {
+    it.concurrent('can validate JDK version in parameters correctly for Spring Project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"potlin","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":51},"packages":["native","devtools","lombok","configuration-processor","pebble"]}'
         )
         expect(
@@ -100,9 +100,9 @@ describe('Functions in util works correctly', () => {
         ).toBe(17)
     })
 
-    it.concurrent('it can validate parameters correctly for package name for Spring Project', () => {
+    it.concurrent('can validate parameters correctly for package name for Spring Project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"potlin","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":false,"description":"","javaVersion":21},"packages":["native","devtools","lombok","configuration-processor","pebble"]}'
         )
         expect(
@@ -111,9 +111,9 @@ describe('Functions in util works correctly', () => {
         ).toBe('com.playpen.demoo')
     })
 
-    it.concurrent('it can validate parameters correctly for group name for Spring Project', () => {
+    it.concurrent('can validate parameters correctly for group name for Spring Project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"potlin","name":"demoo","springBootVersion":"3.1.5","group":false,"artifact":"demoo","packageName":false,"description":"","javaVersion":21},"packages":["native","devtools","lombok","configuration-processor","pebble"]}'
         )
         expect(
@@ -122,9 +122,9 @@ describe('Functions in util works correctly', () => {
         ).toBe('com.example.demoo')
     })
 
-    it.concurrent('it can validate parameters correctly for name for Spring Project', () => {
+    it.concurrent('can validate parameters correctly for name for Spring Project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"potlin","name":false,"springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":false,"description":"","javaVersion":21},"packages":["native","devtools","lombok","configuration-processor","pebble"]}'
         )
         expect(
@@ -133,9 +133,9 @@ describe('Functions in util works correctly', () => {
         ).toBe('com.playpen.demoo')
     })
 
-    it.concurrent('it can validate artifact name in parameters correctly for Spring Project', () => {
+    it.concurrent('can validate artifact name in parameters correctly for Spring Project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"kotlin","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":234,"packageName":"com.playpen.demoo","description":"","javaVersion":21},"packages":["native","devtools","lombok","configuration-processor","pebble"]}'
         )
         expect(
@@ -144,25 +144,25 @@ describe('Functions in util works correctly', () => {
         ).toBe('demo')
     })
 
-    it.concurrent('it can validate packages in parameters', () => {
+    it.concurrent('can validate packages in parameters', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"kotlin","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21},"packages":false}'
         )
         expect(extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)?.packages).toStrictEqual([])
     })
 
-    it.concurrent('it can validate packages in parameters if it is missing completely', () => {
+    it.concurrent('can validate packages in parameters if it is missing completely', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"kotlin","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21}}'
         )
         expect(extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)?.packages).toStrictEqual([])
     })
 
-    it.concurrent('it can validate packages in parameters if it have invalid types', () => {
+    it.concurrent('can validate packages in parameters if it have invalid types', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"spring","metaData":{"language":"kotlin","name":"demoo","springBootVersion":"3.1.5","group":"com.playpen","artifact":"demoo","packageName":"com.playpen.demoo","description":"","javaVersion":21},"packages":["test",false,23]}'
         )
         expect(extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)?.packages).toStrictEqual([
@@ -170,18 +170,18 @@ describe('Functions in util works correctly', () => {
         ])
     })
 
-    it.concurrent('it can validate project type', () => {
+    it.concurrent('can validate project type', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"null","metaData":{"language":"ts","name":"demo","artifact":"demo","nodeVersion":20,"includePinia":true,"includeRouter":true,"includeUnitTest":true,"description":"","indentSize":4,"integrationTest":"playwright","includeEslint":true,"includePrettier":true},"packages":[]}'
         )
 
         expect(extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)).toBe(null)
     })
 
-    it.concurrent('it can extract parameter for VueJS project', () => {
+    it.concurrent('can extract parameter for VueJS project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"vuejs","metaData":{"language":"ts","name":"demo","artifact":"demo","nodeVersion":20,"includePinia":true,"includeRouter":false,"includeUnitTest":true,"description":"","indentSize":4,"integrationTest":"playwright","includeEslint":true,"includePrettier":true},"packages":[]}'
         )
         const result = extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)
@@ -197,9 +197,9 @@ describe('Functions in util works correctly', () => {
         expect(project?.includeEslint).toBe(true)
     })
 
-    it.concurrent('it can validate language parameter for VueJS project', () => {
+    it.concurrent('can validate language parameter for VueJS project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"vuejs","metaData":{"language":"taco","name":"demo","artifact":"demo","nodeVersion":20,"includePinia":true,"includeRouter":false,"includeUnitTest":true,"description":"","indentSize":4,"integrationTest":"playwright","includeEslint":true,"includePrettier":true},"packages":[]}'
         )
         const result = extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)
@@ -207,9 +207,9 @@ describe('Functions in util works correctly', () => {
         expect(project?.language).toBe(Language.Typescript)
     })
 
-    it.concurrent('it can validate language parameter if missing for VueJS project', () => {
+    it.concurrent('can validate language parameter if missing for VueJS project', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"vuejs","metaData":{"language":false,"name":"demo","artifact":"demo","nodeVersion":20,"includePinia":true,"includeRouter":false,"includeUnitTest":true,"description":"","indentSize":4,"integrationTest":"playwright","includeEslint":true,"includePrettier":true},"packages":[]}'
         )
         const result = extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)
@@ -217,9 +217,9 @@ describe('Functions in util works correctly', () => {
         expect(project?.language).toBe(Language.Typescript)
     })
 
-    it.concurrent('it can validate language parameter if missing for VueJS project variation #2', () => {
+    it.concurrent('can validate language parameter if missing for VueJS project variation #2', () => {
         const input = encode(
-            // eslint-disable-next-line vue/max-len
+             
             '{"projectType":"vuejs","metaData":{"includePinia":true,"includeRouter":false,"includeUnitTest":true,"indentSize":4,"integrationTest":"playwright","includeEslint":true,"includePrettier":true},"packages":[]}'
         )
         const result = extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)

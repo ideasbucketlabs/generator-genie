@@ -30,7 +30,7 @@ function getFileName(location: string): string {
     return extensionParts.join('.')
 }
 
-const templateMap = new Map<string, any[]>()
+const templateMap = new Map<string, unknown[]>()
 
 function determineFileLanguageType(filename: string): Language {
     if (filename.includes('.java')) {

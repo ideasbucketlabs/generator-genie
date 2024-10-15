@@ -18,7 +18,7 @@ const emit = defineEmits<{
     (e: 'update:model-value', value: { active: boolean; valid: boolean; metaData: SpringProject }): void
 }>()
 
-// eslint-disable-next-line vue/no-setup-props-destructure
+ 
 // const springProject = ref<SpringProject>(clone(props.modelValue.metaData))
 const information = clone(props.modelValue.metaData)
 const group = ref<string>(information.group)
@@ -156,17 +156,17 @@ function validate() {
             <div class="flex space-x-4">
                 <BaseInput
                     v-model="springBootVersion"
-                    :label="SpringBootVersion['3_3_0']"
+                    :label="SpringBootVersion['3_3_4']"
                     name="springBootVersion"
                     type="radio"
-                    :value="SpringBootVersion['3_3_0']"
+                    :value="SpringBootVersion['3_3_4']"
                 ></BaseInput>
                 <BaseInput
                     v-model="springBootVersion"
-                    :label="SpringBootVersion['3_2_6']"
+                    :label="SpringBootVersion['3_2_10']"
                     name="springBootVersion"
                     type="radio"
-                    :value="SpringBootVersion['3_2_6']"
+                    :value="SpringBootVersion['3_2_10']"
                 ></BaseInput>
             </div>
         </div>

@@ -12,17 +12,17 @@ const config: Config = {
         extend: {
             colors: {
                 primary: {
-                    '50': colors.indigo['50'],
-                    '100': colors.indigo['100'],
-                    '200': colors.indigo['200'],
-                    '300': colors.indigo['300'],
-                    '400': colors.indigo['400'],
-                    '500': colors.indigo['500'],
-                    '600': colors.indigo['600'],
-                    '700': colors.indigo['700'],
-                    '800': colors.indigo['800'],
-                    '900': colors.indigo['900'],
-                    '950': colors.indigo['950']
+                    '50': colors.blue['50'],
+                    '100': colors.blue['100'],
+                    '200': colors.blue['200'],
+                    '300': colors.blue['300'],
+                    '400': colors.blue['400'],
+                    '500': colors.blue['500'],
+                    '600': colors.blue['600'],
+                    '700': colors.blue['700'],
+                    '800': colors.blue['800'],
+                    '900': colors.blue['900'],
+                    '950': colors.blue['950']
                 },
                 'primary-dark': {
                     '50': colors.gray['50'],
@@ -60,7 +60,7 @@ const config: Config = {
             }
         }
     },
-    // eslint-disable-next-line no-undef
+     
     plugins: [tailwindForm, typography]
 }
 

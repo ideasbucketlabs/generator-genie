@@ -12,7 +12,7 @@ export function isValid(springProject: SpringProject): SpringProjectError {
         error.group = 'Group cannot be null or blank and must be all lower case.'
     } else if (!/^(?!\.)(?!.*\.$)(?!.*\.\.)[a-z][a-z0-9_.]+$/.test(springProject.group)) {
         error.group =
-            // eslint-disable-next-line vue/max-len
+             
             'Group must not begin or end with `.`, cannot have two consecutive `.`, must begin with alpha character and must be alpha numeric.'
     }
 
@@ -58,8 +58,8 @@ export function isValid(springProject: SpringProject): SpringProjectError {
     }
 
     if (
-        (springProject.springBootVersion ?? '') !== SpringBootVersion['3_3_0'] &&
-        (springProject.springBootVersion ?? '') !== SpringBootVersion['3_2_6']
+        (springProject.springBootVersion ?? '') !== SpringBootVersion['3_3_4'] &&
+        (springProject.springBootVersion ?? '') !== SpringBootVersion['3_2_10']
     ) {
         error.springBootVersion = 'Spring Boot version is invalid.'
     }

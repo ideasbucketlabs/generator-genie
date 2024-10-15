@@ -40,6 +40,7 @@ describe('DependenciesDialog works correctly', () => {
 
         const dialog = wrapper.getComponent(Dialog)
         await dialog.vm.$nextTick()
+        // eslint-disable-next-line  @typescript-eslint/no-explicit-any
         await (dialog.vm as any).show()
 
         const input = dialog.find('input[name="dependencies-input-filter"]')
