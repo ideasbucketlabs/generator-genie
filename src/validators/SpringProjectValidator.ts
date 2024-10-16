@@ -12,7 +12,6 @@ export function isValid(springProject: SpringProject): SpringProjectError {
         error.group = 'Group cannot be null or blank and must be all lower case.'
     } else if (!/^(?!\.)(?!.*\.$)(?!.*\.\.)[a-z][a-z0-9_.]+$/.test(springProject.group)) {
         error.group =
-             
             'Group must not begin or end with `.`, cannot have two consecutive `.`, must begin with alpha character and must be alpha numeric.'
     }
 

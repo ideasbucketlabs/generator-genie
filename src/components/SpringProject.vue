@@ -18,7 +18,6 @@ const emit = defineEmits<{
     (e: 'update:model-value', value: { active: boolean; valid: boolean; metaData: SpringProject }): void
 }>()
 
- 
 // const springProject = ref<SpringProject>(clone(props.modelValue.metaData))
 const information = clone(props.modelValue.metaData)
 const group = ref<string>(information.group)

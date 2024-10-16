@@ -57,7 +57,7 @@ function getGradleContent(
         getContent({
             metadata: getMetadata(language, springBootVersion, jdkVersion),
             dependencies: dependencies
-        }).tree[0] as File
+        }).tree.find((it) => it.name === 'build.gradle.kts') as File
     ).content!
 }
 
