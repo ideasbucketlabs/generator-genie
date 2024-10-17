@@ -140,13 +140,11 @@ onMounted(async () => {
             selectedFileId.value = firstFile.id!
         } else {
             code.value =
-                 
                 '<div class="flex w-full h-full flex-1 items-center justify-center"><div>Please select a file to see the content.</div></div>'
             rawCode.value = ''
         }
     } else {
         code.value =
-             
             '<div class="flex w-full h-full flex-1 items-center justify-center"><div>Please select a file to see the content.</div></div>'
         rawCode.value = ''
     }
@@ -164,7 +162,7 @@ onMounted(async () => {
             @close="emit('close')"
         >
             <div style="height: calc(100dvh - 5dvw)" class="flex dark:text-primary-dark-100">
-                <div class="hidden w-72 flex-col bg-primary-50 xl:flex xl:pb-16 dark:bg-primary-dark-800">
+                <div class="hidden w-72 flex-col bg-primary-100 xl:flex xl:pb-16 dark:bg-primary-dark-800">
                     <div
                         class="flex h-11 items-center border-b border-primary-100 p-2 font-semibold text-primary-500 dark:border-gray-700"
                     >
@@ -242,7 +240,7 @@ onMounted(async () => {
 
                         <!--                        <pre class="code-display flex-1 rounded-bl overflow-auto relative" v-html="code"></pre>-->
                     </div>
-                    <div class="flex justify-center space-x-4 bg-primary-50 py-2 dark:bg-primary-dark-800">
+                    <div class="flex justify-center space-x-4 bg-primary-100 py-2 dark:bg-primary-dark-800">
                         <BaseButton :primary="true" @click="emit('downloadClicked')" v-if="!isMobile">
                             <span class="block">Download</span>
                             <template #shortcut>

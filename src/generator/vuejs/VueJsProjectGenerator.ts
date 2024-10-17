@@ -8,7 +8,7 @@ import { getId } from '@/util/Util'
 import content from '@/generator/vuejs/template/compiled/content'
 import { Language } from '@/entity/Language'
 import { jsGitIgnore } from '@/generator/common/gitignore'
-import { getEditorConfig } from '@/generator/common/util'
+import { getEditorConfig, sortContentTreeItems } from '@/generator/common/util'
 import partition from 'lodash.partition'
 
 const engine = new Liquid({
@@ -124,7 +124,10 @@ function getTsConfigJson(
     return JSON.stringify(
         {
             files: [],
-            references: references
+            references: references,
+            compilerOptions: {
+                module: 'NodeNext'
+            }
         },
         null,
         indentSize
@@ -232,12 +235,12 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
             ...(projectMetaData.includeEslint
                 ? {
                       eslint: '^9.12.0',
-                      'eslint-plugin-vue': '^9.28.0'
+                      'eslint-plugin-vue': '^9.29.0'
                   }
                 : {}),
             ...(projectMetaData.includeEslint && typescriptSelected
                 ? {
-                      '@vue/eslint-config-typescript': '^14.0.0'
+                      '@vue/eslint-config-typescript': '^14.0.1'
                   }
                 : {}),
             ...(projectMetaData.includePrettier
@@ -286,12 +289,12 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 : {}),
             ...(projectMetaData.integrationTest === 'cypress' && projectMetaData.includeEslint
                 ? {
-                      'eslint-plugin-cypress': '^3.5.0'
+                      'eslint-plugin-cypress': '^4.0.0'
                   }
                 : {}),
             ...(projectMetaData.integrationTest === 'playwright' && projectMetaData.includeEslint
                 ? {
-                      'eslint-plugin-playwright': '^1.6.2'
+                      'eslint-plugin-playwright': '^1.7.0'
                   }
                 : {}),
             ...userChosenExplicitDevDependency
@@ -489,6 +492,69 @@ function getSrcContent(
         children: outputChildren
     } as Folder
 }
+
+function getVsCodeContent(projectMetaData: VueJsProject): Array<Folder | File> {
+    const recommendations = ['Vue.volar']
+
+    if (projectMetaData.includeEslint) {
+        recommendations.push('dbaeumer.vscode-eslint')
+    }
+
+    if (projectMetaData.includePrettier) {
+        recommendations.push('esbenp.prettier-vscode')
+    }
+
+    if (projectMetaData.includeUnitTest) {
+        recommendations.push('vitest.explorer')
+    }
+
+    if (projectMetaData.integrationTest === 'playwright') {
+        recommendations.push('ms-playwright.playwright')
+    } else if (projectMetaData.integrationTest === 'nightwatch') {
+        recommendations.push('browserstackcom.nightwatch')
+    }
+
+    return [
+        {
+            name: 'extensions.json',
+            id: getId(),
+            type: ContentType.File,
+            lang: Language.Json,
+            content: JSON.stringify(
+                {
+                    recommendations: recommendations
+                },
+                null,
+                projectMetaData.indentSize
+            )
+        },
+        {
+            name: 'settings.json',
+            id: getId(),
+            type: ContentType.File,
+            lang: Language.Json,
+            content: JSON.stringify(
+                {
+                    'explorer.fileNesting.enabled': true,
+                    'explorer.fileNesting.patterns': {
+                        'tsconfig.json': 'tsconfig.*.json, env.d.ts',
+                        'vite.config.*': 'jsconfig*, vitest.config.*, cypress.config.*, playwright.config.*',
+                        'package.json':
+                            'package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .prettier*, prettier*, .editorconfig'
+                    },
+                    'editor.codeActionsOnSave': {
+                        'source.fixAll': 'explicit'
+                    },
+                    'editor.formatOnSave': true,
+                    'editor.defaultFormatter': 'esbenp.prettier-vscode'
+                },
+                null,
+                projectMetaData.indentSize
+            )
+        }
+    ]
+}
+
 export function getContent(projectMetaData: { metadata: VueJsProject; dependencies: Package[] }): ContentTree {
     compileTemplates()
 
@@ -529,6 +595,12 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
     }
 
     const contentTree: Array<File | Folder> = [
+        {
+            name: '.vscode',
+            id: getId(),
+            type: ContentType.Folder,
+            children: getVsCodeContent(projectMetaData.metadata)
+        },
         {
             name: 'package.json',
             lang: Language.Json,
@@ -627,6 +699,25 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                 content: '/// <reference types="vite/client" />'
             }
         )
+    } else {
+        contentTree.push({
+            name: 'jsconfig.json',
+            lang: Language.Json,
+            id: getId(),
+            type: ContentType.File,
+            content: JSON.stringify(
+                {
+                    compilerOptions: {
+                        paths: {
+                            '@/*': ['./src/*']
+                        }
+                    },
+                    exclude: ['node_modules', 'dist']
+                },
+                null,
+                projectMetaData.metadata.indentSize
+            )
+        } as File)
     }
 
     if (projectMetaData.metadata.includeUnitTest) {
@@ -730,41 +821,18 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                         id: getId(),
                         type: ContentType.Folder,
                         children: [
-                            ...[
-                                {
-                                    name: `example.cy.${typescriptSelected ? 'ts' : 'js'}`,
-                                    lang: projectMetaData.metadata.language,
-                                    type: ContentType.File,
-                                    id: getId(),
-                                    content: engine.renderSync(
-                                        parsedTemplates.get('example.cy.ts')!,
-                                        payload
-                                    ) as unknown as string
-                                }
-                            ],
+                            {
+                                name: `example.cy.${typescriptSelected ? 'ts' : 'js'}`,
+                                lang: projectMetaData.metadata.language,
+                                type: ContentType.File,
+                                id: getId(),
+                                content: engine.renderSync(
+                                    parsedTemplates.get('example.cy.ts')!,
+                                    payload
+                                ) as unknown as string
+                            },
                             ...(typescriptSelected
-                                ? [
-                                      {
-                                          name: 'tsconfig.json',
-                                          lang: Language.Json,
-                                          id: getId(),
-                                          type: ContentType.File,
-                                          content: JSON.stringify(
-                                              {
-                                                  extends: '@vue/tsconfig/tsconfig.dom.json',
-                                                  include: ['./**/*', '../support/**/*'],
-                                                  compilerOptions: {
-                                                      isolatedModules: false,
-                                                      target: 'es5',
-                                                      lib: ['es5', 'dom'],
-                                                      types: ['cypress']
-                                                  }
-                                              },
-                                              null,
-                                              projectMetaData.metadata.indentSize
-                                          )
-                                      } as File
-                                  ]
+                                ? []
                                 : [
                                       {
                                           name: 'jsconfig.json',
@@ -835,7 +903,30 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
                                 ) as unknown as string
                             }
                         ]
-                    }
+                    },
+                    ...(typescriptSelected
+                        ? [
+                              {
+                                  name: 'tsconfig.json',
+                                  lang: Language.Json,
+                                  id: getId(),
+                                  type: ContentType.File,
+                                  content: JSON.stringify(
+                                      {
+                                          extends: '@vue/tsconfig/tsconfig.dom.json',
+                                          include: ['./e2e/**/*', './support/**/*'],
+                                          exclude: ['./support/component.*'],
+                                          compilerOptions: {
+                                              isolatedModules: false,
+                                              types: ['cypress']
+                                          }
+                                      },
+                                      null,
+                                      projectMetaData.metadata.indentSize
+                                  )
+                              } as File
+                          ]
+                        : [])
                 ]
             } as Folder
         )
@@ -911,11 +1002,11 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
 
     if (projectMetaData.metadata.includeEslint) {
         contentTree.push({
-            name: 'eslint.config.mjs',
+            name: 'eslint.config.js',
             lang: Language.Javascript,
             id: getId(),
             type: ContentType.File,
-            content: engine.renderSync(parsedTemplates.get('eslint.config.mjs')!, payload) as unknown as string
+            content: engine.renderSync(parsedTemplates.get('eslint.config.js')!, payload) as unknown as string
         } as File)
     }
 
@@ -938,6 +1029,6 @@ export function getContent(projectMetaData: { metadata: VueJsProject; dependenci
     } as File)
 
     return {
-        tree: contentTree
+        tree: sortContentTreeItems(contentTree)
     }
 }

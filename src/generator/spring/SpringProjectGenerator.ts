@@ -10,6 +10,7 @@ import content from '@/generator/spring/template/compiled/content'
 import { Language } from '@/entity/Language'
 import { gradleGitIgnore, mavenGitIgnore } from '@/generator/common/gitignore'
 import { SpringBootVersion } from '@/entity/SpringBootVersion'
+import { sortContentTreeItems } from '@/generator/common/util'
 
 const engine = new Liquid({
     jsTruthy: true,
@@ -549,6 +550,6 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
     )
 
     return {
-        tree: contentTree
+        tree: sortContentTreeItems(contentTree)
     }
 }
