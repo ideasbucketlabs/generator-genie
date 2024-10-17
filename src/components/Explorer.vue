@@ -121,7 +121,17 @@ async function nestedOptionChanged(inputElement: HTMLInputElement | null) {
 function findFirstFile(contentTree: ContentTree): File | null {
     const files = contentTree.tree.filter((it) => (it.type ?? ContentType.Folder) === ContentType.File)
 
-    return files.length > 0 ? (files[0] as File) : null
+    if (files.length === 0) {
+        return null
+    }
+
+    const firstFile = files.find((it) => !it.name.startsWith('.') && (it as File).lang !== Language.Binary)
+
+    if (firstFile === undefined) {
+        return null
+    }
+
+    return firstFile as File
 }
 
 onMounted(async () => {
