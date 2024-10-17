@@ -208,7 +208,7 @@ kotlin {
 }
 
 {%- endif -%}
-tasks.named('test') {
+tasks.withType<Test> {
     useJUnitPlatform()
 }
 {%- if dependenciesIds contains "data-jpa" and dependenciesIds contains "native" -%}
