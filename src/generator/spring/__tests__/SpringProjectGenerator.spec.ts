@@ -7,16 +7,16 @@ import type { SpringProject } from '@/entity/SpringProject'
 import type { File } from '@/entity/File'
 import type { Package } from '@/entity/Dependency'
 import { Language } from '@/entity/Language'
-import spring3_3_4 from '../../../stores/spring-3_3_4'
-import spring3_2_10 from '../../../stores/spring-3_2_10'
+import spring3_3_5 from '../../../stores/spring-3_3_5'
+import spring3_2_11 from '../../../stores/spring-3_2_11'
 
-const spring3_1_6Packages: Package[] = spring3_3_4.flatMap((it) => {
+const spring3_1_6Packages: Package[] = spring3_3_5.flatMap((it) => {
     return it.packages.map((pack) => {
         return pack
     })
 })
 
-const spring3_2_5Packages: Package[] = spring3_2_10.flatMap((it) => {
+const spring3_2_5Packages: Package[] = spring3_2_11.flatMap((it) => {
     return it.packages.map((pack) => {
         return pack
     })
@@ -31,7 +31,7 @@ function getOutput(fileName: string) {
 
 function getMetadata(
     language: Language.Kotlin | Language.Java = Language.Java,
-    springBootVersion: SpringBootVersion = SpringBootVersion['3_3_4'],
+    springBootVersion: SpringBootVersion = SpringBootVersion['3_3_5'],
     jdkVersion: 17 | 21 = 17
 ): SpringProject {
     return {
@@ -50,7 +50,7 @@ function getMetadata(
 function getGradleContent(
     dependencies: Package[],
     language: Language.Kotlin | Language.Java = Language.Java,
-    springBootVersion: SpringBootVersion = SpringBootVersion['3_3_4'],
+    springBootVersion: SpringBootVersion = SpringBootVersion['3_3_5'],
     jdkVersion: 17 | 21 = 17
 ): string {
     return (
@@ -61,8 +61,8 @@ function getGradleContent(
     ).content!
 }
 
-function getDependencies(input: string[], springBootVersion: SpringBootVersion = SpringBootVersion['3_3_4']) {
-    if (springBootVersion === SpringBootVersion['3_3_4']) {
+function getDependencies(input: string[], springBootVersion: SpringBootVersion = SpringBootVersion['3_3_5']) {
+    if (springBootVersion === SpringBootVersion['3_3_5']) {
         return spring3_1_6Packages.filter((it) => input.includes(it.id))
     }
 
@@ -99,7 +99,7 @@ describe('Can generate build.gradle properly', () => {
                     'docker-compose-setup'
                 ]),
                 Language.Kotlin,
-                SpringBootVersion['3_2_10']
+                SpringBootVersion['3_2_11']
             )
         ).toBe(getOutput('all-developer-tools-selected-with-kotlin-for-spring-3-2'))
     })
@@ -109,7 +109,7 @@ describe('Can generate build.gradle properly', () => {
             getGradleContent(
                 getDependencies(['wavefront', 'distributed-tracing']),
                 Language.Java,
-                SpringBootVersion['3_2_10'],
+                SpringBootVersion['3_2_11'],
                 21
             )
         ).toBe(getOutput('distributed-tracing-with-wavefront-with-java-spring_3_2_JDK_21'))

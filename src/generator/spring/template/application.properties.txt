@@ -1,3 +1,7 @@
+spring.application.name={{ metadata.name }}
+{%- if dependenciesIds contains "jte" -%}
+gg.jte.development-mode=true
+{%- endif -%}
 {%- if dependenciesIds contains "postgresql" -%}
     {%- if dependenciesIds contains "data-r2dbc" -%}
 spring.r2dbc.url=r2dbc:postgresql://${POSTGRES_URL:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DBNAME:dbname}
