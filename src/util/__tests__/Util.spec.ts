@@ -8,7 +8,7 @@ import { ProjectType } from '../../entity/ProjectType'
 
 const defaultSpringProject = {
     language: Language.Java,
-    springBootVersion: SpringBootVersion['3_3_4'] as SpringBootVersion,
+    springBootVersion: SpringBootVersion['3_3_5'] as SpringBootVersion,
     group: 'com.example',
     name: 'demo',
     artifact: 'demo',
@@ -82,7 +82,7 @@ describe('Functions in util works correctly', () => {
         expect(
             (extractDataFromParameters(input, defaultSpringProject, defaultVueJsProject)?.metaData as SpringProject)
                 .springBootVersion
-        ).toBe(SpringBootVersion['3_3_4'])
+        ).toBe(SpringBootVersion['3_3_5'])
     })
 
     it.concurrent('can validate JDK version in parameters correctly for Spring Project', () => {

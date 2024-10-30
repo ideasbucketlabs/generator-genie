@@ -85,7 +85,7 @@ const springProject = ref<{ active: boolean; valid: boolean; metaData: SpringPro
     valid: true,
     metaData: {
         language: Language.Java,
-        springBootVersion: SpringBootVersion['3_3_4'] as SpringBootVersion,
+        springBootVersion: SpringBootVersion['3_3_5'] as SpringBootVersion,
         group: defaultGroup,
         name: 'demo',
         artifact: 'demo',

@@ -152,16 +152,16 @@ function getProjectFolders(metadata: SpringProject, context: 'main' | 'test', de
     }
 }
 
-function getPropertiesFolderContent(packages: Set<string>): Array<File | Folder> {
+function getPropertiesFolderContent(packages: Set<string>, metadata: SpringProject): Array<File | Folder> {
     const content: Array<File | Folder> = [
         {
             name: 'application.properties',
             type: ContentType.File,
             id: getId(),
-            // content: engine.renderSync(parsedTemplates.get('application.properties')!, {
-            //     dependenciesIds: Array.from(packages)
-            // }) as unknown as string,
-            content: '',
+            content: engine.renderSync(parsedTemplates.get('application.properties')!, {
+                dependenciesIds: Array.from(packages),
+                metadata
+            }) as unknown as string,
             lang: Language.Properties
         },
         {
@@ -229,8 +229,45 @@ function getPropertiesFolderContent(packages: Set<string>): Array<File | Folder>
     return content
 }
 function getSrcFolder(metadata: SpringProject, packages: Set<string>): Folder | File {
-    const mainFolder: Folder = getProjectFolders(metadata, 'main', packages)
-    const testFolder: Folder = getProjectFolders(metadata, 'test', packages)
+    const mainFolder: Folder = getProjectFolders(
+        {
+            ...metadata,
+            ...{
+                name: metadata.name.charAt(0).toUpperCase() + metadata.name.slice(1)
+            }
+        },
+        'main',
+        packages
+    )
+    const testFolder: Folder = getProjectFolders(
+        {
+            ...metadata,
+            ...{
+                name: metadata.name.charAt(0).toUpperCase() + metadata.name.slice(1)
+            }
+        },
+        'test',
+        packages
+    )
+
+    const children: Array<File | Folder> = [
+        mainFolder,
+        {
+            name: 'resources',
+            type: ContentType.Folder,
+            id: getId(),
+            children: getPropertiesFolderContent(packages, metadata)
+        }
+    ]
+
+    if (packages.has('jte')) {
+        children.push({
+            name: 'jte',
+            id: getId(),
+            type: ContentType.Folder
+        })
+    }
+
     return {
         name: 'src',
         type: ContentType.Folder,
@@ -240,15 +277,7 @@ function getSrcFolder(metadata: SpringProject, packages: Set<string>): Folder | 
                 name: 'main',
                 type: ContentType.Folder,
                 id: getId(),
-                children: [
-                    mainFolder,
-                    {
-                        name: 'resources',
-                        type: ContentType.Folder,
-                        id: getId(),
-                        children: getPropertiesFolderContent(packages)
-                    }
-                ] as Array<File | Folder>
+                children: children
             },
             {
                 name: 'test',
@@ -425,7 +454,7 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
     const timefoldVersion = '1.15.0'
     const vaadinVersion: string = '24.4.13'
     const netflixDgsVersion: string =
-        projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_4'] ? '9.1.2' : '8.7.1'
+        projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_5'] ? '9.1.2' : '8.7.1'
     const hillaVersion: string = '2.5.5'
     const springModulithVersion: string = '1.2.4'
 
@@ -515,15 +544,15 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         jteVersion,
         java: Language.Java,
         ormVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_4']
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_5']
                 ? '"6.5.3.Final"'
                 : '"6.4.10.Final"',
         kotlinSelected: projectMetaData.metadata.language === Language.Kotlin,
         javaSelected: projectMetaData.metadata.language === Language.Java,
         springCloudVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_4'] ? '2023.0.3' : '2023.0.3',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_5'] ? '2023.0.3' : '2023.0.3',
         springShellVersion:
-            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_4'] ? '3.3.3' : '3.2.8',
+            projectMetaData.metadata.springBootVersion === SpringBootVersion['3_3_5'] ? '3.3.3' : '3.2.8',
         jdkSourceCompatibility: projectMetaData.metadata.javaVersion,
         kotlinPlugin: '1.9.25'
     }
@@ -537,17 +566,7 @@ export function getContent(projectMetaData: { metadata: SpringProject; dependenc
         contentTree.push(getDockerYaml(dependenciesIds))
     }
 
-    contentTree.push(
-        getSrcFolder(
-            {
-                ...projectMetaData.metadata,
-                ...{
-                    name: projectMetaData.metadata.name.charAt(0).toUpperCase() + projectMetaData.metadata.name.slice(1)
-                }
-            },
-            dependenciesIds
-        )
-    )
+    contentTree.push(getSrcFolder(projectMetaData.metadata, dependenciesIds))
 
     return {
         tree: sortContentTreeItems(contentTree)

@@ -219,28 +219,28 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
         devDependencies: {
             ...{
                 '@vitejs/plugin-vue': '^5.1.4',
-                vite: '^5.4.8'
+                vite: '^5.4.10'
             },
             ...(typescriptSelected
                 ? {
                       [`@tsconfig/node${projectMetaData.nodeVersion}`]:
                           projectMetaData.nodeVersion === 18 ? '^18.2.2' : '^20.1.4',
-                      '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.16.11',
+                      '@types/node': projectMetaData.nodeVersion === 18 ? '^18.18.7' : '^20.17.0',
                       '@vue/tsconfig': '^0.5.1',
-                      'npm-run-all2': '^6.2.3',
+                      'npm-run-all2': '^7.0.1',
                       'vue-tsc': '^2.1.6',
-                      typescript: '~5.5.4'
+                      typescript: '~5.6.0'
                   }
                 : {}),
             ...(projectMetaData.includeEslint
                 ? {
-                      eslint: '^9.12.0',
+                      eslint: '^9.13.0',
                       'eslint-plugin-vue': '^9.29.0'
                   }
                 : {}),
             ...(projectMetaData.includeEslint && typescriptSelected
                 ? {
-                      '@vue/eslint-config-typescript': '^14.0.1'
+                      '@vue/eslint-config-typescript': '^14.1.1'
                   }
                 : {}),
             ...(projectMetaData.includePrettier
@@ -252,7 +252,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
             ...(projectMetaData.includeUnitTest
                 ? {
                       jsdom: '^25.0.1',
-                      vitest: '^2.1.2',
+                      vitest: '^2.1.3',
                       '@vue/test-utils': '^2.4.6'
                   }
                 : {}),
@@ -294,7 +294,7 @@ function getPackageJson(projectMetaData: VueJsProject, dependencies: Package[], 
                 : {}),
             ...(projectMetaData.integrationTest === 'playwright' && projectMetaData.includeEslint
                 ? {
-                      'eslint-plugin-playwright': '^1.7.0'
+                      'eslint-plugin-playwright': '^2.0.0'
                   }
                 : {}),
             ...userChosenExplicitDevDependency
