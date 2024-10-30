@@ -2,29 +2,3 @@ spring.application.name={{ metadata.name }}
 {%- if dependenciesIds contains "jte" -%}
 gg.jte.development-mode=true
 {%- endif -%}
-{%- if dependenciesIds contains "postgresql" -%}
-    {%- if dependenciesIds contains "data-r2dbc" -%}
-spring.r2dbc.url=r2dbc:postgresql://${POSTGRES_URL:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DBNAME:dbname}
-spring.r2dbc.username=${POSTGRES_USERNAME:user}
-spring.r2dbc.password=${POSTGRES_PASSWORD:secret}
-    {%- endif -%}
-    {%- if dependenciesIds contains "jdbc" -%}
-spring.datasource.url=jdbc:postgresql://${POSTGRES_URL:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DBNAME:dbname}
-spring.datasource.username=${POSTGRES_USERNAME:user}
-spring.datasource.password=${POSTGRES_PASSWORD:secret}
-spring.datasource.hikari.minimumIdle=${DB_MIN_IDLE_CONN:2}
-    {%- endif -%}
-{%- endif -%}
-
-{%- if dependenciesIds contains "kafka" -%}
-spring.kafka.bootstrap-servers=${KAFKA_BOOTSTRAP:localhost:9092}
-{%- endif -%}
-
-{%- if dependenciesIds contains "actuator" -%}
-management.endpoint.health.enabled=true
-management.endpoint.health.probes.enabled=true
-management.endpoint.info.enabled=true
-management.endpoint.metrics.enabled=true
-management.endpoints.enabled-by-default=false
-management.endpoints.web.exposure.include=info,health,metrics
-{%- endif -%}
